@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./Base64.sol";
+import "./PlatziPunksDNA.sol";
 
 contract PlatziPunks is ERC721, ERC721Enumerable {
   using Counters for Counters.Counter;
