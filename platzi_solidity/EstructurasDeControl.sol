@@ -7,6 +7,8 @@ contract EstructurasDeControl {
     uint[] public numeros;
     string public resultado;
 
+    event NotificacionDeCondicion(bool condicion);
+
     constructor(bool condicion) {
         if(condicion) {
             resultado = "Condicion true";
@@ -14,6 +16,8 @@ contract EstructurasDeControl {
             resultado = "Condicion false";
         }
 
+        emit NotificacionDeCondicion(condicion);
+        
         for(uint iterador = 0; iterador < 10; iterador++) {
             numeros.push(iterador);
         }
