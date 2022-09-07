@@ -15,7 +15,7 @@ contract Modificadores {
     }
 
     modifier EsOwner {
-        if (msg.sender != owner) revert();
+        require(msg.sender == owner, "El usuario no es el creador del contrato");
         _;
     }
 }
