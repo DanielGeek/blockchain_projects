@@ -13,6 +13,7 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 cd contracts && npx hardhat run --network localhost scripts/deploy.js
+cd contracts && npx hardhat run --network goerli scripts/deploy.js
 ```
 
 etherscan goerli test address contract deploy

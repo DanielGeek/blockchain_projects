@@ -25,7 +25,7 @@ async function main() {
   let config = `export const abiPlatziFoodAddress = "${platziFood.address}"`;
 
   let data = JSON.stringify(config);
-  fs.writeFileSync("../config.js", JSON.parse(data));
+  fs.writeFileSync("../web/config.js", JSON.parse(data));
 
   fs.copyFile('./artifacts/contracts/PlatziFood.sol/PlatziFood.json', '../web/utils/abi/PlatziFood.js', (err) => {
     if (err)
