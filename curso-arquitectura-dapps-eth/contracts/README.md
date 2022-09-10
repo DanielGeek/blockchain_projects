@@ -14,3 +14,6 @@ node scripts/sample-script.js
 npx hardhat help
 cd contracts && npx hardhat run --network localhost scripts/deploy.js
 ```
+
+etherscan goerli test address contract deploy
+0x1034a6C5cBD12AA676340AE7672F1a2319524C96

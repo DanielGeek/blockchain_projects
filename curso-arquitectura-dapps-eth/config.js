@@ -1,0 +1,1 @@
+export const abiPlatziFoodAddress = "0xBA9FD46Cd802CbbA1E047f4e8fFA3cBF27094e85"
