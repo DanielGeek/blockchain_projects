@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 
 function MyApp({ Component, pageProps }) {
   const [walletAccount, setWalletAccount] = useState("");
+  const [isConnectedToGoerli, setIsConnectedToGoerli] = useState(true);
 
   const checkIfMetaMaskIsConnected = async () => {
     const { ethereum } = window;
@@ -14,6 +15,14 @@ function MyApp({ Component, pageProps }) {
       console.log("Check if MetaMask is installed");
     } else {
       console.log("MetaMask installed");
+
+      ethereum.on("chainChanged", function( networkId ) {
+        if (parseInt(networkId) !== 5) {
+          setIsConnectedToGoerli(false);
+        } else {
+          setIsConnectedToGoerli(true);
+        }
+      })
     }
 
     const accounts = await ethereum.request({ method: "eth_accounts"});
@@ -52,6 +61,18 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div>
+      {!isConnectedToGoerli && (
+        <div className={styles.container}>
+          <div className={styles.wrongNetwork}>
+            <h1>Wrong Network</h1>
+            <p>
+              {" "}
+              Please, connect to the network Goerli in your MetaMask
+            </p>
+          </div>
+        </div>
+      )}
+
       {!walletAccount && (
         <div className={styles.container}>
           <button
@@ -63,7 +84,7 @@ function MyApp({ Component, pageProps }) {
         </div>
       )}
 
-      {walletAccount && (
+      {(walletAccount && isConnectedToGoerli) && (
         <div>
           <main>
             <nav className="border-b p-6">
