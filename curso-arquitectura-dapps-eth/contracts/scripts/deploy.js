@@ -27,7 +27,7 @@ async function main() {
   let data = JSON.stringify(config);
   fs.writeFileSync("../web/config.js", JSON.parse(data));
 
-  fs.copyFile('./artifacts/contracts/PlatziFood.sol/PlatziFood.json', '../web/utils/abi/PlatziFood.js', (err) => {
+  fs.copyFile('./artifacts/contracts/PlatziFood.sol/PlatziFood.json', '../web/utils/abi/PlatziFood.json', (err) => {
     if (err)
     console.log('Error Ocurred: ', err);
   });
