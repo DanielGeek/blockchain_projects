@@ -1,1 +1,1 @@
-export const abiPlatziFoodAddress = "0x1205850405F6C3672f1C1f354B27e8A028f840D6"
+export const abiPlatziFoodAddress = "0x1034a6C5cBD12AA676340AE7672F1a2319524C96"
