@@ -12,5 +12,6 @@ npx hardhat node
 npx hardhat run scripts/deploy.js
 npx hardhat run script/deploy.js --network alfajores
 ```
-
+Help
+https://alfajores-blockscout.celo-testnet.org/
 https://celo.org/developers/faucet
