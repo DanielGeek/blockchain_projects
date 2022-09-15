@@ -1,9 +1,4 @@
 fn main() {
-    println!("Please, enter your name: ");
-
-    let mut name : String = String::new();
-    std::io::stdin().read_line(&mut name).unwrap();
-    name = name.trim().to_string();
 
     println!("Please, enter your age: ");
     let mut age : String = String::new();
@@ -11,5 +6,11 @@ fn main() {
 
     let age_int : u8 = age.trim().parse().unwrap();
 
-    println!("Hello, welcome {} of {} years old", name, age_int);
+    if age_int >= 18 {
+        println!("You can enter");
+    } else {
+        println!("you are underage");
+    }
+
+    println!("You have {} years old", age_int);
 }
