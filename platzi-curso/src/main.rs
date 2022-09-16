@@ -1,28 +1,12 @@
+fn add_one(number_to_add: i32) -> i32 {
+    let final_number = number_to_add + 1;
+    println!("{}", final_number);
 
+    return final_number;
+}
 fn main() {
 
-    let mut names: Vec<String> = Vec::new();
-
-    for i in 0..3 {
-        println!("Please, introduce a name: ");
-        let mut name = String::new();
-        std::io::stdin().read_line(&mut name).unwrap();
-
-        names.push(name);
-    }
-
-
-//    println!("{:?}", names);
-    for name in names {
-        println!("Name is: {}", name);
-    }
-
-    let hello = ["H", "E", "L", "L", "O"];
-
-    println!("{}", hello[0]);
-    println!("{}", hello[1]);
-    println!("{}", hello[2]);
-    println!("{}", hello[3]);
-    println!("{}", hello[4]);
+    let result = add_one(1);
+    add_one(result);
 
 }
