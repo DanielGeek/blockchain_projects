@@ -1,12 +1,13 @@
-fn add_one(number_to_add: i32) -> i32 {
-    let final_number = number_to_add + 1;
-    println!("{}", final_number);
+use csv::{ReaderBuilder, StringRecord};
+use std::{fs};
 
-    return final_number;
-}
+const FILENAME: &str = "history.csv";
+
 fn main() {
+    let content = fs::read_to_string(FILENAME).unwrap();
+    let mut rdr = ReaderBuilder::new().delimiter(b';').from_reader(content.as_bytes());
 
-    let result = add_one(1);
-    add_one(result);
-
+    for result in rdr.records() {
+        println!("Text: {}", result.unwrap().get(2).unwrap().trim());
+    }
 }
