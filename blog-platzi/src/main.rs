@@ -17,20 +17,27 @@ pub mod schema;
 pub mod models;
 
 fn main() {
-    // Indicamos que vamos a utilizar el esquema de Posts y el modelo
-    use self::models::Post;
-    use self::schema::posts;
-    use self::schema::posts::dsl::*;
-
-    // Lectura de variables de entorno
     dotenv().ok();
     let db_url = env::var("DATABASE_URL").expect("La variable de entorno DATABASE_URL no existe.");
 
     // Conexión con la BBDD
     let conn = PgConnection::establish(&db_url).expect("No se ha podido establecer la conexión con la base de datos.");
+    // Indicamos que vamos a utilizar el esquema de Posts y el modelo
+    
+    use self::models::{Post, NewPost};
+    use self::schema::posts;
+    use self::schema::posts::dsl::*;
 
-    // Realizamos la consulta equivalente a: SELECT * FROM posts;
-    let posts_result = posts.load::<Post>(&conn).expect("Error en la consulta SQL.");
+    let new_post = NewPost {
+        title: "My second post",
+        body: "2 Lorem ipsum...",
+        slug: "second-post",
+    };
+
+    let post: Post = diesel::insert_into(posts::table).values(&new_post).get_result(&conn).expect("La insertada fallo");
+
+    // Realizamos la consulta equivalente a: SELECT * FROM posts limit 1;
+    let posts_result = posts.limit(1).load::<Post>(&conn).expect("Error en la consulta SQL.");
 
     // Iteramos los resultados de la consulta
     for post in posts_result {
