@@ -1,13 +1,52 @@
-fn main() {
-    let edad = 18;
+#[macro_use]
 
-    let resultado = match edad {
-        0..=16 => "Entre 0 y 16",
-        17 => "El valor es 17",
-        18 => "El valor es 18",
-        19 | 20 | 21 => "El valor es 19, 20 o 21",
-        _ => "Valor por defecto"
-    };
+extern crate diesel;
 
-    println!("{}", resultado);
+pub mod schema;
+pub mod models;
+
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
+
+use dotenv::dotenv;
+use std::env;
+
+use diesel::prelude::*;
+use diesel::pg::PgConnection;
+
+pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
+use diesel::r2d2::{self, ConnectionManager};
+use diesel::r2d2::Pool;
+
+use self::models::Post;
+use self::schema::posts::dsl::*;
+
+#[get("/")]
+async fn index(pool: web::Data<DbPool>) -> impl Responder {
+    // Traemos el POOL para disponer de la conexión a la BBDD
+    let conn = pool.get().expect("Problemas al traer el pool de conexión.");
+
+    // El 'match' responde en caso de éxito o error en la consulta
+    match web::block(move || {posts.load::<Post>(&conn)}).await {
+        Ok(data) => {
+            return HttpResponse::Ok().body(format!("{:?}", data));
+        },
+        Err(err) => HttpResponse::Ok().body("Error al recibir los datos.")
+    }
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+
+    dotenv().ok();
+    let db_url = env::var("DATABASE_URL").expect("La variable de entorno DATABASE_URL no existe.");
+
+    let connection = ConnectionManager::<PgConnection>::new(db_url);
+
+    // El POOL sirve para compartir la conexión con otros servicios
+    let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool.");
+
+    HttpServer::new(move || {
+        // Compartimos el pool de conexión a cada endpoint
+        App::new().service(index).app_data(web::Data::new(pool.clone()))
+    }).bind(("127.0.0.1", 8080)).unwrap().run().await
 }
