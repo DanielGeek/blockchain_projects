@@ -1,42 +1,13 @@
-#[macro_use]
+fn main() {
+    let edad = 18;
 
-extern crate diesel;
+    let resultado = match edad {
+        0..=16 => "Entre 0 y 16",
+        17 => "El valor es 17",
+        18 => "El valor es 18",
+        19 | 20 | 21 => "El valor es 19, 20 o 21",
+        _ => "Valor por defecto"
+    };
 
-pub mod schema;
-pub mod models;
-
-use dotenv::dotenv;
-use std::env;
-
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
-
-// Librerías para crear una conexión a la BBDD y compartirla en toda la aplicación
-use diesel::r2d2::{self, ConnectionManager};
-use diesel::r2d2::Pool;
-
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-
-// Endpoint GET que devuelve texto, utiliamos el Macro GET para indicar el verbo HTTP
-#[get("/")]
-async fn hello_wold() -> impl Responder {
-    HttpResponse::Ok().body("Hola Platzi!!!")
-}
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-
-    dotenv().ok();
-    let db_url = env::var("DATABASE_URL").expect("La variable de entorno DATABASE_URL no existe.");
-
-    let connection = ConnectionManager::<PgConnection>::new(db_url);
-
-    // El POOL sirve para compartir la conexión con otros servicios
-    let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool");
-
-    HttpServer::new(move || {
-        // Compartimos el pool de conexión a cada endpoint
-        App::new().service(hello_wold).app_data(web::Data::new(pool.clone()))
-    }).bind(("127.0.0.1", 8080)).unwrap().run().await
-
+    println!("{}", resultado);
 }
