@@ -1,53 +1,42 @@
-// Indicamos que vamos a utilizar macros
 #[macro_use]
 
-// Importamos Diesel
 extern crate diesel;
 
-// Importamos la conexión con PostgreSQL
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
-
-// Importamos librerias para leer variables de entorno
-use dotenv::dotenv;
-use std::env;
-
-// Importamos esquemas de BBDD y modelos
 pub mod schema;
 pub mod models;
 
-fn main() {
+use dotenv::dotenv;
+use std::env;
+
+use diesel::prelude::*;
+use diesel::pg::PgConnection;
+
+// Librerías para crear una conexión a la BBDD y compartirla en toda la aplicación
+use diesel::r2d2::{self, ConnectionManager};
+use diesel::r2d2::Pool;
+
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+
+// Endpoint GET que devuelve texto, utiliamos el Macro GET para indicar el verbo HTTP
+#[get("/")]
+async fn hello_wold() -> impl Responder {
+    HttpResponse::Ok().body("Hola Platzi!!!")
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+
     dotenv().ok();
     let db_url = env::var("DATABASE_URL").expect("La variable de entorno DATABASE_URL no existe.");
 
-    // Conexión con la BBDD
-    let conn = PgConnection::establish(&db_url).expect("No se ha podido establecer la conexión con la base de datos.");
-    // Indicamos que vamos a utilizar el esquema de Posts y el modelo
+    let connection = ConnectionManager::<PgConnection>::new(db_url);
 
-    use self::models::{Post, NewPost, PostSimplificado};
-    use self::schema::posts;
-    use self::schema::posts::dsl::*;
+    // El POOL sirve para compartir la conexión con otros servicios
+    let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool");
 
-    diesel::delete(posts.filter(slug.eq("second-blogpost"))).execute(&conn).expect("Ha fallado la eliminacion del tercer post");
+    HttpServer::new(move || {
+        // Compartimos el pool de conexión a cada endpoint
+        App::new().service(hello_wold).app_data(web::Data::new(pool.clone()))
+    }).bind(("127.0.0.1", 8080)).unwrap().run().await
 
-    // let new_post = NewPost {
-    //     title: "My second post",
-    //     body: "2 Lorem ipsum...",
-    //     slug: "second-post",
-    // };
-
-    // let post: Post = diesel::insert_into(posts::table).values(&new_post).get_result(&conn).expect("La insertada fallo");
-
-    // let post_update = diesel::update(posts.filter(id.eq(2)))
-    //     .set(slug.eq("second-blogpost"))
-    //     .get_result::<Post>(&conn)
-    //     .expect("Error updating record");
-
-    println!("Query sin limites");
-    let posts_result = posts.load::<Post>(&conn).expect("Error en la consulta SQL.");
-
-    // Iteramos los resultados de la consulta
-    for post in posts_result {
-        println!("{:?}", post);
-    }
 }
