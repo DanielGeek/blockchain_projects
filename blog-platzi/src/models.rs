@@ -1,5 +1,12 @@
+
+#[derive(Queryable, Debug)]
+pub struct PostSimplificado {
+    pub title: String,
+    pub body: String,
+}
+
 // Macro para indicar que los registros de la BBDD tendrán la misma forma que la estructura.
-#[derive(Queryable)]
+#[derive(Queryable, Debug)]
 pub struct Post {
     pub id: i32,
     pub title: String,
