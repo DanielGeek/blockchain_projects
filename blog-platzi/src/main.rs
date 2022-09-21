@@ -7,6 +7,7 @@ pub mod models;
 
 use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, post};
 
+use tera::Tera;
 use dotenv::dotenv;
 use std::env;
 
@@ -20,6 +21,18 @@ use diesel::r2d2::Pool;
 use self::models::{Post, NewPost, NewPostHandler};
 use self::schema::posts;
 use self::schema::posts::dsl::*;
+
+#[get("/tera_test")]
+async fn tera_test(template_manager: web::Data<tera::Tera>) -> impl Responder {
+
+    // Creamos un contexto para pasarle datos al template
+    let mut ctx = tera::Context::new();
+
+    // Enviamos el template que queremos localizándolo por su nombre
+    HttpResponse::Ok().content_type("text/html").body(
+        template_manager.render("tera_test.html", &ctx).unwrap()
+    )
+}
 
 #[get("/")]
 async fn index(pool: web::Data<DbPool>) -> impl Responder {
@@ -61,9 +74,14 @@ async fn main() -> std::io::Result<()> {
     let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool.");
 
     HttpServer::new(move || {
-        App::new()
-            .service(index)
-            .service(new_post)
-            .app_data(web::Data::new(pool.clone()))
+
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/templates/**/*")).unwrap();
+
+         App::new()
+        .service(index)
+        .service(new_post)
+        .service(tera_test)
+        .app_data(web::Data::new(pool.clone()))
+        .app_data(web::Data::new(tera.clone()))
     }).bind(("127.0.0.1", 8080)).unwrap().run().await
 }
