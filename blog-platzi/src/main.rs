@@ -22,29 +22,59 @@ use self::models::{Post, NewPost, NewPostHandler};
 use self::schema::posts;
 use self::schema::posts::dsl::*;
 
-#[get("/tera_test")]
-async fn tera_test(template_manager: web::Data<tera::Tera>) -> impl Responder {
-
-    // Creamos un contexto para pasarle datos al template
-    let mut ctx = tera::Context::new();
-
-    // Enviamos el template que queremos localizándolo por su nombre
-    HttpResponse::Ok().content_type("text/html").body(
-        template_manager.render("tera_test.html", &ctx).unwrap()
-    )
-}
-
 #[get("/")]
-async fn index(pool: web::Data<DbPool>) -> impl Responder {
-    // Traemos el POOL para disponer de la conexión a la BBDD
-    let conn = pool.get().expect("Problemas al traer el pool de conexión.");
+async fn index(pool: web::Data<DbPool>, template_manager: web::Data<tera::Tera>) -> impl Responder {
+    let conn = pool.get().expect("Problemas al traer la base de datos");
 
-    // El 'match' responde en caso de éxito o error en la consulta
+    // Consulta para obtener todos los registros
     match web::block(move || {posts.load::<Post>(&conn)}).await {
         Ok(data) => {
-            return HttpResponse::Ok().body(format!("{:?}", data));
+            let data = data.unwrap();
+
+            // Enviamos, a través del contexto, los datos al HTML
+            let mut ctx = tera::Context::new();
+            ctx.insert("posts", &data);
+
+            // Pasamos los datos al template index.html
+            HttpResponse::Ok().content_type("text/html").body(
+                template_manager.render("index.html", &ctx).unwrap()
+            )
         },
-        Err(err) => HttpResponse::Ok().body("Error al recibir los datos.")
+        Err(err) => HttpResponse::Ok().body("Error al recibir la data")
+    }
+}
+
+// Capturamos el parámetro por URL
+#[get("/blog/{blog_slug}")]
+async fn get_post(
+    pool: web::Data<DbPool>,
+    template_manager: web::Data<tera::Tera>,
+    blog_slug: web::Path<String>
+) -> impl Responder {
+    let conn = pool.get().expect("Problemas al traer la base de datos");
+
+    let url_slug = blog_slug.into_inner();
+
+    match web::block(move || {posts.filter(slug.eq(url_slug)).load::<Post>(&conn)}).await {
+        Ok(data) => {
+            let data = data.unwrap();
+
+            // Si el post no existe, devolvemos 404
+            if data.len() == 0 {
+                return HttpResponse::NotFound().finish();
+            }
+
+            let data = &data[0];
+
+            // Enviamos, a través del contexto, los datos del post al HTML
+            let mut ctx = tera::Context::new();
+            ctx.insert("post", data);
+
+            HttpResponse::Ok().content_type("text/html").body(
+                template_manager.render("post.html", &ctx).unwrap()
+            )
+        },
+        Err(err) => HttpResponse::Ok().body("Error al recibir la data")
     }
 }
 
@@ -80,7 +110,7 @@ async fn main() -> std::io::Result<()> {
          App::new()
         .service(index)
         .service(new_post)
-        .service(tera_test)
+        .service(get_post)
         .app_data(web::Data::new(pool.clone()))
         .app_data(web::Data::new(tera.clone()))
     }).bind(("127.0.0.1", 8080)).unwrap().run().await
