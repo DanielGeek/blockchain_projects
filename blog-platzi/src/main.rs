@@ -5,7 +5,7 @@ extern crate diesel;
 pub mod schema;
 pub mod models;
 
-use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder, post};
 
 use dotenv::dotenv;
 use std::env;
@@ -17,7 +17,8 @@ pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 use diesel::r2d2::{self, ConnectionManager};
 use diesel::r2d2::Pool;
 
-use self::models::Post;
+use self::models::{Post, NewPost, NewPostHandler};
+use self::schema::posts;
 use self::schema::posts::dsl::*;
 
 #[get("/")]
@@ -34,6 +35,20 @@ async fn index(pool: web::Data<DbPool>) -> impl Responder {
     }
 }
 
+#[post("/new_post")]
+async fn new_post(pool: web::Data<DbPool>, item: web::Json<NewPostHandler>) -> impl Responder {
+    // Traemos el POOL para disponer de la conexión a la BBDD
+    let conn = pool.get().expect("Problemas al traer la base de datos");
+
+    // Utiliamos la función creada en el modelo para crear un nuevo registro y devolverlo
+    match web::block(move || {Post::create_post(&conn, &item)}).await {
+        Ok(data) => {
+            return HttpResponse::Ok().body(format!("{:?}", data));
+        },
+        Err(err) => HttpResponse::Ok().body("Error al recibir la data")
+    }
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
 
@@ -46,7 +61,9 @@ async fn main() -> std::io::Result<()> {
     let pool = Pool::builder().build(connection).expect("No se pudo construir el Pool.");
 
     HttpServer::new(move || {
-        // Compartimos el pool de conexión a cada endpoint
-        App::new().service(index).app_data(web::Data::new(pool.clone()))
+        App::new()
+            .service(index)
+            .service(new_post)
+            .app_data(web::Data::new(pool.clone()))
     }).bind(("127.0.0.1", 8080)).unwrap().run().await
 }
