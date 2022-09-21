@@ -97,6 +97,8 @@ async fn main() -> std::io::Result<()> {
 
     dotenv().ok();
     let db_url = env::var("DATABASE_URL").expect("La variable de entorno DATABASE_URL no existe.");
+    let port = env::var("PORT").expect("La variable de entorno PORT no existe.");
+    let port: u16 = port.parse().unwrap();
 
     let connection = ConnectionManager::<PgConnection>::new(db_url);
 
@@ -113,5 +115,5 @@ async fn main() -> std::io::Result<()> {
         .service(get_post)
         .app_data(web::Data::new(pool.clone()))
         .app_data(web::Data::new(tera.clone()))
-    }).bind(("127.0.0.1", 8080)).unwrap().run().await
+    }).bind(("127.0.0.1", port)).unwrap().run().await
 }
