@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-// IMPORT ICON
+import { DiJqueryLogo } from 'react-icons/di';
+//----IMPORT ICON
 import { MdNotifications } from 'react-icons/md';
 import { BsSearch } from 'react-icons/bs';
 import { CgMenuLeft, CgMenuRight } from 'react-icons/cg';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-// INTERNAL IMPORT
+//INTERNAL IMPORT
 import Style from './NavBar.module.css';
 import { Discover, HelpCenter, Notification, Profile, SideBar } from './index';
-import { Button } from '../componentsindex';
+import { Button, Error } from '../componentsindex';
 import images from '../../img';
 
 const NavBar = () => {
 	const [discover, setDiscover] = useState(false);
 	const [help, setHelp] = useState(false);
-	const [notifiaction, setNotifiaction] = useState(false);
+	const [notification, setNotification] = useState(false);
 	const [profile, setProfile] = useState(false);
 	const [openSideMenu, setOpenSideMenu] = useState(false);
 
@@ -24,29 +26,29 @@ const NavBar = () => {
 		if (btnText == 'Discover') {
 			setDiscover(true);
 			setHelp(false);
-			setNotifiaction(false);
+			setNotification(false);
 			setProfile(false);
 		} else if (btnText == 'Help Center') {
 			setDiscover(false);
 			setHelp(true);
-			setNotifiaction(false);
+			setNotification(false);
 			setProfile(false);
 		} else {
 			setDiscover(false);
 			setHelp(false);
-			setNotifiaction(false);
+			setNotification(false);
 			setProfile(false);
 		}
 	};
 
 	const openNotification = () => {
-		if (!notifiaction) {
-			setNotifiaction(true);
+		if (!notification) {
+			setNotification(true);
 			setDiscover(false);
 			setHelp(false);
 			setProfile(false);
 		} else {
-			setNotifiaction(false);
+			setNotification(false);
 		}
 	};
 
@@ -55,7 +57,7 @@ const NavBar = () => {
 			setProfile(true);
 			setHelp(false);
 			setDiscover(false);
-			setNotifiaction(false);
+			setNotification(false);
 		} else {
 			setProfile(false);
 		}
@@ -117,7 +119,7 @@ const NavBar = () => {
 							className={Style.notify}
 							onClick={() => openNotification()}
 						/>
-						{notifiaction && <Notification />}
+						{notification && <Notification />}
 					</div>
 
 					{/* CREATE BUTTON SECTION */}
