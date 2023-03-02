@@ -5,6 +5,7 @@ import {
 	HeroSection,
 	Service,
 	BigNFTSlider,
+	Subscribe,
 } from '../components/componentsindex';
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
 			<HeroSection />
 			<Service />
 			<BigNFTSlider />
+			<Subscribe />
 		</div>
 	);
 };
