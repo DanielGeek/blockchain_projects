@@ -11,6 +11,7 @@ import {
 	Filter,
 	NFTCard,
 	Collection,
+	FollowerTab,
 } from '../components/componentsindex';
 
 const Home = () => {
@@ -19,10 +20,8 @@ const Home = () => {
 			<HeroSection />
 			<Service />
 			<BigNFTSlider />
-			<Title
-				heading='New Collection'
-				paragraph='Discover the most outstanding NTFs in all topics of life'
-			/>
+
+			<FollowerTab />
 			<Collection />
 			<Title
 				heading='Featured NFTs'
