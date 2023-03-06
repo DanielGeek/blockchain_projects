@@ -6,7 +6,11 @@ import { Banner, NFTCardTwo } from '../collectionPage/collectionIndex';
 import { Brand, Title } from '../components/componentsindex';
 import FollowerTabCard from '../components/FollowerTab/FollowerTabCard/FollowerTabCard';
 import images from '../img';
-import { AuthorProfileCard, AuthorTaps } from '../authorPage/componentIndex';
+import {
+	AuthorProfileCard,
+	AuthorTaps,
+	AuthorNFTCardBox,
+} from '../authorPage/componentIndex';
 
 const author = () => {
 	const followerArray = [
@@ -62,14 +66,25 @@ const author = () => {
 				setFollower={setFollower}
 				setFollowing={setFollowing}
 			/>
+			<AuthorNFTCardBox
+				collectiables={collectiables}
+				created={created}
+				like={like}
+				follower={follower}
+				following={following}
+				nfts={nfts}
+				myNFTS={myNFTs}
+			/>
 			<Title
 				heading='Popular Creators'
 				paragraph='Click on music icon and enjoy NTF music or audio
 '
 			/>
-			{/* {followerArray.map((el, i) => (
-				<FollowerTabCard key={i + 1} i={i} el={el} />
-			))} */}
+			<div className={Style.author_box}>
+				{followerArray.map((el, i) => (
+					<FollowerTabCard i={i} el={el} />
+				))}
+			</div>
 			<Brand />
 		</div>
 	);
