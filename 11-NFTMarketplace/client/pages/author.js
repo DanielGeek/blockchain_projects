@@ -55,11 +55,21 @@ const author = () => {
 		<div className={Style.author}>
 			<Banner bannerImage={images.creatorbackground2} />
 			<AuthorProfileCard />
+			<AuthorTaps
+				setCollectiables={setCollectiables}
+				setCreated={setCreated}
+				setLike={setLike}
+				setFollower={setFollower}
+				setFollowing={setFollowing}
+			/>
 			<Title
 				heading='Popular Creators'
 				paragraph='Click on music icon and enjoy NTF music or audio
 '
 			/>
+			{/* {followerArray.map((el, i) => (
+				<FollowerTabCard key={i + 1} i={i} el={el} />
+			))} */}
 			<Brand />
 		</div>
 	);
