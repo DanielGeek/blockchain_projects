@@ -48,11 +48,9 @@ contract NFTMarketplace is ERC721URIStorage {
         owner == payable(msg.sender);
     }
 
-    function updateListingPrice(uint256 _listingPrice)
-        public
-        payable
-        onlyOwner
-    {
+    function updateListingPrice(
+        uint256 _listingPrice
+    ) public payable onlyOwner {
         listingPrice = _listingPrice;
     }
 
@@ -61,11 +59,10 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     // Let create "CREATE NFT TOKEN FUNCTION"
-    function createToken(string memory tokenURI, uint256 price)
-        public
-        payable
-        returns (uint256)
-    {
+    function createToken(
+        string memory tokenURI,
+        uint256 price
+    ) public payable returns (uint256) {
         _tokenIds.increment();
 
         uint256 newTokenId = _tokenIds.current();
