@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import Style from '../styles/index.module.css';
 import {
@@ -17,6 +17,9 @@ import {
 	Brand,
 	Video,
 } from '../components/componentsindex';
+
+// IMPORTING CONTRACT DATA
+import { NFTMarketplaceContext } from '@/Context/NFTMarketplaceContext';
 
 const Home = () => {
 	return (
