@@ -5,7 +5,10 @@ import { useRouter } from 'next/router';
 import { Button, Category, Brand } from '../components/componentsindex';
 import NFTDetailsPage from '../NFTDetailsPage/NFTDetailsPage';
 
+import { NFTMarketplaceContext } from '@/Context/NFTMarketplaceContext';
+
 const NFTDetails = () => {
+	const { currentAccount } = useContext(NFTMarketplaceContext);
 	const [nft, setNft] = useState({
 		image: '',
 		tokenId: '',
@@ -23,9 +26,7 @@ const NFTDetails = () => {
 
 	return (
 		<div>
-			<NFTDetailsPage
-			// nft={nft}
-			/>
+			<NFTDetailsPage nft={nft} />
 			<Category />
 			<Brand />
 		</div>

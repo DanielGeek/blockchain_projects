@@ -23,6 +23,12 @@ const NavBar = () => {
 	const [profile, setProfile] = useState(false);
 	const [openSideMenu, setOpenSideMenu] = useState(false);
 
+	const router = useRouter();
+
+	const { currentAccount, connectWallet, openError } = useContext(
+		NFTMarketplaceContext
+	);
+
 	const openMenu = (e) => {
 		const btnText = e.target.innerText;
 		if (btnText == 'Discover') {
@@ -73,19 +79,12 @@ const NavBar = () => {
 		}
 	};
 
-	const { currentAccount, connectWallet } = useContext(NFTMarketplaceContext);
-
 	return (
 		<div className={Style.navbar}>
 			<div className={Style.navbar_container}>
 				<div className={Style.navbar_container_left}>
 					<div className={Style.logo}>
-						<Image
-							src={images.logo}
-							alt='NFT MARKET PLACE'
-							width={100}
-							height={100}
-						/>
+						<DiJqueryLogo onClick={() => router.push('/')} />
 					</div>
 					<div className={Style.navbar_container_left_box_input}>
 						<div className={Style.navbar_container_left_box_input_box}>
@@ -136,9 +135,10 @@ const NavBar = () => {
 								}}
 							/>
 						) : (
-							<a href='/uploadNFT'>
-								<Button btnName='Create' handleClick={() => {}} />
-							</a>
+							<Button
+								btnName='Create'
+								handleClick={() => router.push('/uploadNFT')}
+							/>
 						)}
 					</div>
 
@@ -154,7 +154,7 @@ const NavBar = () => {
 								className={Style.navbar_container_right_profile}
 							/>
 
-							{profile && <Profile />}
+							{profile && <Profile currentAccount={currentAccount} />}
 						</div>
 					</div>
 
@@ -171,9 +171,15 @@ const NavBar = () => {
 			{/* SIDEBAR COMPONENT */}
 			{openSideMenu && (
 				<div className={Style.SideBar}>
-					<SideBar setOpenSideMenu={setOpenSideMenu} />
+					<SideBar
+						setOpenSideMenu={setOpenSideMenu}
+						currentAccount={currentAccount}
+						connectWallet={connectWallet}
+					/>
 				</div>
 			)}
+
+			{openError && <Error />}
 		</div>
 	);
 };

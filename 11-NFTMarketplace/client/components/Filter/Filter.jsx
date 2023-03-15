@@ -90,7 +90,7 @@ const Filter = () => {
 							className={Style.filter_box_items_box_item_trans}
 							onClick={() => openImage()}
 						>
-							<FaImages /> <smal>Images</smal>
+							<FaImages /> <small>Images</small>
 							{image ? <AiFillCloseCircle /> : <TiTick />}
 						</div>
 					</div>
@@ -100,7 +100,7 @@ const Filter = () => {
 							className={Style.filter_box_items_box_item_trans}
 							onClick={() => openVideo()}
 						>
-							<FaVideo /> <smal>Videos</smal>
+							<FaVideo /> <small>Videos</small>
 							{video ? <AiFillCloseCircle /> : <TiTick />}
 						</div>
 					</div>
@@ -110,7 +110,7 @@ const Filter = () => {
 							className={Style.filter_box_items_box_item_trans}
 							onClick={() => openMusic()}
 						>
-							<FaMusic /> <smal>Musics</smal>
+							<FaMusic /> <small>Musics</small>
 							{music ? <AiFillCloseCircle /> : <TiTick />}
 						</div>
 					</div>

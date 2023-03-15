@@ -12,6 +12,8 @@ import {
 	AuthorNFTCardBox,
 } from '../authorPage/componentIndex';
 
+import { NFTMarketplaceContext } from '@/Context/NFTMarketplaceContext';
+
 const author = () => {
 	const followerArray = [
 		{
@@ -52,13 +54,53 @@ const author = () => {
 	const [follower, setFollower] = useState(false);
 	const [following, setFollowing] = useState(false);
 
+	const { fetchMyNFTsOrListedNFTs, currentAccount } = useContext(
+		NFTMarketplaceContext
+	);
+
 	const [nfts, setNfts] = useState([]);
 	const [myNFTs, setMyNFTs] = useState([]);
+
+	const addAccountsChangedListener = () => {
+		window.ethereum.on('accountsChanged', () => {
+			fetchMyNFTsOrListedNFTs('fetchItemsListed').then((items) => {
+				setNfts(items);
+			});
+			fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
+				setMyNFTs(items);
+			});
+		});
+
+		window.ethereum.on('chainChanged', () => {
+			fetchMyNFTsOrListedNFTs('fetchItemsListed').then((items) => {
+				setNfts(items);
+			});
+			fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
+				setMyNFTs(items);
+			});
+		});
+	};
+
+	useEffect(() => {
+		addAccountsChangedListener();
+	}, []);
+
+	useEffect(() => {
+		fetchMyNFTsOrListedNFTs('fetchItemsListed').then((items) => {
+			setNfts(items);
+		});
+	}, []);
+
+	useEffect(() => {
+		fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
+			setMyNFTs(items);
+		});
+	}, []);
 
 	return (
 		<div className={Style.author}>
 			<Banner bannerImage={images.creatorbackground2} />
-			<AuthorProfileCard />
+			<AuthorProfileCard currentAccount={currentAccount} />
 			<AuthorTaps
 				setCollectiables={setCollectiables}
 				setCreated={setCreated}
