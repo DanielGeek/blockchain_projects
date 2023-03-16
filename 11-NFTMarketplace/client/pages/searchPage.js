@@ -19,7 +19,7 @@ const searchPage = () => {
 	useEffect(() => {
 		try {
 			fetchNFTs().then((item) => {
-				setNfts(item.reverse());
+				setNfts(item?.reverse());
 				setNftsCopy(item);
 			});
 		} catch (error) {
@@ -119,7 +119,7 @@ const searchPage = () => {
 				onClearSearch={onClearSearch}
 			/>
 			<Filter />
-			{nfts.length == 0 ? <Loader /> : <NFTCardTwo NFTData={nfts} />}
+			{nfts?.length == 0 ? <Loader /> : <NFTCardTwo NFTData={nfts} />}
 			<Slider />
 			<Brand />
 		</div>

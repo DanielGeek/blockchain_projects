@@ -27,28 +27,70 @@ const client = ipfsHttpClient({
 });
 
 // INTERNAL IMPORT
-import { nftMarketplaceAddress, NFTMarketplaceABI } from './constants';
-
-// FETCHING SMART CONTRACT
-const fetchContract = (signerOrProvider) =>
-	new ethers.Contract(
-		nftMarketplaceAddress,
-		NFTMarketplaceABI,
-		signerOrProvider
-	);
+import {
+	nftMarketplaceAddress,
+	NFTMarketplaceABI,
+	NFTMarketplaceBIN,
+} from './constants';
 
 export const NFTMarketplaceContext = React.createContext();
 
 export const NFTMarketplaceProvier = ({ children }) => {
 	const titleData = 'Discover, collect and sell NFTs';
-
+	const [address, setAddress] = useState('');
 	const [error, setError] = useState('');
 	const [openError, setOpenError] = useState(false);
 	const [currentAccount, setCurrentAccount] = useState('');
 	const router = useRouter();
 
+	const deploy = async (name = 'Daniel nft', symbol = 'dnft') => {
+		console.log('entro');
+		const provider = new ethers.providers.Web3Provider(ethereum);
+		console.log({ provider });
+		const signer = provider.getSigner();
+		console.log({ signer });
+		const factory = new ethers.ContractFactory(
+			NFTMarketplaceABI,
+			NFTMarketplaceBIN,
+			signer
+		);
+
+		console.log({ factory });
+		const contract = await factory.deploy();
+		console.log({ contract });
+		const doc = {
+			chain: await signer.getChainId(),
+			address: contract.address.toLowerCase(),
+			owner: (await signer.getAddress()).toLowerCase(),
+			name: name,
+			symbol: symbol,
+			t: 1,
+			contractURI: null,
+		};
+
+		console.log('contract ', contract);
+		console.log('doc ', doc);
+		console.log(doc.address);
+		setAddress(doc.address);
+
+		return contract;
+	};
+
+	// FETCHING SMART CONTRACT
+	const fetchContract = (signerOrProvider) => {
+		console.log('fetchContract');
+		console.log({ address });
+		return new ethers.Contract(
+			address,
+			// nftMarketplaceAddress,
+			NFTMarketplaceABI,
+			signerOrProvider
+		);
+	};
+
 	// CONNECTION WITH SMART CONTRACT
 	const connectingWithSmartContract = async () => {
+		console.log({ address });
 		try {
 			const web3Modal = new Wenb3Modal();
 			const connection = await web3Modal.connect();
@@ -144,7 +186,7 @@ export const NFTMarketplaceProvier = ({ children }) => {
 		try {
 			const price = ethers.utils.parseUnits(formInputPrice, 'ether');
 			const contract = await connectingWithSmartContract();
-
+			console.log({ contract });
 			const listingPrice = await contract.getListingPrice();
 
 			const transaction = !isReselling
@@ -298,6 +340,7 @@ export const NFTMarketplaceProvier = ({ children }) => {
 	return (
 		<NFTMarketplaceContext.Provider
 			value={{
+				deploy,
 				checkIfWalletConnected,
 				connectWallet,
 				uploadToIPFS,

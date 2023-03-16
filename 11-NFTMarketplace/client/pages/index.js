@@ -39,7 +39,7 @@ const Home = () => {
 
 	useEffect(() => {
 		fetchNFTs().then((item) => {
-			setNfts(item.reverse());
+			setNfts(item?.reverse());
 			setNftsCopy(item);
 		});
 	}, []);
@@ -67,7 +67,7 @@ const Home = () => {
 				paragraph='Discover the most outstanding NTFs in all topics of life'
 			/>
 			<Filter />
-			{nfts.length == 0 ? <Loader /> : <NFTCard NFTData={nfts} />}
+			{nfts?.length == 0 ? <Loader /> : <NFTCard NFTData={nfts} />}
 			<Title
 				heading='Browse by category'
 				paragraph='Explore the NFTs in the most featured categories'

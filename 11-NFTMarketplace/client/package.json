@@ -23,6 +23,7 @@
 	},
 	"devDependencies": {
 		"@nomicfoundation/hardhat-toolbox": "2.0.0",
-		"hardhat": "2.11.2"
+		"hardhat": "2.11.2",
+		"raw-loader": "^4.0.2"
 	}
 }

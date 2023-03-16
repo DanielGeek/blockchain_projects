@@ -25,7 +25,7 @@ const NavBar = () => {
 
 	const router = useRouter();
 
-	const { currentAccount, connectWallet, openError } = useContext(
+	const { currentAccount, connectWallet, openError, deploy } = useContext(
 		NFTMarketplaceContext
 	);
 
@@ -77,6 +77,10 @@ const NavBar = () => {
 		} else {
 			setOpenSideMenu(false);
 		}
+	};
+
+	const diployContract = async () => {
+		await deploy();
 	};
 
 	return (
@@ -140,6 +144,7 @@ const NavBar = () => {
 								handleClick={() => router.push('/uploadNFT')}
 							/>
 						)}
+						<Button btnName='Deploy' handleClick={() => diployContract()} />
 					</div>
 
 					{/* USER PROFILE */}
