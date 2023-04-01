@@ -144,7 +144,7 @@ const NavBar = () => {
 								handleClick={() => router.push('/uploadNFT')}
 							/>
 						)}
-						<Button btnName='Deploy' handleClick={() => diployContract()} />
+						{/* <Button btnName='Deploy' handleClick={() => diployContract()} /> */}
 					</div>
 
 					{/* USER PROFILE */}

@@ -78,11 +78,9 @@ export const NFTMarketplaceProvier = ({ children }) => {
 
 	// FETCHING SMART CONTRACT
 	const fetchContract = (signerOrProvider) => {
-		console.log('fetchContract');
-		console.log({ address });
 		return new ethers.Contract(
-			address,
-			// nftMarketplaceAddress,
+			// address,
+			nftMarketplaceAddress,
 			NFTMarketplaceABI,
 			signerOrProvider
 		);
@@ -210,7 +208,8 @@ export const NFTMarketplaceProvier = ({ children }) => {
 	// FETCHNFTS FUNCTION
 	const fetchNFTs = async () => {
 		try {
-			const provider = new ethers.providers.JsonRpcProvider();
+			// const provider = new ethers.providers.JsonRpcProvider(); // with localhost
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
 			const contract = fetchContract(provider);
 
 			const data = await contract.fetchMarketItems();

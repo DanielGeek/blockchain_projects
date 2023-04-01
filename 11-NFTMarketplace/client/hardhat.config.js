@@ -1,6 +1,21 @@
-require("@nomicfoundation/hardhat-toolbox");
+require('@nomiclabs/hardhat-ethers');
+require('dotenv').config();
 
-/** @type import('hardhat/config').HardhatUserConfig */
+const account = process.env.METAMASK_PRIVATE_KEY;
+console.log({account})
+
 module.exports = {
-  solidity: "0.8.17",
+	defaultNetwork: 'mumbai',
+	networks: {
+		mumbai: {
+			url: 'https://rpc-mumbai.maticvigil.com',
+			accounts: [
+				account,
+			],
+			chainId: 80001,
+			gas: 2100000,
+			gasPrice: 8000000000,
+		},
+	},
+	solidity: '0.8.4',
 };
