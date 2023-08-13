@@ -19,6 +19,12 @@ export type Web3State = {
     hooks: Web3Hooks;
 } & Nullable<Web3Dependencies>
 
+type Web3Dependencies = {
+    provider: providers.Web3Provider | null;
+    contract: Contract | null;
+    ethereum: MetaMaskInpageProvider | null;
+}
+
 export const createDefaultState = () => {
     return {
         ethereum: null,
