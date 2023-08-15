@@ -6,6 +6,7 @@ export type Web3Dependencies = {
     provider: providers.Web3Provider | null;
     contract: Contract | null;
     ethereum: MetaMaskInpageProvider | null;
+    isLoading: boolean;
 }
 
 export type CryptoHookFactory<D = any, R = any, P = any> = {
