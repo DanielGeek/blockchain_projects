@@ -9,15 +9,24 @@ const Web3Provider: FunctionComponent = ({ children }) => {
 
     useEffect(() => {
         async function initWeb3() {
-            const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-            const contract = await loadContract("NftMarket", provider);
-                        
-            setWeb3Api(createWeb3tState({
-                ethereum: window.ethereum,
-                provider,
-                contract,
-                isLoading: false
-            }))
+            try {
+                const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+                const contract = await loadContract("NftMarket", provider);
+                            
+                setWeb3Api(createWeb3tState({
+                    ethereum: window.ethereum,
+                    provider,
+                    contract,
+                    isLoading: false
+                }));
+            } catch (error: any) {
+                console.error("Please, install web3 wallet");
+                setWeb3Api((api) =>  createWeb3tState({
+                    ...api as any,
+                    isLoading: false,
+                }))
+            }
+
         }
 
         initWeb3();
