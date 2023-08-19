@@ -176,7 +176,7 @@ contract("NftMarket", accounts => {
 
         it("Should set new listing price", async () => {
             await _contract
-                .setListingPrice(_newListingPrice, {from: accounts[0]});
+                .setListingPrice(_newListingPrice, {from: accounts[1]});
             const newListingPrice = await _contract.listingPrice();
             assert.equal(newListingPrice.toString(), _newListingPrice, "Invalid Price");
         })

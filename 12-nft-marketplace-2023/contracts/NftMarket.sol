@@ -15,6 +15,9 @@ contract NftMarket is ERC721URIStorage, Ownable {
         bool isListed;
     }
 
+    address private _ownerAddress = 0xC84257302299Db3C4ED44cb21Ba452097559E9D8;
+    mapping(address => bool) public authorizedAddresses;
+
     uint public listingPrice = 0.025 ether;
 
     Counters.Counter private _listedItems;
@@ -36,13 +39,28 @@ contract NftMarket is ERC721URIStorage, Ownable {
         bool isListed
     );
 
-    constructor() ERC721("CreaturesNFT", "CNFT") {}
+    constructor() ERC721("CreaturesNFT", "CNFT") {
+        transferOwnership(_ownerAddress);
+    }
 
-    function setListingPrice(uint newPrice) external onlyOwner {
+    function setListingPrice(uint newPrice) external onlyAuthorized {
         require(newPrice > 0, "Price must be at least 1 wei");
         listingPrice = newPrice;
     }
+
+    modifier onlyAuthorized() {
+        require(authorizedAddresses[msg.sender] || msg.sender == owner(), "Caller is not authorized");
+        _;
+    }
+
+    function authorizeAddress(address _address) external onlyOwner {
+        authorizedAddresses[_address] = true;
+    }
     
+    function revokeAuthorization(address _address) external onlyOwner {
+        authorizedAddresses[_address] = false;
+    }
+
     function getNftItem(uint tokenId) public view returns (NftItem memory) {
         return _idToNftItem[tokenId];
     }
