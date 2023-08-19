@@ -40,7 +40,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
     );
 
     constructor() ERC721("CreaturesNFT", "CNFT") {
-        transferOwnership(_ownerAddress);
+        // transferOwnership(_ownerAddress);
     }
 
     function setListingPrice(uint newPrice) external onlyAuthorized {
