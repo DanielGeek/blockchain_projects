@@ -6,6 +6,7 @@ contract("NftMarket", accounts => {
     let _contract = null;
     let _nftPrice = ethers.utils.parseEther("0.3").toString();
     let _listingPrice = ethers.utils.parseEther("0.025").toString();
+    let _newListingPrice = ethers.utils.parseEther("0.035").toString();
 
     before(async () => {
         _contract = await NftMarket.deployed();
@@ -157,6 +158,27 @@ contract("NftMarket", accounts => {
             const ownedNfts = await _contract.getOwnedNfts({from: accounts[2]});
 
             assert.equal(ownedNfts.length, 0, "Invalid length of tokens");
+        })
+    })
+
+    describe('List an Nft', () => {
+        before(async () => {
+            await _contract.placeNftOnSale(
+                1,
+                _nftPrice, { from: accounts[1], value: _listingPrice }
+            )
+        })
+
+        it("Should have two listed items", async () => {
+            const listedNfts = await _contract.getAllNftsOnSale();
+            assert.equal(listedNfts.length, 2, "Invalid length of Nfts");
+        })
+
+        it("Should set new listing price", async () => {
+            await _contract
+                .setListingPrice(_newListingPrice, {from: accounts[0]});
+            const newListingPrice = await _contract.listingPrice();
+            assert.equal(newListingPrice.toString(), _newListingPrice, "Invalid Price");
         })
     })
 });
