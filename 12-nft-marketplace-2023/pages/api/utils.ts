@@ -1,11 +1,7 @@
 import { withIronSession } from "next-iron-session";
 import contract from "../../public/contracts/NftMarket.json";
 
-const NETWORKS = {
-  "5777": "Ganache"
-}
-
-type NETWORK = typeof NETWORKS;
+type NETWORK = typeof contract.networks;
 
 const targetNetwork = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
 
