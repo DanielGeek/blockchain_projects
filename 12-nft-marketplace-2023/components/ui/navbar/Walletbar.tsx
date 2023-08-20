@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { Menu } from "@headlessui/react";
-import Link from "next/link";
+import { ForwardedLink } from "@ui";
 import { FunctionComponent } from "react";
 
 type WalletbarProps = {
@@ -62,13 +62,12 @@ const Walletbar: FunctionComponent<WalletbarProps> = ({
                     </Menu.Item>
                     <Menu.Item>
                         {({ active }) => (
-                            <Link href="/profile">
-                                <a
-                                    className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            <ForwardedLink
+                                href="/profile"
+                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                 >
                                     Profile
-                                </a>
-                            </Link>
+                            </ForwardedLink>
 
                         )}
                     </Menu.Item>
