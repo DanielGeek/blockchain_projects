@@ -2,7 +2,7 @@
 
 import { FunctionComponent } from "react";
 import { Nft } from "../../../../types/nft";
-import { PINATA_GATEWAY_TOKEN } from "@hooks/web3/useListedNfts";
+import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
 
 type NftItemProps = {
     item: Nft;

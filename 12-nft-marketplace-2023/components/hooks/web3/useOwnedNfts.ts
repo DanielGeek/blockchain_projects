@@ -4,19 +4,19 @@ import { ethers } from "ethers";
 import useSWR from "swr";
 import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
 
-type UseListedNftsResponse = {}
+type UseOwnedNftsResponse = {}
 
-type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
+type OwnedNftsHookFactory = CryptoHookFactory<Nft[], UseOwnedNftsResponse>
 
-export type UseListedNftsHook = ReturnType<ListedNftsHookFactory>
+export type UseOwnedNftsHook = ReturnType<OwnedNftsHookFactory>
 
 // deps -> provider, ethereum, contract (web3State)
-export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
+export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
     const { data, ...swr } = useSWR(
-        contract ? "web3/useListedNfts" : null,
+        contract ? "web3/useOwnedNfts" : null,
         async () => {
             const nfts = [] as Nft[];
-            const coreNfts = await contract!.getAllNftsOnSale();
+            const coreNfts = await contract!.getOwnedNfts();
 
             for (let i = 0; i < coreNfts.length; i++) {
                 const item = coreNfts[i];

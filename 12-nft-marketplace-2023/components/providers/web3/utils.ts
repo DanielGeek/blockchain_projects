@@ -43,6 +43,8 @@ export const createWeb3tState = ({
 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;
 
+export const PINATA_GATEWAY_TOKEN = process.env.NEXT_PUBLIC_PINATA_GATEWAY_TOKEN as string;
+
 export const loadContract = async (
         name: string, 
         provider: providers.Web3Provider
