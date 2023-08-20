@@ -4,14 +4,16 @@ import { ethers } from "ethers";
 import useSWR from "swr";
 import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
 
-type UseOwnedNftsResponse = {}
+type UseOwnedNftsResponse = {
+    listNft: (token: number, price: number) => Promise<void>
+}
 
 type OwnedNftsHookFactory = CryptoHookFactory<Nft[], UseOwnedNftsResponse>
 
 export type UseOwnedNftsHook = ReturnType<OwnedNftsHookFactory>
 
 // deps -> provider, ethereum, contract (web3State)
-export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
+export const hookFactory: OwnedNftsHookFactory = ({ contract }) => () => {
     const { data, ...swr } = useSWR(
         contract ? "web3/useOwnedNfts" : null,
         async () => {
@@ -31,15 +33,33 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
                     isListed: item.isListed,
                     meta
                 });
-                
+
             }
-            
+
             return nfts;
         }
     )
 
+    const listNft = async (tokenId: number, price: number) => {
+        try {
+            const result = await contract?.placeNftOnSale(
+                tokenId,
+                ethers.utils.parseEther(price.toString()),
+                {
+                    value: ethers.utils.parseEther(0.025.toString())
+                }
+            );
+
+            await result?.wait();
+            alert("Item has been listed!");
+        } catch (e: any) {
+            console.error(e.message);
+        }
+    }
+
     return {
         ...swr,
+        listNft,
         data: data || [],
     };
 }
