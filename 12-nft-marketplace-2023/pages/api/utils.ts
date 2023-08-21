@@ -1,7 +1,8 @@
 import { ethers } from "ethers";
 import { Session, withIronSession } from "next-iron-session";
-import contract from "../../public/contracts/NftMarket.json";
+import * as util from "ethereumjs-util";
 import { NextApiRequest, NextApiResponse } from "next";
+import contract from "../../public/contracts/NftMarket.json";
 import { NftMarketContract } from "@_types/nftMarketContract";
 
 type NETWORK = typeof contract.networks;
@@ -40,10 +41,18 @@ export const addressCheckMiddleware = async(req: NextApiRequest & { session: Ses
       provider
     ) as unknown as NftMarketContract;
 
-    const name = await contract.name();
-    console.log(name);
-    
-    if (message) {
+    let nonce: string | Buffer = 
+      "\x19Ethereum Signed Message:\n" + 
+      JSON.stringify(message).length + 
+      JSON.stringify(message);
+
+    nonce = util.keccak(Buffer.from(nonce, "utf-8"));
+    const { v, r, s } = util.fromRpcSig(req.body.signature);
+    const pubKey = util.ecrecover(util.toBuffer(nonce), v,r,s);
+    const addrBuffer = util.pubToAddress(pubKey);
+    const address = util.bufferToHex(addrBuffer);
+
+    if (address === req.body.address) {
       resolve("Correct Address");
     } else {
       reject("Wrong Address");
