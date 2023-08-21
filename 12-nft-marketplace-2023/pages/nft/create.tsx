@@ -24,6 +24,19 @@ const NftCreate: NextPage = () => {
         ]
     });
 
+    const getSignedData = async () => {
+        const messageToSign = await axios.get("/api/verify");
+        const accounts = await ethereum?.request({method: "eth_requestAccounts"}) as string[];
+        const account = accounts[0];
+
+        const signedData = await ethereum?.request({
+            method: "personal_sign",
+            params: [JSON.stringify(messageToSign.data), account, messageToSign.data.id]
+        });
+
+        return {signedData, account};
+    }
+
     const handleImage = async(e: ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) {
             console.error("Select a file");
@@ -33,7 +46,12 @@ const NftCreate: NextPage = () => {
         const file = e.target.files[0];
         const buffer = await file.arrayBuffer();
         const bytes = new Uint8Array(buffer);
-        console.log(bytes);
+        
+        try {
+            const { signedData, account } = await getSignedData();
+        } catch (e: any) {
+            console.error(e.message);
+        }
     }
     
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -54,15 +72,7 @@ const NftCreate: NextPage = () => {
 
     const createNft = async() => {
         try {
-            const messageToSign = await axios.get("/api/verify");
-            const accounts = await ethereum?.request({method: "eth_requestAccounts"}) as string[];
-            const account = accounts[0];
-
-            const signedData = await ethereum?.request({
-                method: "personal_sign",
-                params: [JSON.stringify(messageToSign.data), account, messageToSign.data.id]
-            });
-
+            const { signedData, account } = await getSignedData();
 
             await axios.post("/api/verify", {
                 address: account,
@@ -85,7 +95,7 @@ const NftCreate: NextPage = () => {
                                 checked={hasURI}
                                 onChange={() => setHasURI(!hasURI)}
                                 className={`${hasURI ? 'bg-indigo-900' : 'bg-indigo-700'}
-                  relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                    relative inline-flex flex-shrink-0 h-[28px] w-[64px] border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
                             >
                                 <span className="sr-only">Use setting</span>
                                 <span
