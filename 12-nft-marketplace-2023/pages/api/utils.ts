@@ -3,6 +3,8 @@ import contract from "../../public/contracts/NftMarket.json";
 
 type NETWORK = typeof contract.networks;
 
+type ATTRIBUTE = { trait_type: string | any[]; value: string | any[]; }
+
 const targetNetwork = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
 
 export const contractAddress = contract["networks"][targetNetwork]["address"];
@@ -16,3 +18,10 @@ export function withSession(handler: any) {
     }
   })
 }
+
+export const isValidAttribute = (attribute: ATTRIBUTE) => {
+  return typeof attribute.trait_type === "string" &&
+          typeof attribute.value === "string" &&
+          attribute.trait_type.length > 0 &&
+          attribute.value.length > 0;
+};
