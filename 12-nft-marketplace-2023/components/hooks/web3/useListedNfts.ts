@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { ethers } from "ethers";
 import useSWR from "swr";
+import { toast } from "react-toastify";
 import { CryptoHookFactory } from "@_types/hooks";
 import { Nft } from "@_types/nft";
 import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
@@ -50,8 +51,14 @@ export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
                 }
             );
 
-            await result?.wait();
-            alert("You have bought Nft. See profile page.");
+            await toast.promise(
+                result!.wait(), {
+                    pending: "Processing transaction",
+                    success: "Nft is yours! Go to Profile page",
+                    error: "Processing error"
+                }
+            );
+
         } catch (e: any) {
             console.error(e.message);
         }

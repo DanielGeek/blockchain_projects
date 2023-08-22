@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { CryptoHookFactory } from "@_types/hooks";
 import { Nft } from "@_types/nft";
 import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
+import { toast } from "react-toastify";
 
 type UseOwnedNftsResponse = {
     listNft: (token: number, price: number) => Promise<void>
@@ -51,8 +52,13 @@ export const hookFactory: OwnedNftsHookFactory = ({ contract }) => () => {
                 }
             );
 
-            await result?.wait();
-            alert("Item has been listed!");
+            await toast.promise(
+                result!.wait(), {
+                    pending: "Processing transaction",
+                    success: "NFTs has been listed",
+                    error: "Processing error"
+                }
+            );
         } catch (e: any) {
             console.error(e.message);
         }
