@@ -6,6 +6,13 @@ import axios from "axios";
 import { addressCheckMiddleware, pinataApiKey, pinataSecretApiKey, withSession } from "./utils";
 import { FileReq } from "@_types/nft";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
 
 export default withSession ( async (req: NextApiRequest & { session: Session }, res: NextApiResponse ) => {
   if (req.method === "POST") {
@@ -27,9 +34,9 @@ export default withSession ( async (req: NextApiRequest & { session: Session }, 
       "file",
       buffer, {
         contentType,
-        filename: fileName + "_" + uuidv4()
+        filename: fileName + "-" + uuidv4()
       }
-    )
+    );
 
     const fileRes = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", formData, {
       maxBodyLength: Infinity,
