@@ -33583,10 +33583,16 @@
       "links": {},
       "address": "0x494AE71e6E3540651Cf3c6E8033658cEE8eB12E7",
       "transactionHash": "0x14911de11b17ca5e072ab90a4f2c0ec3fbe64213f40a144f97677b165e7f14da"
+    },
+    "11155111": {
+      "events": {},
+      "links": {},
+      "address": "0x4bff8A5b356de48A099566575Af3dEAc07eC2103",
+      "transactionHash": "0x3465a4d1a91dcf992af68b11eff5e83b7831c8c29400d1126aca2ecd644fa5ee"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-08-19T19:39:27.738Z",
+  "updatedAt": "2023-08-23T03:37:12.046Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
