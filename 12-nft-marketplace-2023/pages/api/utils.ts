@@ -5,6 +5,11 @@ import { NextApiRequest, NextApiResponse } from "next";
 import contract from "../../public/contracts/NftMarket.json";
 import { NftMarketContract } from "@_types/nftMarketContract";
 
+// const NETWORKS = {
+//   "5777": "Ganache",
+//   "11155111": "Sepolia"
+// }
+
 type NETWORK = typeof contract.networks;
 
 type ATTRIBUTE = { trait_type: string | any[]; value: string | any[]; }
