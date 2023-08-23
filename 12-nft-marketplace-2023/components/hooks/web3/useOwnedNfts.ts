@@ -7,7 +7,8 @@ import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
 import { toast } from "react-toastify";
 
 type UseOwnedNftsResponse = {
-    listNft: (token: number, price: number) => Promise<void>
+    listNft: (token: number, price: number) => Promise<void>;
+    isLoading: boolean;
 }
 
 type OwnedNftsHookFactory = CryptoHookFactory<Nft[], UseOwnedNftsResponse>
@@ -71,5 +72,6 @@ export const hookFactory: OwnedNftsHookFactory = ({ contract }) => () => {
         ...swr,
         listNft,
         data: data || [],
+        isLoading: !data,
     };
 }

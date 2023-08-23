@@ -7,7 +7,8 @@ import { Nft } from "@_types/nft";
 import { PINATA_GATEWAY_TOKEN } from "@providers/web3/utils";
 
 type UseListedNftsResponse = {
-    buyNft: (token: number, value: number) => Promise<void>
+    buyNft: (token: number, value: number) => Promise<void>;
+    isLoading: boolean;
 }
 
 type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
@@ -15,7 +16,7 @@ type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
 export type UseListedNftsHook = ReturnType<ListedNftsHookFactory>
 
 // deps -> provider, ethereum, contract (web3State)
-export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
+export const hookFactory: ListedNftsHookFactory = ({ contract }) => () => {
     const { data, ...swr } = useSWR(
         contract ? "web3/useListedNfts" : null,
         async () => {
@@ -69,5 +70,6 @@ export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
         ...swr,
         buyNft,
         data: data || [],
+        isLoading: !data,
     };
 }

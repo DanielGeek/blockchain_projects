@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { NextPage } from 'next'
-import { BaseLayout } from '@ui'
+import { BaseLayout, Spinner } from '@ui'
 
 import { Nft } from '@_types/nft';
 import { useOwnedNfts } from '@hooks/web3';
@@ -26,8 +26,7 @@ const Profile: NextPage = () => {
         }
 
         return () => setActiveNft(undefined);
-    }, [nfts.data])
-    
+    }, [nfts.data]);
 
     return (
         <BaseLayout>
@@ -68,37 +67,40 @@ const Profile: NextPage = () => {
                                         role="list"
                                         className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
                                     >
-                                        {(nfts.data as Nft[]).map((nft) => (
-                                            <li
-                                                key={nft.tokenId}
-                                                onClick={() => setActiveNft(nft)}
-                                                className="relative">
-                                                <div
-                                                    className={classNames(
-                                                        nft.tokenId === activeNft?.tokenId
-                                                            ? 'ring-2 ring-offset-2 ring-indigo-500'
-                                                            : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500',
-                                                        'group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden'
-                                                    )}
-                                                >
-                                                    <img
-                                                        // src={`${nft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
-                                                        src={nft.meta.image}
-                                                        alt=""
-                                                        className={classNames(
-                                                            nft.tokenId === activeNft?.tokenId ? '' : 'group-hover:opacity-75',
-                                                            'object-cover pointer-events-none'
-                                                        )}
-                                                    />
-                                                    <button type="button" className="absolute inset-0 focus:outline-none">
-                                                        <span className="sr-only">View details for {nft.meta.name}</span>
-                                                    </button>
-                                                </div>
-                                                <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
-                                                    {nft.meta.name}
-                                                </p>
-                                            </li>
-                                        ))}
+                                        {
+                                            nfts.isLoading ? <Spinner />
+                                                : 
+                                                    (nfts.data as Nft[]).map((nft) => (
+                                                        <li
+                                                            key={nft.tokenId}
+                                                            onClick={() => setActiveNft(nft)}
+                                                            className="relative">
+                                                            <div
+                                                                className={classNames(
+                                                                    nft.tokenId === activeNft?.tokenId
+                                                                        ? 'ring-2 ring-offset-2 ring-indigo-500'
+                                                                        : 'focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500',
+                                                                    'group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 overflow-hidden'
+                                                                )}
+                                                            >
+                                                                <img
+                                                                    // src={`${nft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
+                                                                    src={nft.meta.image}
+                                                                    alt=""
+                                                                    className={classNames(
+                                                                        nft.tokenId === activeNft?.tokenId ? '' : 'group-hover:opacity-75',
+                                                                        'object-cover pointer-events-none'
+                                                                    )}
+                                                                />
+                                                                <button type="button" className="absolute inset-0 focus:outline-none">
+                                                                    <span className="sr-only">View details for {nft.meta.name}</span>
+                                                                </button>
+                                                            </div>
+                                                            <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
+                                                                {nft.meta.name}
+                                                            </p>
+                                                        </li>
+                                                    ))}
                                     </ul>
                                 </section>
                             </div>
@@ -106,7 +108,7 @@ const Profile: NextPage = () => {
 
                         {/* Details sidebar */}
                         <aside className="hidden w-96 bg-white p-8 border-l border-gray-200 overflow-y-auto lg:block">
-                            { activeNft &&
+                            { nfts.isLoading ? <Spinner /> : activeNft &&
                                 <div className="pb-16 space-y-6">
                                     <div>
                                         <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">

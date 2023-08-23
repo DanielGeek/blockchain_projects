@@ -6,8 +6,8 @@ import { Spinner } from "@ui";
 const NftList: FunctionComponent = () => {
   const { nfts } = useListedNfts();
 
-  if (!nfts.data?.length) {
-      return <Spinner /> 
+  if (nfts.isLoading) {
+    return <Spinner /> 
   }
 
   return (
