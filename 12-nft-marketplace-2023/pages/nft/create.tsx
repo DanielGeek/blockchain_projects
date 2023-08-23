@@ -146,14 +146,13 @@ const NftCreate: NextPage = () => {
 
             await toast.promise(
                 tx!.wait(), {
-                    pending: "Creating NFT",
-                    success: "NFT created",
-                    error: "NFT created error"
+                    pending: "Minting NFT",
+                    success: "NFT minted!",
+                    error: "NFT minted error"
                 }
             )
             
             await tx?.wait();
-            alert("Nft was created!");
 
         } catch (e: any) {
             console.error(e.message);
