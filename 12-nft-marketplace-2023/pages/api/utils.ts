@@ -33,10 +33,12 @@ export const isValidAttribute = (attribute: ATTRIBUTE) => {
           attribute.value.length > 0;
 };
 
+const url = process.env.NODE_ENV === "production" ? process.env.INFURA_SEPOLIA_URL : "http://127.0.0.1:7545";
+
 export const addressCheckMiddleware = async(req: NextApiRequest & { session: Session }, res: NextApiResponse) => {
   return new Promise(async (resolve, reject) => {
     const message = req.session.get("message-session");
-    const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:7545");
+    const provider = new ethers.providers.JsonRpcProvider(url);
     const contract = new ethers.Contract(
       contractAddress,
       abi,
