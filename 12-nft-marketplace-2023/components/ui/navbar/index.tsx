@@ -1,9 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Disclosure, Menu } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { useWeb3 } from '@providers/web3'
-import Link from 'next/link'
+import { Disclosure } from '@headlessui/react'
+import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import ActiveLink from '../link'
 import { useAccount, useNetwork } from '@hooks/web3'
 import Walletbar from './Walletbar'

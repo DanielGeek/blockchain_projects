@@ -1,2 +1,4 @@
-# solidity_projects
-study projects with solidity language and smart contracts
+# Blochain projects
+
+## creatures Marketplace | Solidity | Next | truffle | tailwind | TypeScript | Testing | Ganache | Sepolia
+https://creatures-market-place.vercel.app/

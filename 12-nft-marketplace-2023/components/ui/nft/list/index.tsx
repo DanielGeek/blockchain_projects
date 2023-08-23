@@ -1,9 +1,14 @@
 import { FunctionComponent } from "react";
 import { useListedNfts } from "@hooks/web3";
 import NftItem from "../item";
+import { Spinner } from "@ui";
 
 const NftList: FunctionComponent = () => {
   const { nfts } = useListedNfts();
+
+  if (!nfts.data?.length) {
+      return <Spinner /> 
+  }
 
   return (
     <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
