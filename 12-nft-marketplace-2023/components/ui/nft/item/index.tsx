@@ -15,7 +15,8 @@ const NftItem: FunctionComponent<NftItemProps> = ({ item, buyNft }) => {
             <div className="flex-shrink-0">
                 <img
                     className={`h-full w-full object-cover`}
-                    src={`${item.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
+                    // src={`${item.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
+                    src={item.meta.image}
                     alt="New NFT"
                 />
             </div>

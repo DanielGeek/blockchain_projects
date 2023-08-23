@@ -82,7 +82,8 @@ const Profile: NextPage = () => {
                                                     )}
                                                 >
                                                     <img
-                                                        src={`${nft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
+                                                        // src={`${nft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`}
+                                                        src={nft.meta.image}
                                                         alt=""
                                                         className={classNames(
                                                             nft.tokenId === activeNft?.tokenId ? '' : 'group-hover:opacity-75',
@@ -109,7 +110,8 @@ const Profile: NextPage = () => {
                                 <div className="pb-16 space-y-6">
                                     <div>
                                         <div className="block w-full aspect-w-10 aspect-h-7 rounded-lg overflow-hidden">
-                                            <img src={`${activeNft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`} alt="" className="object-cover" />
+                                            {/* <img src={`${activeNft.meta.image}?pinataGatewayToken=${PINATA_GATEWAY_TOKEN}`} alt="" className="object-cover" /> */}
+                                            <img src={activeNft.meta.image} alt="" className="object-cover" />
                                         </div>
                                         <div className="mt-4 flex items-start justify-between">
                                             <div>
