@@ -17,7 +17,14 @@ describe("PetAdoption", function() {
             const contractOwner = await contract.owner();
 
             expect(contractOwner).to.equal(owner.address);
-        })
+        });
+
+        it("Should return the right owner", async function() {
+            const { owner, contract } = await deployContract();
+            const contractOwner = await contract.getOwner();
+
+            expect(contractOwner).to.equal(owner.address);
+        });
     });
 });
 
