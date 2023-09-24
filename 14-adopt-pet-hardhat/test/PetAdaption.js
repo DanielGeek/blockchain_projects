@@ -42,6 +42,15 @@ describe("PetAdoption", function() {
             expect(await contract.petIndex()).to.equal(petsAddedCount + 1);
         });
     });
+
+    describe("Adopt pet", function() {
+        it("Should revert with index out of bounds", async function() {
+            const { contract, petsAddedCount } = await loadFixture(deployContractFixture);
+
+            await expect(contract.adoptPet(petsAddedCount)).to.be.revertedWith("Pet index out of bounds!");
+            await expect(contract.adoptPet(-1)).to.be.rejectedWith("value out-of-bounds");
+        });
+    });
 });
 
 //npx hardhat test --network hardhat
