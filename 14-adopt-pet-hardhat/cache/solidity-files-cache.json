@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/danielgeek/Documents/GitHub/blockchain_projects/14-adopt-pet-hardhat/contracts/PetAdoption.sol": {
-      "lastModificationDate": 1696565707991,
-      "contentHash": "16d19244565a4b6794dbacf1b1857871",
+      "lastModificationDate": 1696699668622,
+      "contentHash": "d12c13997581b0ae38e1739a35cd4658",
       "sourceName": "contracts/PetAdoption.sol",
       "solcConfig": {
         "version": "0.8.19",
@@ -28,9 +28,7 @@
           }
         }
       },
-      "imports": [
-        "hardhat/console.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.8.9"
       ],
