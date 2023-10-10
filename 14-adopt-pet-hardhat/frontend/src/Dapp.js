@@ -3,9 +3,11 @@ import { Navbar } from './components/Navbar';
 import { PetItem } from './components/PetItem';
 import { TxError } from './components/TxError';
 import { WalletNotDetected } from './components/WalletNotDetected';
+import { ConnectWallet } from './components/ConnectWallet';
 
 function Dapp() {
   const [pets, setPets] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(undefined);
 
   useEffect(() => {
     async function fetchPets() {
@@ -17,8 +19,12 @@ function Dapp() {
     fetchPets();
   }, []);
 
-  if (window.ethereum === undefined) {
+  if (!window.ethereum) {
     return <WalletNotDetected />
+  }
+
+  if (!selectedAddress) {
+    return <ConnectWallet />
   }
 
   return (
