@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { PetItem } from './components/PetItem';
 import { TxError } from './components/TxError';
+import { WalletNotDetected } from './components/WalletNotDetected';
 
 function Dapp() {
   const [pets, setPets] = useState([]);
@@ -15,6 +16,10 @@ function Dapp() {
 
     fetchPets();
   }, []);
+
+  if (window.ethereum === undefined) {
+    return <WalletNotDetected />
+  }
 
   return (
     <div className="container">
