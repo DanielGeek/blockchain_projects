@@ -1,6 +1,6 @@
 
 
-export function Navbar() {
+export function Navbar({ address }) {
     return (
         <div className="navbar-container">
             <div className="navbar">
@@ -8,7 +8,7 @@ export function Navbar() {
                 <div>My Profile</div>
             </div>
             <div className="user-account">
-                Welcome 0x231804218745129783742189739131
+                Welcome {address}
             </div>
         </div>
     )
