@@ -5,11 +5,16 @@ import { TxError } from './components/TxError';
 import { WalletNotDetected } from './components/WalletNotDetected';
 import { ConnectWallet } from './components/ConnectWallet';
 
+import { ethers } from 'ethers';
+import contractAddress from './contracts/contract-address-localhost.json';
+import PetAdoptionArtifact from './contracts/PetAdoption.json';
+
 const HARDHAT_NETWORK_ID = Number(process.env.REACT_APP_NETWORK_ID);
 
 function Dapp() {
   const [pets, setPets] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(undefined);
+  const [contract, setContract] = useState(undefined);
 
   useEffect(() => {
     async function fetchPets() {
@@ -26,7 +31,7 @@ function Dapp() {
       const [address] = await window.ethereum.request({method: "eth_requestAccounts"});
 
       await checkNetwork();
-      initializeDapp(address);
+      initiliazeDapp(address);
       
       window.ethereum.on("accountsChanged", ([newAddress]) => {
         if (newAddress === undefined) {
@@ -34,20 +39,29 @@ function Dapp() {
           return;
         }
 
-        initializeDapp(newAddress);
+        initiliazeDapp(newAddress);
       });
     } catch (e) {
       console.error(e.message);
     }
   }
 
-  async function initializeDapp(address) {
+  async function initiliazeDapp(address) {
     setSelectedAddress(address);
     const contract = await initContract();
+    console.log({contract})
   }
 
   async function initContract() {
-    alert("I should init the contract!");
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const contract = new ethers.Contract(
+      contractAddress.PetAdoption,
+      PetAdoptionArtifact.abi,
+      await provider.getSigner(0)
+    );
+
+    setContract(contract);
+    return contract;
   }
 
   async function switchNetwork() {
