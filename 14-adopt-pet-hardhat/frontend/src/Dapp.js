@@ -13,9 +13,10 @@ const HARDHAT_NETWORK_ID = Number(process.env.REACT_APP_NETWORK_ID);
 
 function Dapp() {
   const [pets, setPets] = useState([]);
+  const [adoptedPets, setAdoptedPets] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(undefined);
   const [contract, setContract] = useState(undefined);
-  const [adoptedPets, setAdoptedPets] = useState([]);
+  const [txError, setTxError] = useState(undefined);
 
   useEffect(() => {
     async function fetchPets() {
@@ -39,6 +40,7 @@ function Dapp() {
           setAdoptedPets([]);
           setSelectedAddress(undefined);
           setContract(undefined);
+          setTxError(undefined);
           return;
         }
 
@@ -73,6 +75,7 @@ function Dapp() {
       const adoptedPets = await contract.getAllAdoptedPets();
       
       if (adoptedPets.length > 0) {
+        console.log(adoptedPets);
         setAdoptedPets(adoptedPets.map(petIdx => Number(petIdx)));
       } else {
         setAdoptedPets([]);
@@ -95,7 +98,7 @@ function Dapp() {
       alert(`Pet with id: ${id} has been adopted!`);
       setAdoptedPets([...adoptedPets, id]);
     } catch (e) {
-      console.error(e.reason);
+      setTxError(e?.reason);
     }
   }
   
@@ -127,8 +130,11 @@ function Dapp() {
 
   return (
     <div className="container">
-      <TxError />
-      {JSON.stringify(adoptedPets)}
+      { txError &&
+        <TxError
+          dismiss={() => setTxError(undefined)}
+          message={txError} />
+      }
       <br />
       <Navbar address={selectedAddress} />
       <div className="items">
