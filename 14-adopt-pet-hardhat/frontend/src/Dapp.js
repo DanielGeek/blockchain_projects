@@ -141,7 +141,8 @@ function Dapp() {
         { pets.map((pet) =>
           <PetItem
             key={pet.id}
-            pet={pet} 
+            pet={pet}
+            disabled={adoptedPets.includes(pet.id)}
             adoptPet={() => adoptPet(pet.id)}
           />
         )}
