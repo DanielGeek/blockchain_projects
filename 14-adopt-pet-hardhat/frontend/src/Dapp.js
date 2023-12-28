@@ -6,7 +6,7 @@ import { WalletNotDetected } from './components/WalletNotDetected';
 import { ConnectWallet } from './components/ConnectWallet';
 
 import { ethers } from 'ethers';
-import contractAddress from './contracts/contract-address-localhost.json';
+import { contractAddress } from "./address";
 import PetAdoptionArtifact from './contracts/PetAdoption.json';
 import { TxInfo } from './components/TxInfo';
 
