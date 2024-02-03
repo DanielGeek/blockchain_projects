@@ -5,6 +5,7 @@ import {
     RainbowKitProvider,
     getDefaultWallets,
     connectorsForWallets,
+    Chain,
 } from '@rainbow-me/rainbowkit';
 import {
     argentWallet,
@@ -13,13 +14,31 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
+
 import {
     sepolia,
 } from 'wagmi/chains';
 
+const anvil: Chain = {
+    id: 31_337,
+    name: "Anvil Local",
+    network: "anvil",
+    nativeCurrency: {
+        decimals: 18,
+        name: "tETH",
+        symbol: "tETH"
+    },
+    rpcUrls: {
+        public: { http: ["http://localhost:8545"]},
+        default: { http: ["http://localhost:8545"]},
+    },
+    testnet: true
+}
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
-        sepolia
+        anvil,
+        sepolia,
     ],
     [publicProvider()]
 );
