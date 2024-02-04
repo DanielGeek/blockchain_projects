@@ -66,5 +66,4 @@ $ cast --help
 ```
 
 ### run function from contract ChetterMessage.s.sol
-`forge script ./script/Chatter.s.sol --rpc-url https://rpc.sepolia.org --broadcast --sender 0x30727808d10
-af7495D82738f8ff22Ef5824ec372 --unlocked --chain-id 11155111`
+`forge script ./script/Chatter.s.sol --rpc-url https://rpc.sepolia.org --broadcast --sender 0xe12392E42bd36ce2955a91c87AdF03413B73b67c --unlocked --chain-id 11155111`

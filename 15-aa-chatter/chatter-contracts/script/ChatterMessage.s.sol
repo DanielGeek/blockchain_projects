@@ -9,5 +9,10 @@ contract ChatterScript is Script {
         Chatter chat = Chatter(0xd0F90CDF11516Ea23aEA3aCD602d94d262676846);
         vm.broadcast();
         chat.sendMessage("hello hello");
+        chat.sendMessage("hello hello1");
+        chat.sendMessage("hello hello2");
+        chat.sendMessage("hello hello3");
+        chat.sendMessage("hello hello4");
+        chat.sendMessage("hello hello5");
     }
 }
