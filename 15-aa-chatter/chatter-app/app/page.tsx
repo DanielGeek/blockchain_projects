@@ -1,4 +1,6 @@
 "use client";
+import ChatMessage from '@/components/ChatMessage';
+import JazziconImage from '@/components/JazzinconImage';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 import { Log } from 'viem';
@@ -49,9 +51,9 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between container max-w-xl mx-auto py-3">
       <ConnectButton />
-      <div>{messages?.map((logmsg, i) => <div key={i}>{logmsg.args.sender} - {logmsg.args.message}</div>)}</div>
+      <div className='flex flex-col gap-2 w-full'>{messages?.map((logmsg, i) => <ChatMessage address={logmsg.args.sender} message={logmsg.args.message} />)}</div>
       <div>
         <input type='text' onChange={(e) => {setMessage(e.target.value)}} placeholder='Hi there...' />
         <button onClick={(e) => {e.preventDefault(), sendMessage()}} type='button'>📩</button>
