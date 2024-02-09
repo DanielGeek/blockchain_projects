@@ -18,7 +18,7 @@ export default function MessageHistory() {
             address: chatterAddress,
             abi: chatterjson.abi,
             eventName: "Message",
-            fromBlock: BigInt(0),
+            fromBlock: BigInt(5212661),
             toBlock: 'latest'
         }).then(setMessages).catch(console.error);
     }, []);

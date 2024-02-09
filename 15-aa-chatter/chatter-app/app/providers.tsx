@@ -37,7 +37,7 @@ const anvil: Chain = {
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
-        anvil,
+        // anvil,
         sepolia,
     ],
     [publicProvider()]
