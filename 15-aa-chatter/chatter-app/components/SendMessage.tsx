@@ -29,7 +29,7 @@ export default function SendMessage() {
         }
     });
 
-    return <div className='flex w-full p-5'>
+    return <div className='flex w-full p-5 border-t-2'>
         <input 
             type='text' 
             value={message}
