@@ -20,7 +20,7 @@ export default function MessageHistory({address} : {address: `0x${string}` | und
             publicClient.getContractEvents({
                 address: chatterAddress,
                 abi: chatterjson.abi,
-                eventName: "Message",
+                eventName: "Messages",
                 fromBlock: blocknumber - BigInt(100),
                 toBlock: 'latest'
             }).then(setMessages).catch(console.error);

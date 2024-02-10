@@ -5,6 +5,7 @@ import { useEthersSigner } from '@/lib/ethers';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 import { Presets, Client } from "userop";
+import { SimpleAccount } from 'userop/dist/typechain';
 import { encodeFunctionData } from 'viem';
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi';
 
@@ -23,7 +24,7 @@ export default function Stackup() {
 
     const [useSmartWallet, setUseSmartWallet] = useState<boolean>(false);
 
-    const [builder, setBuilder] = useState<SimpleAccount>();
+    const [builder, setBuilder] = useState<Presets.Builder.SimpleAccount>();
 
     useEffect(() => {
         console.log(useSmartWallet);
@@ -41,6 +42,7 @@ export default function Stackup() {
                 const smartWalletAddress = builder.getSender();
                 console.log(`Account address: ${address} with smart wallet address ${smartWalletAddress}`);
                 setConnectedAddress(smartWalletAddress as `0x${string}`);
+                setBuilder(builder)
             })
         } else {
             setConnectedAddress(address)
@@ -58,36 +60,34 @@ export default function Stackup() {
 
     const { write, data } = useContractWrite(config);
 
-    async function sendMessage() {
+    function sendMessage() {
         if (message && message.length > 0) {
             if (useSmartWallet) {
-                const value = "0"; // Amount of the ERC-20 token to transfer
+                if (builder) {
+                    const value = "0"; // Amount of the ERC-20 token to transfer
 
-                const erc20 = new ethers.Contract(token, ERC20_ABI, provider);
-                const decimals = await Promise.all([erc20.decimals()]);
-                const amount = ethers.utils.parseUnits(value, decimals);
+                    // Encode the calls
+                    const callTo = [chatterAddress];
+                    const data = encodeFunctionData({
+                        abi: chatterjson.abi,
+                        functionName: 'sendMessage',
+                        args: [message]
+                    })
+                    const callData = [data];
+                    // Send the User Operation to the ERC-4337 mempool
+                    Client.init(rpcUrl).then(async client => {
+                        const res = await client.sendUserOperation(builder.executeBatch(callTo, callData), {
+                            onBuild: (op) => console.log("Signed UserOperation:", op),
+                        });
 
-                // Encode the calls
-                const callTo = [chatterAddress];
-                const data = encodeFunctionData({
-                    abi: chatterjson.abi,
-                    functionName: 'sendMessage',
-                    args: ['message']
-                })
-                const callData = [data];
-                // Send the User Operation to the ERC-4337 mempool
-                Client.init(rpcUrl).then(async client => {
-                    const res = await client.sendUserOperation(builder.executeBatch(callTo, callData), {
-                        onBuild: (op) => console.log("Signed UserOperation:", op),
+                        // Return receipt
+                        console.log(`UserOpHash: ${res.userOpHash}`);
+                        console.log("Waiting for transaction...");
+                        const ev = await res.wait();
+                        console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
+                        console.log(`View here: https://jiffyscan.xyz/userOpHash/${res.userOpHash}`);
                     });
-    
-                    // Return receipt
-                    console.log(`UserOpHash: ${res.userOpHash}`);
-                    console.log("Waiting for transaction...");
-                    const ev = await res.wait();
-                    console.log(`Transaction hash: ${ev?.transactionHash ?? null}`);
-                    console.log(`View here: https://jiffyscan.xyz/userOpHash/${res.userOpHash}`);
-                });
+                }
             } else {
                 write?.();
             }
