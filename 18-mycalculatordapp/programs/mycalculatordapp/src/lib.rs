@@ -5,11 +5,9 @@ declare_id!("A51G5oX5vaKvYgEXotRTMDxiqRFnwBVSELVnZ6hcKtat");
 #[program]
 pub mod mycalculatordapp {
     use super::*;
-
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
+    pub fn create(ctx: Context<Create>, init_message: String) -> ProgramResult {
+      let calculator = &mut ctx.accounts.calculator;
+      calculator.greeting = init_message;
+      OK(())
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
