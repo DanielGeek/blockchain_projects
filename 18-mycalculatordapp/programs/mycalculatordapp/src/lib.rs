@@ -20,3 +20,10 @@ pub struct create<'info> {
   pub user: Signer<'info>,
   pub system_program: Program<'info, System>
 }
+
+#[account]
+pub struct Calculator {
+  pub greeting: String,
+  pub result: i64,
+  pub remainder: i64
+}
