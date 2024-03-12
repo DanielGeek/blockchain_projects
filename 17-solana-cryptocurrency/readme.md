@@ -14,3 +14,9 @@
 - Get token address balance: spl-token balance GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
 
 - Mint 100 token for this token address: spl-token mint GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 1000 --url devnet
+
+- Get total supply: spl-token supply GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+
+- Limit minting token: spl-token authorize GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz mint --disable --url devnet
+
+- Burn token from account: spl-token burn CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB 100 --url devnet
