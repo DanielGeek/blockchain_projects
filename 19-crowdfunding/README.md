@@ -1,7 +1,7 @@
 ## Calculator Dapp with Rust and Solana network
 
 ### Commandas to use
-- anchor init mycalculator-dapp
+- anchor init project-name
 - anchor build
 - anchor test
 
