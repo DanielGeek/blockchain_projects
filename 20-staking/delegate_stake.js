@@ -48,7 +48,7 @@ const main = async () => {
       delegateTx,
       [wallet]
   );
-  console.log(`Stake account delegated to ${selectedValidatorPubkey}. Tx Id: ${delegateTxId}`);
+  console.log(`Stake account delegated to ${selectedValidatorPubkey} Tx Id: ${delegateTxId}`);
   stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
   console.log(`Stake account status: ${stakeStatus.state}`);
 };

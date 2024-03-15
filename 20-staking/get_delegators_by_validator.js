@@ -2,9 +2,9 @@ const { Connection, clusterApiUrl, Keypair, LAMPORTS_PER_SOL, StakeProgram, send
 
 const main = async () => {
   const connection = new Connection(clusterApiUrl("devnet"), "processed");
-  const STAKE_PROGRAM_ID = new PublicKey("Config1111111111111111111111111111111111111");
+  const STAKE_PROGRAM_ID = new PublicKey("Stake11111111111111111111111111111111111111");
 
-  const VOTE_PUB_KEY = "FztsbEJLCmdaeQWuJKZrQ8MjN1j3yVMftynzA5e8kjKb";
+  const VOTE_PUB_KEY = "FwR3PbjS5iyqzLiLugrBqKSa5EKZ4vK9SKs7eQXtT59f";
 
   const accounts = await connection.getParsedProgramAccounts(STAKE_PROGRAM_ID, {
       filters: [
