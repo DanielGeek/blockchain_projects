@@ -1,9 +1,30 @@
 {
-    "name": "NAME_OF_NFT",
-    "symbol": "",
+    "name": "Ambi",
+    "symbol": "AMB",
     "image": "0.png",
+    "description": "Ambi nft",
     "properties": {
-        "files": [{ "url": "0.png", "type": "image/png" }],
-        "creators": [{ "address": "INSERT_YOUR_WALLET_ADDRESS", "share": 100 }]
-    }
+        "files": [
+            {
+                "uri": "0.png",
+                "type": "image/png"
+            }
+        ],
+        "creators": [
+            {
+                "address": "AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4",
+                "share": 100
+            }
+        ]
+    },
+    "attributes": [
+        {
+            "trait_type": "Background",
+            "value": "Blue"
+        },
+        {
+            "trait_type": "Eyes",
+            "value": "Big"
+        }
+    ]
 }

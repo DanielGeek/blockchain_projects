@@ -1,0 +1,33 @@
+{
+  "program": {
+    "candyMachine": "",
+    "candyMachineCreator": "",
+    "collectionMint": ""
+  },
+  "items": {
+    "0": {
+      "name": "Ambi",
+      "image_hash": "b601d0790f0eef299e6692e20961a94964b431cc38369606947b7ec6387a6ca2",
+      "image_link": "https://arweave.net/5r09NOpfA6PfMkTjBitvjKu2HqdUeCT8TeHdM2dkBqs?ext=png",
+      "metadata_hash": "64bd2c7123cb71bd9415d2755d868c33273a386b65581d0e090dc2110ee6d550",
+      "metadata_link": "https://arweave.net/mCY7lor9uYnbdoqG3UA7fT_p_QjFLk1Oiwi68hP09f8",
+      "onChain": false
+    },
+    "1": {
+      "name": "Anniyan",
+      "image_hash": "c423b0924a64dc3c35b9e61400f5ab5d9ad02413a4e84a1580a9b76337d7ab8f",
+      "image_link": "https://arweave.net/Xuw9ab04uGr5k5LtByZFDuN0DMyfambrZLQps6g93XM?ext=png",
+      "metadata_hash": "22fcb3a7780705b723714030e94aa6f3affaf77173ed3b083ce53eb176c1f3d1",
+      "metadata_link": "https://arweave.net/mv1ili3RC_sg-eNBpZehsSZecoTSUliXzQOio2kSmK8",
+      "onChain": false
+    },
+    "2": {
+      "name": "Remo",
+      "image_hash": "b6dfe55361970c6ad3f864fe3e8e757c45e62d42a670ae241aa259be2250ec12",
+      "image_link": "https://arweave.net/L7uD7dhxqNltACQpZvFIifXh0X4qNR8M331tQP2esNo?ext=png",
+      "metadata_hash": "65201eba7a4e58ed34de0fa828a779b2e34630fd40b5ad0b9382f9588d85189e",
+      "metadata_link": "https://arweave.net/nBTZvTE37pF7WTb_iIkU9j5iRfmm_02x6L9X417tB3M",
+      "onChain": false
+    }
+  }
+}
