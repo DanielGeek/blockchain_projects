@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 import { MintLayout, TOKEN_PROGRAM_ID, Token } from '@solana/spl-token';
@@ -20,6 +20,7 @@ const opts = {
 };
 
 const CandyMachine = ({ walletAddress }) => {
+    const [candyMachine, setCandyMachine] = useState(null);
 
     useEffect(() => {
         getCandyMachineState();
@@ -53,6 +54,9 @@ const CandyMachine = ({ walletAddress }) => {
             (!candyMachine.data.goLiveDate || 
                 candyMachine.data.goLiveDate.toNumber() > 
                 new Date().getTime() / 1000);
+        const goLiveDateTimeString = `${new Date(goLiveDate * 1000).toGMTString()}`;
+        setCandyMachine(candyMachine);
+        console.log({itemsAvailable, itemsRedeemed, itemsRemaining, goLiveDate, goLiveDateTimeString});
     };
 
     const getCandyMachineCreator = async (candyMachine) => {
