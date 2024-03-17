@@ -1,0 +1,16 @@
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+gifportal = "5KttK3fLpAWDQ4QgbqSchYXudf4jEtPVJRif6x9yUcKX"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "/Users/danielgeek/.config/solana/id.json"
+
+[scripts]
+test = "yarn run mocha -t 1000000 tests/"
