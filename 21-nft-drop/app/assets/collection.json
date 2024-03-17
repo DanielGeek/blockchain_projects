@@ -1,16 +1,18 @@
 {
-    "name": "Ambi",
+    "name": "My Awesome NFT Collection",
     "symbol": "AMB",
-    "image": "0.png",
-    "description": "Ambi nft",
+    "description": "This collection features unique digital artworks inspired by nature.",
+    "image": "collection.png",
+    
+    "external_url": "https://example.com/my-awesome-collection",
     "properties": {
-        "category": "image",
         "files": [
             {
-                "uri": "0.png",
+                "uri": "collection.png",
                 "type": "image/png"
             }
         ],
+        "category": "image",
         "creators": [
             {
                 "address": "AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4",

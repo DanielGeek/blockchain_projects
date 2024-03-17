@@ -4,11 +4,12 @@
     "image": "2.png",
     "description": "Remo nft",
     "properties": {
+        "category": "image",
         "files": [{ "uri": "2.png", "type": "image/png" }],
         "creators": [
         { 
             "address": "AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4", 
-            "share": 100 
+            "share": 100
             }
         ]
     },

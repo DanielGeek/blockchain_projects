@@ -21,6 +21,14 @@ To get started with this project, clone this repo and follow these commands:
 # Docs
 https://developers.metaplex.com/candy-machine/sugar
 
-# collection address
+# Collection address
 8cVA7QRzRLjU3j2yTbTaySbounTCUVUC8QbqPCcX4XmG
 
+# upload metadata
+`sugar launch --rpc-url https://api.devnet.solana.com`
+
+- Candy machine ID: DPbJ4Re4cZribt9kqCu5Gb3kCqHaWgJYrmMVkuTMTXKa
+- Collection mint ID: 9reDtpGgre83ifX78UxygdsgyJLYTbrXV4PF9wZNGPCY
+  
+# See your candy machine at:
+- https://www.solaneyes.com/address/DPbJ4Re4cZribt9kqCu5Gb3kCqHaWgJYrmMVkuTMTXKa?cluster=devnet
