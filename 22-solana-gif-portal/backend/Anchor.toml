@@ -2,14 +2,14 @@
 seeds = false
 skip-lint = false
 
-[programs.localnet]
+[programs.devnet]
 gifportal = "5KttK3fLpAWDQ4QgbqSchYXudf4jEtPVJRif6x9yUcKX"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "/Users/danielgeek/.config/solana/id.json"
 
 [scripts]
