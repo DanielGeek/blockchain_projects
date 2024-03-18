@@ -5,12 +5,14 @@ import { Buffer } from 'buffer';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import idl from './idl.json';
+import kp from './keypair.json';
 
 const { SystemProgram, Keypair } = web3;
 window.Buffer = Buffer;
 
-let baseAccount = Keypair.generate();
-
+const arr = Object.values(kp._keypair.secretKey);
+const secret = new Uint8Array(arr);
+const baseAccount = web3.Keypair.fromSecretKey(secret);
 
 const programID = new PublicKey(idl.metadata.address);
 const network = clusterApiUrl('devnet');
@@ -63,8 +65,24 @@ const App = () => {
     const sendGif = async () => {
         if (inputValue.length > 0) {
             console.log('Gif link: ', inputValue);
-            setGifList([...gifList, inputValue]);
             setInputValue('');
+            try {
+                const provider = getProvider();
+                const program = new Program(idl, programID, provider);
+                console.log("baseAccount.publicKey, ", baseAccount.publicKey);
+                console.log("provider.wallet.publicKey, ", provider.wallet.publicKey);
+                await program.rpc.addGif(inputValue, {
+                    accounts: {
+                        baseAccount: baseAccount.publicKey,
+                        user: provider.wallet.publicKey
+                    }
+                });
+                console.log("GIF successfully sent to program", inputValue);
+                await getGifList();
+                setInputValue('');
+            } catch (error) {
+                console.error(error);
+            }
         } else {
             console.log('Empty input. Try again.');
         }
@@ -83,7 +101,8 @@ const App = () => {
 
     const createGifAccount = async () => {
         try {
-            const provider = getProvider()
+            
+            const provider =  getProvider()
             const program = new Program(idl, programID, provider)
             await program.rpc.startStuffOff({
                 accounts: {
