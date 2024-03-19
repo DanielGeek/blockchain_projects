@@ -1,4 +1,6 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
+use anchor_lang::solana_program::system_program;
 use chainlink_solana as chainlink;
 
 declare_id!("7ABtiu5wEQJLgha9dUE6BvuhH5GPhwyU1aGRtoPAt6Es");
@@ -7,7 +9,7 @@ declare_id!("7ABtiu5wEQJLgha9dUE6BvuhH5GPhwyU1aGRtoPAt6Es");
 pub mod chainlink_solana_dapp {
     use super::*;
     pub fn execute(ctx: Context<Execute>) -> ProgramResult {
-        let round = chainlink::lates_round_data(
+        let round = chainlink::latest_round_data(
             ctx.accounts.chainlink_program.to_account_info(),
             ctx.accounts.chainlink_feed.to_account_info())?;
         let result_account = &mut ctx.accounts.result_account;
@@ -19,11 +21,15 @@ pub mod chainlink_solana_dapp {
 #[derive(Accounts)]
 pub struct Execute<'info> {
     #[account(init, payer=user, space=100)]
-    let result_account: Account<'info, ResultAccount>,
+    pub result_account: Account<'info, ResultAccount>,
     #[account(mut)]
     pub user: Signer<'info>,
-    pub system_program: Program<'info, System>,
+    #[account(address = system_program::ID)]
+     /// CHECK:
+    pub system_program: AccountInfo<'info>,
+    /// CHECK:
     pub chainlink_program: AccountInfo<'info>,
+    /// CHECK:
     pub chainlink_feed: AccountInfo<'info>
 }
 
