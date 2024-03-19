@@ -1,13 +1,4 @@
-class Block:
-    """
-    Block: a unit of storage.
-    Store transaction in a blockchain that supports a cryptocurrency.
-    """
-    def __init__(self, data):
-        self.data = data
-
-    def __repr__(self):
-        return f'Block - data: {self.data}'
+from block import Block
 
 class Blockchain:
     """
@@ -22,9 +13,15 @@ class Blockchain:
 
     def __repr__(self):
         return f'Blockchain:{self.chain}'
+    
+def main():
 
-blockchain = Blockchain()
-blockchain.add_block('one')
-blockchain.add_block('two')
+    blockchain = Blockchain()
+    blockchain.add_block('one')
+    blockchain.add_block('two')
 
-print(blockchain)
+    print(blockchain)
+    print(f'blockchain.py __name__: {__name__}')
+
+if __name__ == '__main__':
+    main()
