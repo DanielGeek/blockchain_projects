@@ -31,6 +31,6 @@ describe("chainlink_solana_dapp", () => {
     const latestPrice = await program.account.resultAccount.fetch(
       resultAccount.publicKey
     );
-    console.log("Price is: " + latestPrice.value / 100000000);
+    console.log("Price is: " + latestPrice.value.toNumber() / 10000000);
   });
 });
