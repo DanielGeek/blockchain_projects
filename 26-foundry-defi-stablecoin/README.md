@@ -1,3 +1,5 @@
+# This project is meant to be a stablecoin where users can deposit WETH and WBTC in exchange for a token that will be pegged to the USD.
+
 1. Relative Stability: Anchored or Pegged -> $1.00
    1. Chainlink Price feed.
    2. Set a function to exchange ETH & BTC -> $$$
