@@ -17,4 +17,4 @@
 1. What are our invariants/properties?
 
 ### help full commands
-`forge test --match-test invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv`
+`forge test --match-test invariant_protocolMustHaveMoreValueThanTotalSupply -vv`
