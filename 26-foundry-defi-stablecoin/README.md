@@ -8,3 +8,13 @@
 3. Collateral: Exogenous (Crypto)
    1. wEth
    2. wBTC
+
+- Calculate health factor function
+- Set healt factor if debt is 0
+- Added a bunch of view function
+
+
+1. What are our invariants/properties?
+
+### help full commands
+`forge test --match-test invariant_protocolMustHaveMoreValueThanTotalSupply -vvvv`
