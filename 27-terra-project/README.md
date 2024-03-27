@@ -9,3 +9,6 @@
 
 # Faucet
 - https://faucet.terra.money/
+
+# help full link
+- https://terra-classic-rpc.publicnode.com/
