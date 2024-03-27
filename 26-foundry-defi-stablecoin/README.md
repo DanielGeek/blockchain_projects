@@ -1,25 +1,31 @@
-# This project is meant to be a stablecoin where users can deposit WETH and WBTC in exchange for a token that will be pegged to the USD.
-
-1. Relative Stability: Anchored or Pegged -> $1.00
-   1. Chainlink Price feed.
-   2. Set a function to exchange ETH & BTC -> $$$
-2. Stability Mechanism (Minting): Algorithmic (Decentralized)
-   1. People can only mint the stablecoin with enough collateral (coded)
-3. Collateral: Exogenous (Crypto)
-   1. wEth
-   2. wBTC
-
-- Calculate health factor function
-- Set healt factor if debt is 0
-- Added a bunch of view function
+# DeFi Stablecoin Project | Foundry | Chainlink Oracles | wETH | wBTC
 
 
-1. What are our invariants/properties?
+## This project is meant to be a stablecoin where users can deposit WETH and WBTC in exchange for a token that will be pegged to the USD.
 
+Key Features:
+- ERC20 Standard: This ensures that the DSC token can interact seamlessly with the Ethereum ecosystem, including exchanges, wallets, and other decentralized applications (dApps).
 
-1. Some proper oracle use
-2. Write more tests
-3. Smart Contract Audit Preparation
+- Burnable: The token can be burned to reduce the circulating supply, a critical feature for managing its stable value.
+
+- Owned by DSCEngine: The minting and burning rights are exclusively held by the DSCEngine contract, ensuring that the supply of DSC can only be modified in accordance with the system's collateralization rules and stability mechanisms.
+
+Interaction between DSCEngine and DecentralizedStableCoin:
+The DSCEngine contract acts as the operational core of the system. It manages collateral deposits, the minting and burning of DSC tokens to adjust the supply, and ensures the system remains over-collateralized to safeguard its stability and reliability.
+
+System Purpose:
+The overarching goal of this system is to provide a decentralized stablecoin (DSC) that maintains its value close to one USD, leveraging cryptocurrency collateral. The system's stability and security hinge on the strategic interaction between collateral management and monetary supply regulation through the minting and burning of DSC. This is achieved in a decentralized manner, without relying on central governance entities or complex governance mechanisms, setting it apart from other stablecoin models that may depend on centralized authorities or intricate governance frameworks.
+
+Tech Stack and tools:
+Solidity
+Foundry
+openzeppelin ERC20, Ownable, nonReentrant library
+IPFS
+USD
+wETH
+wBTC
+Chainlink Oracles
+Testing, Fuzz (Invariant) tests
 
 ### help full commands
 `forge test --match-test invariant_protocolMustHaveMoreValueThanTotalSupply -vv`
