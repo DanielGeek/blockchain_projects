@@ -16,5 +16,10 @@
 
 1. What are our invariants/properties?
 
+
+1. Some proper oracle use
+2. Write more tests
+3. Smart Contract Audit Preparation
+
 ### help full commands
 `forge test --match-test invariant_protocolMustHaveMoreValueThanTotalSupply -vv`
