@@ -1,31 +1,30 @@
 fn main() {
-    // Definition
-    let x: i16 = 10;
-    println!("x is: {x}");
+    // Unsigned integers
+    let unsigned_num: u8 = 5; // u16, u32, u64, u128
 
-    // Mutability
-    let mut y = 5;
-    y = 10;
+    // Signed integers
+    let signed_num: i8 = 5; // i16, i32, i64, i128
 
-    // Scope
-    {
-        let z = 50;
-    }
-    // let s = z;
+    // Floating point numbers
+    let float_num: f32 = 5.0; // f64
 
-    // Shadowing
-    let t = 10;
-    let t = t + 10;
-    println!("t is {t}");
+    // Platform specific integers
+    let arch_1: usize = 5;
+    let arch_2: isize = 5;
 
-    let u = 3;
-    let u = 3.0;
+    // Characters
+    let char = 'a';
 
-    let v = 30;
-    {
-        let v = 40;
-        println!("Inner v is: {v}");
-    }
-    println!("v is : {v}");
+    // Boolean
+    let b: bool = true;
+
+    // Type aliasing
+    type Age = u8;
+    let peter_age: Age = 42;
+
+    // Type Conversion
+    let a = 10;
+    let b = a as f64;
+
 
 }
