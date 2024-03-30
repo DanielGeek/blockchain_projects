@@ -1,17 +1,36 @@
-// 22. Ownership Basic.
-// 1. Each value has a variable that's its "owner."
-// 2. A value can have only one owner at a time.
-// 3. If the owner goes out of scope, the value is cleaned up.
+// 23. Ownership in Functions.
 
 fn main() {
-    let s1 = String::from("world");
-    {
-        let s2 = s1;
-    }
-    // let s2 = s1;
-    // println!("s1 is: {s2}");
+    let vec_1 = vec![1, 2, 3];
+    takes_ownership(vec_1.clone());
+    println!("vec 1 is: {:?}", vec_1);
 
-    let x = 15;
-    let y = x;
-    println!("x is: {x}");
+    let vec_2 = gives_ownership();
+    println!("vec 2 is: {:?}", vec_2);
+
+    let vec_3 = takes_and_gives_ownership(vec_2);
+    // println!("vec 2 is: {:?}", vec_2);
+    println!("vec 3 is: {:?}", vec_3);
+
+    let x = 10;
+    stack_function(x);
+    println!("In main, x is: {x}");
+}
+
+fn takes_ownership(vec: Vec<i32>) {
+    println!("vec is: {:?}", vec);
+}
+
+fn gives_ownership() -> Vec<i32> {
+    vec![4, 5, 6]
+}
+
+fn takes_and_gives_ownership(mut vec: Vec<i32>) -> Vec<i32> {
+    vec.push(10);
+    vec
+}
+
+fn stack_function(mut var: i32) {
+    var = 56;
+    println!("In func, var is: {var}");
 }
