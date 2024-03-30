@@ -1,26 +1,31 @@
+// 16. Functions and Code Blocks
+
 fn main() {
-    // &str and String
-    let fixed_str = "Fixed length string";
-    let mut flexible_str = String::from("This string will grow");
-    flexible_str.push('s');
+    my_fn("This is my function!");
+    let str = "Function call with a variable";
+    my_fn(str);
 
-    // Arrays
-    let mut array_1 = [4, 5, 6, 8, 9];
-    let num = array_1[3];
+    let answer = multiplication(10, 15);
 
-    println!("{:?}", array_1);
-    let array_2 = [0; 10];
+    let result = basic_math(10, 15);
+    let (multiplication, addition, substraction) = basic_math(10, 15);
 
-    // Vectors
-    let vec_1: Vec<i32> = vec![4, 5, 6, 8, 9];
-    let num = vec_1[3];
+    let full_name = {
+        let first_name = "Daniel";
+        let last_name = "Angel";
+        format!("{first_name} {last_name}")
+    };
+}
 
-    // Tuples
-    let my_info = ("Salary", 40000, "Age", 40);
-    let salary_value = my_info.1;
-    let (salary, salary_value, age, age_value) = my_info;
+fn my_fn(s: &str) {
+    println!("{s}");
+}
 
-    let unit = ();
+fn multiplication(num1: i32, num2: i32) -> i32 {
+    println!("Cumputing multiplication");
+    num1 * num2
+}
 
-
+fn basic_math(num1: i32, num2: i32) -> (i32, i32, i32) {
+    (num1 * num2, num1 + num2, num1 - num2)
 }
