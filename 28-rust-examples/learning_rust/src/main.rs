@@ -1,30 +1,26 @@
 fn main() {
-    // Unsigned integers
-    let unsigned_num: u8 = 5; // u16, u32, u64, u128
+    // &str and String
+    let fixed_str = "Fixed length string";
+    let mut flexible_str = String::from("This string will grow");
+    flexible_str.push('s');
 
-    // Signed integers
-    let signed_num: i8 = 5; // i16, i32, i64, i128
+    // Arrays
+    let mut array_1 = [4, 5, 6, 8, 9];
+    let num = array_1[3];
 
-    // Floating point numbers
-    let float_num: f32 = 5.0; // f64
+    println!("{:?}", array_1);
+    let array_2 = [0; 10];
 
-    // Platform specific integers
-    let arch_1: usize = 5;
-    let arch_2: isize = 5;
+    // Vectors
+    let vec_1: Vec<i32> = vec![4, 5, 6, 8, 9];
+    let num = vec_1[3];
 
-    // Characters
-    let char = 'a';
+    // Tuples
+    let my_info = ("Salary", 40000, "Age", 40);
+    let salary_value = my_info.1;
+    let (salary, salary_value, age, age_value) = my_info;
 
-    // Boolean
-    let b: bool = true;
-
-    // Type aliasing
-    type Age = u8;
-    let peter_age: Age = 42;
-
-    // Type Conversion
-    let a = 10;
-    let b = a as f64;
+    let unit = ();
 
 
 }
