@@ -1,63 +1,52 @@
-// 29. Structs and its Types
+// 31. Enums
 
-struct Car {
-    owner: String,
-    year: u32,
-    fuel_level: f32,
-    price: u32,
+// enum WeekDay {
+//     Monday,
+//     Tuesday,
+//     Wednesday,
+//     Thurday,
+//     Friday,
+//     Saturday,
+//     Sunday,
+// }
+
+// fn main() {
+//     let mut day = "Saturday".to_string();
+
+//     let week_day = vec![
+//         "Monday".to_string(),
+//         "Tuesday".to_string(),
+//         "Wednesday".to_string(),
+//         "Thursday".to_string(),
+//         "Friday".to_string(),
+//         "Saturday".to_string(),
+//         "Sunday".to_string(),
+//     ];
+//     day = week_day[1].clone();
+
+//     let day = WeekDay::Saturday;
+// }
+
+enum TravelType {
+    Car(f32),
+    Train(f32),
+    Aeroplane(f32),
 }
 
-impl Car {
-
-    fn monthly_insurance() -> u32 {
-        123
-    }
-
-    fn selling_price(&self) -> u32 {
-        self.price + Car::monthly_insurance()
-    }
-
-    fn new(name: String, year: u32) -> Self{
-        Self {
-            owner: name,
-            year: year,
-            fuel_level: 0.0,
-            price: 0,
-        }
-    }
-
-    fn display_car_info(&self) {
-        println!(
-            "Owner: {}, Year: {}, Price: {}",
-            self.owner, self.year, self.price
-        );
-    }
-
-    fn refuel(&mut self, gallons: f32) {
-        self.fuel_level += gallons;
-    }
-
-    fn sell(self) -> Self {
-        self
+impl TravelType {
+    fn travel_allowance(&self) -> f32 {
+        let allowance = match self {
+            TravelType::Car(miles) => miles * 2.0,
+            TravelType::Train(miles) => miles * 3.0,
+            TravelType::Aeroplane(miles) => miles * 5.0,
+        };
+        allowance
     }
 }
-
-
 fn main() {
-    let mut my_car = Car {
-        owner: String::from("ABC"),
-        year: 2010,
-        fuel_level: 0.0,
-        price: 5_000,
-    };
-
-    my_car.display_car_info();
-    // display_car_info(&my_car);
-
-    my_car.refuel(10.5);
-    let new_owner = my_car.sell();
-    // my_car.refuel(10.5);
-
-    let new_car = Car::new("XYZ".to_string(), 2024);
-
+    let participant = TravelType::Car(60.0);
+    println!(
+        "Allowance of participant is: {}",
+        participant.travel_allowance()
+    )
 }
