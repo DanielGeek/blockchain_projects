@@ -1,52 +1,49 @@
-// 31. Enums
+// 33. Option
 
-// enum WeekDay {
-//     Monday,
-//     Tuesday,
-//     Wednesday,
-//     Thurday,
-//     Friday,
-//     Saturday,
-//     Sunday,
-// }
-
-// fn main() {
-//     let mut day = "Saturday".to_string();
-
-//     let week_day = vec![
-//         "Monday".to_string(),
-//         "Tuesday".to_string(),
-//         "Wednesday".to_string(),
-//         "Thursday".to_string(),
-//         "Friday".to_string(),
-//         "Saturday".to_string(),
-//         "Sunday".to_string(),
-//     ];
-//     day = week_day[1].clone();
-
-//     let day = WeekDay::Saturday;
-// }
-
-enum TravelType {
-    Car(f32),
-    Train(f32),
-    Aeroplane(f32),
+struct Student {
+    name: String,
+    grade: Option<u32>,
 }
 
-impl TravelType {
-    fn travel_allowance(&self) -> f32 {
-        let allowance = match self {
-            TravelType::Car(miles) => miles * 2.0,
-            TravelType::Train(miles) => miles * 3.0,
-            TravelType::Aeroplane(miles) => miles * 5.0,
-        };
-        allowance
+fn get_grade(student_name: &String, student_db: &Vec<Student>) -> Option<u32> {
+    for student in student_db {
+        if student.name == *student_name {
+            return student.grade;
+        }
+    }
+    None
+}
+
+fn main() {
+    let student_db = vec![
+        Student {
+            name: String::from("Alice"),
+            grade: Some(95),
+        },
+        Student {
+            name: String::from("Bob"),
+            grade: Some(87),
+        },
+        Student {
+            name: String::from("Charlie"),
+            grade: None,
+        }
+    ];
+
+    let student_name = String::from("Bob");
+    let student_grade = get_grade(&student_name, &student_db);
+
+    // match student_grade {
+    //     Some(grade) => println!("Grade is: {grade}"),
+    //     None => {}
+    // }
+
+    if let Some(grade) = student_grade {
+        println!("Grade is: {grade}");
     }
 }
-fn main() {
-    let participant = TravelType::Car(60.0);
-    println!(
-        "Allowance of participant is: {}",
-        participant.travel_allowance()
-    )
-}
+
+// enum Option<T> {
+//     None,
+//     Some(T),
+// }
