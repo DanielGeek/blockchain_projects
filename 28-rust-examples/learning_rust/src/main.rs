@@ -1,83 +1,47 @@
-// 33. Option
+// 37. Hash Maps
+use std::{collections::HashMap, hash::Hash};
+// fn main() {
+//     // let mut person:HashMap<&str, i32> = HashMap::new();
+//     // person.insert("Nouman",40);
+//     // person.insert("Kamran", 44);
+//     // person.insert("Shahid", 55);
 
-struct Student {
-    name: String,
-    grade: Option<u32>,
-}
+//     // println!("The age is {:?}", person.get("Nouman").unwrap());
 
-// fn get_grade(student_name: &String, student_db: &Vec<Student>) -> Option<u32> {
-//     for student in student_db {
-//         if student.name == *student_name {
-//             return student.grade;
-//         }
-//     }
-//     None // not reachable
+//     // if person.contains_key("Nouman") {
+//     //     println!("The value exist")
+//     // } else {
+//     //     println!("The value does not exist");
+//     // }
+
+//     // match person.get("Nouman") {
+//     //     Some(value) => println!("The value existe {}", value),
+//     //     None => println!("The value does not exist"),
+//     // }
+
+//     // for (name, age) in &person{
+//     //     println!("The person {} has an age of {}", name, age);
+//     // }
+
+//     let mut likes:HashMap<&str, &str> = HashMap::new();
+    
+//     // likes.insert("Nouman", "apple");
+//     // likes.insert("Nouman", "mango");
+//     // println!("The fruit which is being liked is {:?}", likes);
+
+//     likes.entry("Nouman").or_insert("apple");
+//     likes.entry("Nouman").or_insert("mango");
+//     println!("The fruit which is being likes is {:?}", likes);
 // }
-
-// enum Result<T, E> {
-//     Ok(T),
-//     Err(E),
-// }
-
-// fn check_student(student_name: &String, student_db: &Vec<Student>) -> Result<(), String> {
-//     for student in student_db {
-//         if student.name == *student_name {
-//             return Ok(());
-//         }
-//     }
-//     Err(String::from("Student not found"))
-// }
-
-fn check_student_get_grade(student_name: &String, student_db: &Vec<Student>) -> Result<Option<u32>, String> {
-    for student in student_db {
-        if student.name == *student_name {
-            return Ok(student.grade);
-        }
-    }
-    Err(String::from("Student not found"))
-}
 
 fn main() {
-    let student_db = vec![
-        Student {
-            name: String::from("Alice"),
-            grade: Some(95),
-        },
-        Student {
-            name: String::from("Bob"),
-            grade: Some(87),
-        },
-        Student {
-            name: String::from("Charlie"),
-            grade: None,
-        }
-    ];
+    let some_vec = vec![5,5,8,8,1,0,1,5,5,5,5];
+    let mut freq_vec:HashMap<i32, u32> = HashMap::new();
 
-    let student_name = String::from("Adam");
-    let student_status = check_student_get_grade(&student_name, &student_db);
-
-    match student_status {
-        Ok(option_grade) => {
-            if let Some(grade) = option_grade {
-                println!("Grade is: {grade}");
-            }
-        }
-        Err(error_msg) => println!("{error_msg}"),
+    for i in &some_vec {
+        let freq: &mut u32 = freq_vec.entry(*i).or_insert(0);
+        *freq += 1;
     }
-    
-    // let student_grade = get_grade(&student_name, &student_db);
 
-    // match student_grade {
-    //     Some(grade) => println!("Grade is: {grade}"),
-    //     None => {}
-    // }
-
-    // if let Some(grade) = student_grade {
-    //     println!("Grade is: {grade}");
-    // }
+    println!("{:?}", freq_vec);
 }
-
-// enum Option<T> {
-//     None,
-//     Some(T),
-// }
