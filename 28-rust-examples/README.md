@@ -18,3 +18,6 @@
 - `cargo login your_token`
 - `cargo doc --open`
 - `cargo publish`
+
+## new project with a lib file
+- `cargo new testing --lib`
