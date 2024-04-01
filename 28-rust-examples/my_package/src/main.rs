@@ -1,9 +1,14 @@
-// 43. Privacy in Modules
+// 45. External Dependencies
 
+use array_tool::vec::*;
 use my_package::{Customer, Product, Order, Category};
 fn main() {
-    let product = Product::new(1, String::from("Laptop"), 799.99, Category::Electronics);
-    let customer = Customer::new(1, String::from("Alice"), String::from("alice@example.com"));
-    let order = Order::new(1, product, customer, 2);
-    println!("Total cost of the order: ${}", order.total_bill());
+    let product1 = Product::new(1, String::from("Laptop"), 799.99, Category::Electronics);
+    let product2 = Product::new(2, String::from("T-Shirt"), 20.0, Category::Clothing);
+    let product3 = Product::new(3, String::from("Book"), 10.0, Category::Books);
+
+    let set1: Vec<&Product> = vec![&product1, &product2];
+    let set2: Vec<&Product> = vec![&product2, &product3];
+    let intersection = set1.intersect(set2);
+    println!("The intersection is: {:?}", intersection);
 }

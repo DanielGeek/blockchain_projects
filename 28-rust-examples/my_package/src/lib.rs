@@ -3,6 +3,7 @@ pub use order::Order;
 pub use product::{Category, Product};
 mod product {
     pub use category::Category;
+    #[derive(PartialEq, Debug)]
     pub struct Product {
         id: u64,
         name: String,
@@ -21,6 +22,7 @@ mod product {
         }
     }
     mod category {
+        #[derive(PartialEq, Debug)]
         pub enum Category {
             Electronics,
             Clothing,
