@@ -9,3 +9,7 @@
 - `cargo build --release`
 - `cargo run --bin my_package`
 - `cargo run --bin app1`
+- `cargo install cargo-modules`
+- `cargo-modules structure --lib`
+## Update Rust compiler
+- `rustup update`
