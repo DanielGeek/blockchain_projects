@@ -1,7 +1,7 @@
 // 45. External Dependencies
 
 use array_tool::vec::*;
-use my_package::{Customer, Product, Order, Category};
+use my_package_danielgeek::{Customer, Product, Order, Category};
 fn main() {
     let product1 = Product::new(1, String::from("Laptop"), 799.99, Category::Electronics);
     let product2 = Product::new(2, String::from("T-Shirt"), 20.0, Category::Clothing);

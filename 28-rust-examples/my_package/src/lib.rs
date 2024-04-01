@@ -1,17 +1,29 @@
 pub use customer::Customer;
 pub use order::Order;
 pub use product::{Category, Product};
+// # Online Bussiness
+// This is a rust library for online store
+
+/// This is product module
 mod product {
     pub use category::Category;
+    /// Struct for storing product related information.
     #[derive(PartialEq, Debug)]
     pub struct Product {
         id: u64,
-        name: String,
+        pub name: String,
         price: f64,
         category: Category,
     }
     
     impl Product {
+        /// # Example
+        /// ```
+        /// use my_package_danielgeek::Category;
+        /// use my_package_danielgeek::Product;
+        /// let some_product = Product::new(1, String::from("Laptop"), 799.99, Category::Electronics);
+        /// assert_eq!(some_product.name, String::from("Laptop"));
+        /// ````
         pub fn new(id: u64, name: String, price: f64, category: Category) -> Product {
             Product {
                 id,
@@ -22,6 +34,7 @@ mod product {
         }
     }
     mod category {
+        /// Enum for representing product categories.
         #[derive(PartialEq, Debug)]
         pub enum Category {
             Electronics,
@@ -57,7 +70,7 @@ mod customer {
 
 mod order {
     use crate::product::Product;
-    use crate::customer::{self, Customer};
+    use crate::customer::Customer;
     pub struct Order {
         id: u64,
         product: Product,

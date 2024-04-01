@@ -13,3 +13,8 @@
 - `cargo-modules structure --lib`
 ## Update Rust compiler
 - `rustup update`
+
+## Login  https://crates.io
+- `cargo login your_token`
+- `cargo doc --open`
+- `cargo publish`
