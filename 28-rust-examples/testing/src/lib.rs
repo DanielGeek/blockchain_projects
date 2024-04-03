@@ -15,18 +15,28 @@ mod shapes {
             }
         }
 
+        pub fn new_2(radius: f32) -> Circle {
+            match radius {
+                -10.0..=0.0 => panic!("is between -10.0 and 0.0"),
+                ..= 10.0 => panic!("is lesser then -10.0"),
+                _ => Circle { radius },
+            }
+        }
+
         pub fn contains(&self, other: &Circle) -> bool {
             self.radius > other.radius
         }
     }
 }
 
+fn some_fn() {}
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn larger_circle_should_contain_smaller() {
+        some_fn();
         let larger_circle = shapes::Circle::new(5.0);
         let smaller_circle = shapes::Circle::new(2.0);
         assert_eq!(larger_circle.contains(&smaller_circle), true, "Custom failure message");
@@ -46,5 +56,11 @@ mod tests {
     fn should_not_create_circle() -> Result<(), String> {
         let some_circle = shapes::Circle::new_1(-1.0)?;
         Ok(())
+    }
+
+    #[test]
+    #[should_panic(expected = "is lesser then -10.0")]
+    fn should_not_create_and_panic() {
+        let some_circle = shapes::Circle::new_2(-11.0);
     }
 }
