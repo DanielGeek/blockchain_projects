@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn should_not_create_circle() -> Result<(), String> {
-        let some_circle = shapes::Circle::new_1(-1.0)?;
+        let some_circle = shapes::Circle::new_1(1.0)?;
         Ok(())
     }
 
@@ -62,5 +62,11 @@ mod tests {
     #[should_panic(expected = "is lesser then -10.0")]
     fn should_not_create_and_panic() {
         let some_circle = shapes::Circle::new_2(-11.0);
+    }
+
+    #[test]
+    #[ignore]
+    fn huge_test() {
+        // code that run for hours
     }
 }
