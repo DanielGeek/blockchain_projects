@@ -11,6 +11,7 @@
 - `cargo run --bin app1`
 - `cargo install cargo-modules`
 - `cargo-modules structure --lib`
+- `cargo bench`
 ## Update Rust compiler
 - `rustup update`
 
@@ -21,3 +22,4 @@
 
 ## new project with a lib file
 - `cargo new testing --lib`
+
