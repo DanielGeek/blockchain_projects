@@ -1,19 +1,21 @@
 // 57. Traits
 
 
-struct drawing_info {
-    line_width: u8,
-    color: String,
-}
+// struct drawing_info {
+//     line_width: u8,
+//     color: String,
+// }
 struct Square {
     side: f32,
-    info: drawing_info,
+    line_width: u8,
+    color: String,
 }
 
 struct Rectangle {
     length: f32,
     width: f32,
-    info: drawing_info,
+    line_width: u8,
+    color: String,
 }
 
 // impl Square {
@@ -58,6 +60,40 @@ impl Shape for Square {
     }
 }
 
+fn shape_properties<T>(object: T) 
+where
+    T: Shape,
+{
+    object.area();
+    object.perimeter();
+}
+
+fn returns_shape() -> impl Shape {
+    let sq = Square {
+        side: 5.0,
+        line_width: 5,
+        color: String::from("Red"),
+    };
+    sq
+    // let rect = Rectangle {
+    //     length: 5.0,
+    //     width: 10.0,
+    //     line_width: 5,
+    //     color: String::from("Red"),
+    // };
+
+    // let x = false;
+    // if x {
+    //     sq
+    // } else {
+    //     rect
+    // }
+}
+
+struct Circle {
+    radius: f32,
+}
+
 fn main() {
     let r1 = Rectangle {
         width: 5.0,
@@ -72,9 +108,14 @@ fn main() {
         color: String::from("Red"),
     };
 
-    r1.area();
-    s1.area();
+    let c1 = Circle { radius: 5.0 };
+    shape_properties(r1);
+    shape_properties(s1);
+    shape_properties(c1);
 
-    r1.perimeter();
-    s1.perimeter();
+    // r1.area();
+    // s1.area();
+
+    // r1.perimeter();
+    // s1.perimeter();
 }
