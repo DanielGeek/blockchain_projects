@@ -1,128 +1,25 @@
-// 63. Traits Objects
-
-struct Square {
-    side: f32,
-    line_width: u8,
-    color: String,
+// 65. Derived Traits and Marker Traits
+trait Properties: PartialEq + Default + Clone {}
+#[derive(Debug, PartialEq, Default, Clone)]
+struct Student {
+    name: String,
+    age: u8,
+    sex: char,
 }
-
-struct Rectangle {
-    length: f32,
-    width: f32,
-    line_width: u8,
-    color: String,
-}
-
-trait Draw {
-    fn draw_object(&self);
-}
-
-trait Shape: Draw + OtherTrait + SomeOtherTrait {
-    fn area(&self) -> f32;
-    fn perimeter(&self) -> f32 {
-        println!("Perimeter not implemented, returning dummy value");
-        0.0
-    }
-}
-
-trait OtherTrait {}
-impl OtherTrait for Rectangle {}
-impl OtherTrait for Square {}
-
-trait SomeOtherTrait {}
-impl SomeOtherTrait for Rectangle {}
-impl SomeOtherTrait for Square {}
-
-impl Shape for Rectangle {
-    fn area(&self) -> f32 {
-        let area_of_rect = self.length * self.width;
-        println!("Rectangle area: {}", area_of_rect);
-        area_of_rect
-    }
-
-    fn perimeter(&self) -> f32 {
-        let perimeter_of_rect = 2.0 * (self.length + self.width);
-        println!("Rectangle Perimeter: {}", perimeter_of_rect);
-        perimeter_of_rect
-    }
-}
-
-impl Shape for Square {
-    fn area(&self) -> f32 {
-        let area_of_square = self.side * self.side;
-        println!("Square area: {}", area_of_square);
-        area_of_square
-    }
-}
-
-impl Draw for Square {
-    fn draw_object(&self) {
-        println!("Drawing Square");
-    }
-}
-
-impl Draw for Rectangle {
-    fn draw_object(&self) {
-        println!("Drawing Reactangle");
-    }
-}
-
-fn returns_shape(dimension: Vec<f32>) -> Box<dyn Shape> {
-    if dimension.len() == 1 {
-        let sq = Square {
-            side: dimension[0],
-            line_width: 5,
-            color: String::from("Red"),
-        };
-        Box::new(sq)
-    } else {
-        let rect = Rectangle {
-            length: dimension[0],
-            width: dimension[1],
-            line_width: 5,
-            color: String::from("Red"),
-        };
-        Box::new(rect)
-    }
-}
-
-fn shape_properties_static<T>(object: T)
-where
-    T: Shape,
-{
-    object.area();
-    object.perimeter();
-}
-
-fn shape_properties_dynamic(object: Box<dyn Shape>) {
-    object.area();
-    object.perimeter();
-}
-
-fn shape_properties_rect(object: Rectangle) {
-    object.area();
-    object.perimeter();
-}
-
-fn shape_properties_sq(object: Square) {
-    object.area();
-    object.perimeter();
-}
-
+impl Properties for Student {}
 fn main() {
-    let r1 = Rectangle {
-        width: 5.0,
-        length: 4.0,
-        line_width: 1,
-        color: String::from("Red"),
+    let s_1 = Student {
+        name: String::from("ABC"),
+        age: 35,
+        sex: 'M',
     };
 
-    let s1 = Square {
-        side: 3.2,
-        line_width: 1,
-        color: String::from("Red"),
+    let s_2 = Student {
+        name: String::from("XYZ"),
+        age: 40,
+        sex: 'M',
     };
 
-    shape_properties_dynamic(Box::new(r1));
-    shape_properties_dynamic(Box::new(s1));
+    println!("Student: {:?}", s_1);
+    println!("s_1 and s_2 are equal; {}", s_1 == s_2);
 }
