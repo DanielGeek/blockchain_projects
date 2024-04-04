@@ -30,13 +30,25 @@ struct Rectangle {
 //     }
 // }
 
-trait Shape {
+trait Draw {
+    fn draw_object(&self);
+}
+
+trait Shape: Draw + OtherTrait + SomeOtherTrait {
     fn area(&self) -> f32;
     fn perimeter(&self) -> f32 {
         println!("Perimeter not implemented, returning dummy value");
         0.0
     }
 }
+
+trait OtherTrait {}
+impl OtherTrait for Rectangle {}
+impl OtherTrait for Square {}
+
+trait SomeOtherTrait {}
+impl SomeOtherTrait for Rectangle {}
+impl SomeOtherTrait for Square {}
 
 impl Shape for Rectangle {
     fn area(&self) -> f32 {
@@ -60,7 +72,19 @@ impl Shape for Square {
     }
 }
 
-fn shape_properties<T>(object: T) 
+impl Draw for Square {
+    fn draw_object(&self) {
+        println!("Drawing Square");
+    }
+}
+
+impl Draw for Rectangle {
+    fn draw_object(&self) {
+        println!("Drawing Reactangle");
+    }
+}
+
+fn shape_properties<T>(object: T)
 where
     T: Shape,
 {
