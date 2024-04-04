@@ -1,5 +1,10 @@
-// 63. Traits Objects
+// 57. Traits
 
+
+// struct drawing_info {
+//     line_width: u8,
+//     color: String,
+// }
 struct Square {
     side: f32,
     line_width: u8,
@@ -12,6 +17,18 @@ struct Rectangle {
     line_width: u8,
     color: String,
 }
+
+// impl Square {
+//     fn calculate_area(&self) {
+//         println!("The area is: {}", self.side * self.side);
+//     }
+// }
+
+// impl Rectangle {
+//     fn area(&self) -> f32 {
+//         self.length * self.width
+//     }
+// }
 
 trait Draw {
     fn draw_object(&self);
@@ -67,26 +84,7 @@ impl Draw for Rectangle {
     }
 }
 
-fn returns_shape(dimension: Vec<f32>) -> Box<dyn Shape> {
-    if dimension.len() == 1 {
-        let sq = Square {
-            side: dimension[0],
-            line_width: 5,
-            color: String::from("Red"),
-        };
-        Box::new(sq)
-    } else {
-        let rect = Rectangle {
-            length: dimension[0],
-            width: dimension[1],
-            line_width: 5,
-            color: String::from("Red"),
-        };
-        Box::new(rect)
-    }
-}
-
-fn shape_properties_static<T>(object: T)
+fn shape_properties<T>(object: T)
 where
     T: Shape,
 {
@@ -94,19 +92,30 @@ where
     object.perimeter();
 }
 
-fn shape_properties_dynamic(object: Box<dyn Shape>) {
-    object.area();
-    object.perimeter();
+fn returns_shape() -> impl Shape {
+    let sq = Square {
+        side: 5.0,
+        line_width: 5,
+        color: String::from("Red"),
+    };
+    sq
+    // let rect = Rectangle {
+    //     length: 5.0,
+    //     width: 10.0,
+    //     line_width: 5,
+    //     color: String::from("Red"),
+    // };
+
+    // let x = false;
+    // if x {
+    //     sq
+    // } else {
+    //     rect
+    // }
 }
 
-fn shape_properties_rect(object: Rectangle) {
-    object.area();
-    object.perimeter();
-}
-
-fn shape_properties_sq(object: Square) {
-    object.area();
-    object.perimeter();
+struct Circle {
+    radius: f32,
 }
 
 fn main() {
@@ -123,6 +132,14 @@ fn main() {
         color: String::from("Red"),
     };
 
-    shape_properties_dynamic(Box::new(r1));
-    shape_properties_dynamic(Box::new(s1));
+    let c1 = Circle { radius: 5.0 };
+    shape_properties(r1);
+    shape_properties(s1);
+    // shape_properties(c1);
+
+    // r1.area();
+    // s1.area();
+
+    // r1.perimeter();
+    // s1.perimeter();
 }
