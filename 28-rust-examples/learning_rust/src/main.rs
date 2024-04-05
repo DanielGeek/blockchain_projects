@@ -1,71 +1,62 @@
-// 66. Associated Types in Traits
+// 68. Choosing Associated vs Generic Types
 
-#[derive(Debug)]
-struct Km {
-    value: u32,
+trait Addition<Rhs, Output> {
+    fn add(self, rhs: Rhs) -> Output;
 }
 
-#[derive(Debug)]
-struct Kmh {
-    value: u32,
+struct Point {
+    x: i32,
+    y: i32,
 }
 
-#[derive(Debug)]
-struct Miles {
-    value: u32,
-}
-
-#[derive(Debug)]
-struct Mph {
-    value: u32,
-}
-
-// impl Kmh {
-//     fn distance_in_three_hours(&self) -> Km {
-//         Km {
-//             value: self.value * 3,
-//         }
-//     }
-// }
-
-// impl Mph {
-//     fn distance_in_three_hours(&self) -> Miles {
-//         Miles {
-//             value: self.value * 3,
-//         }
-//     }
-// }
-
-trait DistanceThreeHours {
-    type Distance;
-    fn distance_in_three_hours(&self) -> Self::Distance;
-}
-
-impl DistanceThreeHours for Kmh {
-    type Distance = Km;
-    fn distance_in_three_hours(&self) -> Self::Distance {
-        Self::Distance {
-            value: self.value * 3,
+impl Addition<Point, Point> for Point {
+    fn add(self, rhs: Point) -> Point {
+        Point {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
         }
     }
 }
 
-impl DistanceThreeHours for Mph {
-    type Distance = Miles;
-    fn distance_in_three_hours(&self) -> Self::Distance {
-        Self::Distance {
-            value: self.value * 3,
+impl Addition<i32, Point> for Point {
+    fn add(self, rhs: i32) -> Point {
+        Point {
+            x: self.x + rhs,
+            y: self.y + rhs,
+        }
+    }
+}
+struct Line {
+    start: Point,
+    end: Point,
+}
+
+impl Addition<Point, Line> for Point {
+    fn add(self, rhs: Point) -> Line {
+        Line {
+            start: self,
+            end: rhs,
         }
     }
 }
 
 fn main() {
-    let speed_Kmh = Kmh { value: 90 };
-    let distance_Km = speed_Kmh.distance_in_three_hours();
+    let p1 = Point { x:1, y: 1};
+    let p2 = Point { x: 2, y: 2};
+    let p3: Point = p1.add(p2);
 
-    println!("At {:?}, you will travel {:?} in 3 hours", speed_Kmh, distance_Km);
+    assert_eq!(p3.x, 3);
+    assert_eq!(p3.y, 3);
 
-    let speed_Mph = Mph { value: 90 };
-    let distance_Miles = speed_Mph.distance_in_three_hours();
-    println!("At {:?}, you will travel {:?}, in 3 hours", speed_Mph, distance_Miles);
+    let p1 = Point { x: 1, y: 1};
+    let p3 = p1.add(2);
+
+    assert_eq!(p3.x, 3);
+    assert_eq!(p3.y, 3);
+
+    let p1 = Point { x: 1, y: 1 };
+    let p2 = Point { x: 2, y: 2 };
+    let line: Line = p1.add(p2);
+
+    assert!(line.start.x == 1 && line.start.y == 1 && line.end.x == 2 && line.end.y == 2);
 }
