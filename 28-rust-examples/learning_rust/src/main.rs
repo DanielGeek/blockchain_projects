@@ -1,4 +1,4 @@
-// 69. Closures
+// 69. Closures | Functional Pointers
 
 struct User {
     name: String,
@@ -10,12 +10,22 @@ struct User {
 //     name.len() != 0
 // }
 
-fn is_valid_user<V1, V2>(name: &str, age: u8, simple_validator: V1, advance_validator: V2) -> bool
-where
-    V1: FnOnce(&str) -> bool,
-    V2: Fn(u8) -> bool,
-{
-    simple_validator(name) && advance_validator(age)
+fn is_valid_user(
+    name: &str,
+    banned_user_name: &str,
+    age: u8, 
+    simple_validator: fn(&str, &str) -> bool, 
+    advance_validator: fn(u8) -> bool,
+) -> bool {
+    simple_validator(name, banned_user_name) && advance_validator(age)
+}
+
+fn validate_user_simple(name: &str, banned_user_name: &str) -> bool {
+    name.len() != 0 && name != banned_user_name
+}
+
+fn validate_user_advance(age: u8) -> bool {
+    age >= 30
 }
 
 fn main() {
@@ -24,19 +34,16 @@ fn main() {
         age: 35,
         salary: 40_000,
     };
+    let banned_user = "banned user";
 
-    let mut banned_user = String::from("banned user");
-    let validate_user_simple = move |name: &str| { 
-        let banned_user_name = &banned_user;
-        name.len() != 0 && name != banned_user_name
-    };
-    println!("{banned_user}");
+    // let validate_user_simple = |name: &str| name.len() != 0;
+    // let validate_user_advance = |age: u8| age >= 30;
 
-    let validate_user_advance = |age: u8| age >= 30;
     println!(
         "User validity {}",
         is_valid_user(
             &person_1.name,
+            banned_user,
             person_1.age,
             validate_user_simple,
             validate_user_advance
