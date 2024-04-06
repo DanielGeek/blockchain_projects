@@ -1,52 +1,52 @@
-// 69. Closures | Functional Pointers
+// 73. Iterators
 
-struct User {
-    name: String,
-    age: u8,
-    salary: u32,
-}
-
-// fn validate_user(name: &str) -> bool {
-//     name.len() != 0
+// trait Iterator {
+//     type Item;
+//     fn next(&mut self) -> Option<Self::Item>;
 // }
 
-fn is_valid_user(
-    name: &str,
-    banned_user_name: &str,
-    age: u8, 
-    simple_validator: fn(&str, &str) -> bool, 
-    advance_validator: fn(u8) -> bool,
-) -> bool {
-    simple_validator(name, banned_user_name) && advance_validator(age)
+struct Employee {
+    name: String,
+    salary: u16,
 }
 
-fn validate_user_simple(name: &str, banned_user_name: &str) -> bool {
-    name.len() != 0 && name != banned_user_name
+struct Employee_Records {
+    employee_db: Vec<Employee>,
 }
 
-fn validate_user_advance(age: u8) -> bool {
-    age >= 30
+impl Iterator for Employee_Records {
+    type Item = String;
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.employee_db.len() != 0 {
+            let result = self.employee_db[0].name.clone();
+            self.employee_db.remove(0);
+            Some(result)
+        } else {
+            None
+        }
+    }
 }
-
 fn main() {
-    let person_1 = User {
-        name: String::from("someone"),
-        age: 35,
+    let mut emp_1 = Employee {
+        name: String::from("John"),
         salary: 40_000,
     };
-    let banned_user = "banned user";
 
-    // let validate_user_simple = |name: &str| name.len() != 0;
-    // let validate_user_advance = |age: u8| age >= 30;
+    let mut emp_2 = Employee {
+        name: String::from("Joseph"),
+        salary: 30_000,
+    };
 
-    println!(
-        "User validity {}",
-        is_valid_user(
-            &person_1.name,
-            banned_user,
-            person_1.age,
-            validate_user_simple,
-            validate_user_advance
-        )
-    );
+    let mut emp_db = Employee_Records {
+        employee_db: vec![emp_1, emp_2],
+    };
+
+    // println!("{:?}", emp_db.next());
+    // println!("{:?}", emp_db.next());
+    // println!("{:?}", emp_db.next());
+
+    for employee in emp_db {
+        println!("{employee}");
+    }
+
 }
