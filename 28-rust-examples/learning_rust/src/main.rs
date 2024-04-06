@@ -1,62 +1,45 @@
-// 68. Choosing Associated vs Generic Types
+// 69. Closures
 
-trait Addition<Rhs, Output> {
-    fn add(self, rhs: Rhs) -> Output;
+struct User {
+    name: String,
+    age: u8,
+    salary: u32,
 }
 
-struct Point {
-    x: i32,
-    y: i32,
-}
+// fn validate_user(name: &str) -> bool {
+//     name.len() != 0
+// }
 
-impl Addition<Point, Point> for Point {
-    fn add(self, rhs: Point) -> Point {
-        Point {
-            x: self.x + rhs.x,
-            y: self.y + rhs.y,
-        }
-    }
-}
-
-impl Addition<i32, Point> for Point {
-    fn add(self, rhs: i32) -> Point {
-        Point {
-            x: self.x + rhs,
-            y: self.y + rhs,
-        }
-    }
-}
-struct Line {
-    start: Point,
-    end: Point,
-}
-
-impl Addition<Point, Line> for Point {
-    fn add(self, rhs: Point) -> Line {
-        Line {
-            start: self,
-            end: rhs,
-        }
-    }
+fn is_valid_user<V1, V2>(name: &str, age: u8, simple_validator: V1, advance_validator: V2) -> bool
+where
+    V1: FnOnce(&str) -> bool,
+    V2: Fn(u8) -> bool,
+{
+    simple_validator(name) && advance_validator(age)
 }
 
 fn main() {
-    let p1 = Point { x:1, y: 1};
-    let p2 = Point { x: 2, y: 2};
-    let p3: Point = p1.add(p2);
+    let person_1 = User {
+        name: String::from("someone"),
+        age: 35,
+        salary: 40_000,
+    };
 
-    assert_eq!(p3.x, 3);
-    assert_eq!(p3.y, 3);
+    let mut banned_user = String::from("banned user");
+    let validate_user_simple = move |name: &str| { 
+        let banned_user_name = &banned_user;
+        name.len() != 0 && name != banned_user_name
+    };
+    println!("{banned_user}");
 
-    let p1 = Point { x: 1, y: 1};
-    let p3 = p1.add(2);
-
-    assert_eq!(p3.x, 3);
-    assert_eq!(p3.y, 3);
-
-    let p1 = Point { x: 1, y: 1 };
-    let p2 = Point { x: 2, y: 2 };
-    let line: Line = p1.add(p2);
-
-    assert!(line.start.x == 1 && line.start.y == 1 && line.end.x == 2 && line.end.y == 2);
+    let validate_user_advance = |age: u8| age >= 30;
+    println!(
+        "User validity {}",
+        is_valid_user(
+            &person_1.name,
+            person_1.age,
+            validate_user_simple,
+            validate_user_advance
+        )
+    );
 }
