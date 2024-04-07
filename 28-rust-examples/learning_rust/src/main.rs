@@ -1,20 +1,35 @@
-// 85. Lifetimes in Structs
+// 86. Box Smart Pointer
 
-struct ArrayProcessor<'a> {
-    data: &'a [i32],
+// Simple Pointer               ||       Smart Pointers
+// -------------------------------------------------
+// Just stores memory address   ||  Special capabilities
+// Indicated by &               ||  Not just simple references
+// Also called references       ||  
+// No special capabilities      ||
+
+/*
+enum Conveyance {
+    Car(i32),
+    Train(i32),
+    Air(i32),
+    Walk
 }
+*/
 
-impl<'a> ArrayProcessor<'a> {
-    fn update_data<'b>(&'b mut self, new_data: &'a [i32]) -> &'b [i32] {
-        let previous_data = self.data;
-        self.data = new_data;
-        previous_data
-    }
+#[derive(Debug)]
+enum List {
+    Cons(i32, Box<List>),
+    Nil,
 }
 fn main() {
-    let mut some_data = ArrayProcessor { data: &[4, 5, 6] };
+    // let x = 0.625;
+    // let y = Box::new(x);
+    // let z = &x;
 
-    let previous_data = some_data.update_data(&[5, 8, 10]);
-    println!("Previous data: {:?}", previous_data);
-    println!("New Data: {:?}", some_data.data);
+    let list = List::Cons(
+        1, 
+        Box::new(List::Cons(2, Box::new(List::Cons(3, Box::new(List::Nil))))),
+    );
+
+    println!("{:?}", list);
 }
