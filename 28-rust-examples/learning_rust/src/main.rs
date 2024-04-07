@@ -1,16 +1,20 @@
-// 83. Lifetime ELision
-/*
-    1. Each parameter that is a reference, get its own lifetime parameter.
-    2. If there is exactly one input lifetime parameter, that lifetime is assigned to all output lifetime parameter.
-    3. If there are multiple input lifetime parameters, but one of them is &self or &mut self, the lifetime of self is assigned to all output lifetime parameters.
-*/
+// 85. Lifetimes in Structs
 
-fn main() {
-    let str_1 = "some str";
-    let str_2 = "other str";
-    let received_str = return_str(&str_1, &str_2);
+struct ArrayProcessor<'a> {
+    data: &'a [i32],
 }
 
-fn return_str<'a, 'b>(s_1: &'a str, s_2: &'b str) -> &'a str {
-    s_1
+impl<'a> ArrayProcessor<'a> {
+    fn update_data<'b>(&'b mut self, new_data: &'a [i32]) -> &'b [i32] {
+        let previous_data = self.data;
+        self.data = new_data;
+        previous_data
+    }
+}
+fn main() {
+    let mut some_data = ArrayProcessor { data: &[4, 5, 6] };
+
+    let previous_data = some_data.update_data(&[5, 8, 10]);
+    println!("Previous data: {:?}", previous_data);
+    println!("New Data: {:?}", some_data.data);
 }
