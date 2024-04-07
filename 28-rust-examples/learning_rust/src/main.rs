@@ -1,16 +1,16 @@
-// 81. Generic Lifetimes
+// 83. Lifetime ELision
+/*
+    1. Each parameter that is a reference, get its own lifetime parameter.
+    2. If there is exactly one input lifetime parameter, that lifetime is assigned to all output lifetime parameter.
+    3. If there are multiple input lifetime parameters, but one of them is &self or &mut self, the lifetime of self is assigned to all output lifetime parameters.
+*/
 
 fn main() {
-    let int1 = 5;
-    let picked_value;
-    {
-        let int2 = 10;
-        picked_value = picking_int(&int1, &int2);
-    }
-    println!("{picked_value}");
+    let str_1 = "some str";
+    let str_2 = "other str";
+    let received_str = return_str(&str_1, &str_2);
 }
 
-fn picking_int(i: &i32, j: &i32) -> &'static i32 {
-    let y: &'static i32 = &6;
-    y
+fn return_str<'a, 'b>(s_1: &'a str, s_2: &'b str) -> &'a str {
+    s_1
 }
