@@ -1,43 +1,32 @@
-// 79. Iterating Through Options
+// 80. Concrete Lifetimes
 
 fn main() {
-    let some_product = Some("laptop");
-    let mut products = vec!["cellphone", "battery", "charger"];
+    // {
+    //     let i = 5;
+    // }
+    // let j = i;
+    // println!("i: {i}");
 
-    // match some_product {
-    //     Some(product) => products.push(product),
-    //     _ => {}
-    // };
+    // let str_1 = String::from("abc");
+    // str_fn(str_1);
+    // let str_2 = str_1;
+    // println!("str_1: {str_1}");
 
-    // if let Some(product) = some_product {
-    //     products.push(product);
+    // let i;
+    // {
+    //     let j = 5;
+    //     i = &j;
+    //     println!("i: {i}");
     // }
 
-    // products.extend(some_product);
-    // println!("{:?}", products);
-
-    // let products_iter = products.iter().chain(some_product.iter());
-
-    // for prod in products_iter {
-    //     println!("{:?}", prod);
-    // }
-
-    let products = vec![Some("charger"), Some("battery"), None, Some("cellphone")];
-
-    // let mut prod_without_none = Vec::new();
-    // for p in products {
-    //     if p.is_some() {
-    //         prod_without_none.push(p.unwrap());
-    //     }
-    // }
-
-    // let prod_without_none = products
-    //     .into_iter()
-    //     .filter(|x | x.is_some())
-    //     .map(|x | x.unwrap())
-    //     .collect::<Vec<&str>>();
-
-    let prod_without_none = products.into_iter().flatten().collect::<Vec<&str>>();
-    println!("{:?}", prod_without_none);
+    let mut vec_1 = vec![6, 5, 8, 9];
+    let ref_1 = &vec_1;
+    println!("ref 1: {:?}", ref_1);
+    let ref_2 = &mut vec_1;
+    ref_2.push(3);
+    println!("ref 2: {:?}", ref_2);
 }
 
+fn str_fn(s: String) {
+    println!("s: {s}");
+}
