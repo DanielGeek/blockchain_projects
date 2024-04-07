@@ -1,54 +1,18 @@
-// 86. Box Smart Pointer
+// 89. Reference Counting Smart Pointer
 
-// Simple Pointer               ||       Smart Pointers
-// -------------------------------------------------
-// Just stores memory address   ||  Special capabilities
-// Indicated by &               ||  Not just simple references
-// Also called references       ||  
-// No special capabilities      ||
-
-/*
-enum Conveyance {
-    Car(i32),
-    Train(i32),
-    Air(i32),
-    Walk
+use std::rc::Rc;
+enum List {
+    Cons(i32, Option<Rc<List>>),
 }
-*/
-
-// #[derive(Debug)]
-// enum List {
-//     Cons(i32, Option<Box<List>>),
-// }
-// fn main() {
-//     // let x = 0.625;
-//     // let y = Box::new(x);
-//     // let z = &x;
-
-//     let list = List::Cons(
-//         1, 
-//         Some(Box::new(List::Cons(2, Some(Box::new(List::Cons(3, None)))))),
-//     );
-
-//     println!("{:?}", list);
-// }
-
-struct Huge_Data;
-struct Small_Data;
-
-trait Storage {}
-
-impl Storage for Huge_Data {}
-impl Storage for Small_Data {}
-
 fn main() {
-    let data_1 = Huge_Data;
-    let data_2 = Box::new(Huge_Data);
+    let a = Rc::new(List::Cons(1, Some(Rc::new(List::Cons(2, None)))));
+    println!("Reference count after a: {}", Rc::strong_count(&a));
+    {
+        let b = List::Cons(3, Some(Rc::clone(&a)));
+        println!("Reference count after b: {}", Rc::strong_count(&a));
 
-    let data_3 = data_1;
-    let data_4 = data_2;
-
-    let data_5 = Box::new(Small_Data);
-
-    let data: Vec<Box<dyn Storage>> = vec![Box::new(data_3), data_4, data_5];
+        let c = List::Cons(4, Some(Rc::clone(&a)));
+        println!("Reference count after c: {}", Rc::strong_count(&a));
+    }
+    println!("Reference count after scope: {}", Rc::strong_count(&a));
 }
