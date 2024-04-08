@@ -1,78 +1,58 @@
-// 94. Link List (Part 2)
+// 97. Doubly Link List (Part 1)
+
+use std::{cell::RefCell, rc::Rc};
 
 #[derive(Debug)]
-struct LinkList {
+struct Doubly_LinkList {
     head: pointer,
+    tail: pointer,
 }
 
 #[derive(Debug)]
 struct Node {
     element: i32,
     next: pointer,
+    prev: pointer,
 }
 
-type pointer = Option<Box<Node>>;
+type pointer = Option<Rc<RefCell<Node>>>;
 
-impl LinkList {
-    fn new() -> LinkList {
-        LinkList { head: None }
+impl Doubly_LinkList {
+    fn new() -> Self {
+        Doubly_LinkList {
+            head: None,
+            tail: None,
+        }
     }
 
     fn add(&mut self, element: i32) {
-        // match self.head {
-        //     None => {
-        //         let new_node = Some(Box::new(Node {
-        //             element: element,
-        //             next: None,
-        //         }));
-        //         self.head = new_node;
-        //     }
-        //     Some(Previous_head) => {
-        //         let new_node = Some(Box::new(Node {
-        //             element: element,
-        //             next: Some(Previous_head),
-        //         }));
-        //         self.head = new_node;
-        //     }
-        // }
+        let new_head = Node::new(element);
 
-        // fn take<T>(dest: &mut T) -> T
-        let previous_head = self.head.take();
-        let new_head = Some(Box::new(Node {
-            element: element,
-            next: previous_head,
-        }));
-        self.head = new_head;
-    }
-
-    fn remove(&mut self) -> Option<i32> {
         match self.head.take() {
-            Some(previous_head) => {
-                self.head = previous_head.next;
-                Some(previous_head.element)
+            Some(old_head) => {
+                old_head.borrow_mut().prev = Some(new_head.clone());
+                new_head.borrow_mut().next = Some(old_head.clone());
+                self.head = Some(new_head);
             }
-            None => None,
+
+            None => {
+                self.tail = Some(new_head.clone());
+                self.head = Some(new_head);
+            }
         }
     }
+}
 
-    fn print(&self) {
-        let mut list_traversal = &self.head;
-        while !list_traversal.is_none() {
-            println!("{:?}", list_traversal.as_ref().unwrap().element);
-            list_traversal = &list_traversal.as_ref().unwrap().next;
-        }
+impl Node {
+    fn new(element: i32) -> Rc<RefCell<Node>> {
+        Rc::new(RefCell::new(Node {
+            element: element,
+            next: None,
+            prev: None,
+        }))
     }
 }
 
 fn main() {
-    let mut list = LinkList::new();
-    list.add(5);
-    list.add(7);
-    list.add(10);
-    list.add(15);
-    list.add(20);
-
-    // println!("List: {:?}", list);
-    list.print();
-    println!("{}", list.remove().unwrap());
+    
 }
