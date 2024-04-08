@@ -1,29 +1,63 @@
-// 93. RefCell Example
-
-use std::{cell::RefCell, rc::Rc};
+// 94. Link List (Part 1)
 
 #[derive(Debug)]
-struct File {
-    active_user: u32,
+struct LinkList {
+    head: pointer,
 }
 
 #[derive(Debug)]
-struct User {
-    file: Rc<RefCell<File>>,
+struct Node {
+    element: i32,
+    next: pointer,
 }
+
+type pointer = Option<Box<Node>>;
 
 fn main() {
-    let mut txt_file = Rc::new(RefCell::new((File { active_user: 0 })));
+    // let list = Node {
+    //     element: 1,
+    //     next: None,
+    // };
 
-    let user_1 = User {
-        file: Rc::clone(&txt_file)
+    // let list = Node {
+    //     element: 1,
+    //     next: Some(Box::new(Node {
+    //         element: 2,
+    //         next: None,
+    //     })),
+    // };
+
+    // let list = LinkList {
+    //     head: Some(Node {
+    //         element: 1,
+    //         next: None,
+    //     }),
+    // };
+
+    // let list = LinkList {
+    //     head: Some(Node {
+    //         element: 1,
+    //         next: Some(Box::new(Node {
+    //             element: 2,
+    //             next: Some(Box::new(Node {
+    //                 element: 3,
+    //                 next: None,
+    //             })),
+    //         })),
+    //     }),
+    // };
+
+    // let list = LinkList { head: None };
+
+    let list = LinkList {
+        head: Some(Box::new(Node {
+            element: 100,
+            next: Some(Box::new(Node {
+                element: 200,
+                next: None,
+            })),
+        })),
     };
-    user_1.file.borrow_mut().active_user += 1;
-    println!("Active users: {:?}", txt_file.borrow().active_user);
-    
-    let user_2 = User {
-        file: Rc::clone(&txt_file),
-    };
-    user_2.file.borrow_mut().active_user += 1;
-    println!("Active users: {:?}", txt_file.borrow().active_user);
+
+    println!("{:?}", &list.head);
 }
