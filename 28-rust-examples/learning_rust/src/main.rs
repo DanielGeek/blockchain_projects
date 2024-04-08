@@ -1,4 +1,4 @@
-// 97. Doubly Link List (Part 1)
+// 97. Doubly Link List
 
 use std::{cell::RefCell, rc::Rc};
 
@@ -41,6 +41,49 @@ impl Doubly_LinkList {
             }
         }
     }
+
+    // Case: 1
+    // -----------------------
+    //      Head            Tail
+    // None <-- 2 --> 3 --> None
+    // None     2 <-- 3     None
+
+    // Case: 2
+    // -----------------------
+    //      Head = None
+    //      Tail = None
+    // -----------------------
+
+    fn remove(&mut self) -> Option<i32> {
+        if self.head.is_none() {
+            println!("List is empty so we can not remove");
+            None
+        } else {
+            let removed_val = self.head.as_ref().unwrap().borrow().element;
+            self.head.take()
+            .map(|old_head| match old_head.borrow_mut().next.take() {
+                Some(new_head) => {
+                    new_head.borrow_mut().prev = None;
+                    self.head = Some(new_head);
+                    self.head.clone()
+                }
+                None => {
+                    self.tail = None;
+                    println!("List is empty after removal");
+                    None
+                }
+            });
+            Some(removed_val)
+        }
+    }
+
+    fn print(&self) {
+        let mut traversal = self.head.clone();
+        while !traversal.is_none() {
+            println!("{}", traversal.as_ref().unwrap().borrow().element);
+            traversal = traversal.unwrap().borrow().next.clone();
+        }
+    }
 }
 
 impl Node {
@@ -54,5 +97,15 @@ impl Node {
 }
 
 fn main() {
-    
+    let mut list1 = Doubly_LinkList::new();
+
+    list1.add(30);
+    list1.add(32);
+    list1.add(34);
+    list1.add(36);
+    list1.print();
+
+    list1.remove();
+    println!("After Removal");
+    list1.print();
 }
