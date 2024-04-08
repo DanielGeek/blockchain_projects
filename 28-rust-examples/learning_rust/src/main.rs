@@ -1,18 +1,40 @@
-// 89. Reference Counting Smart Pointer
+// 91. RefCell Smart Pointer
 
-use std::rc::Rc;
-enum List {
-    Cons(i32, Option<Rc<List>>),
-}
+use std::{cell::RefCell, rc::Rc};
+
 fn main() {
-    let a = Rc::new(List::Cons(1, Some(Rc::new(List::Cons(2, None)))));
-    println!("Reference count after a: {}", Rc::strong_count(&a));
-    {
-        let b = List::Cons(3, Some(Rc::clone(&a)));
-        println!("Reference count after b: {}", Rc::strong_count(&a));
+    // let mut x = 50;
+    // let x1 = &x;
+    // let x2 = &x;
+    // let x3 = &mut x;
 
-        let c = List::Cons(4, Some(Rc::clone(&a)));
-        println!("Reference count after c: {}", Rc::strong_count(&a));
-    }
-    println!("Reference count after scope: {}", Rc::strong_count(&a));
+    // println!("{} {}", x1, x2);
+
+    // let a = RefCell::new(10);
+    // {
+    //     let b = a.borrow();
+    //     let c = a.borrow();
+    // }
+    // // drop(b);
+    // // drop(c);
+    // let d = a.borrow_mut();
+    // drop(d);
+    // // println!("{} {}", b, c);
+    // println!("a: {:?}", a);
+
+    // let x = 32;
+    // let x1 = &mut x;
+
+    // let a = RefCell::new(10);
+    // // let c = *a;
+    // let mut b = a.borrow_mut();
+    // *b = 15;
+    // drop(b);
+    // println!("{:?}", a);
+
+    let a = Rc::new(RefCell::new(String::from("C++")));
+    let b = Rc::clone(&a);
+
+    *b.borrow_mut() = String::from("Rust");
+    println!("{:?}", a);
 }
