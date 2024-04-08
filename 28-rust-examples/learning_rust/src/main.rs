@@ -1,40 +1,29 @@
-// 91. RefCell Smart Pointer
+// 93. RefCell Example
 
 use std::{cell::RefCell, rc::Rc};
 
+#[derive(Debug)]
+struct File {
+    active_user: u32,
+}
+
+#[derive(Debug)]
+struct User {
+    file: Rc<RefCell<File>>,
+}
+
 fn main() {
-    // let mut x = 50;
-    // let x1 = &x;
-    // let x2 = &x;
-    // let x3 = &mut x;
+    let mut txt_file = Rc::new(RefCell::new((File { active_user: 0 })));
 
-    // println!("{} {}", x1, x2);
-
-    // let a = RefCell::new(10);
-    // {
-    //     let b = a.borrow();
-    //     let c = a.borrow();
-    // }
-    // // drop(b);
-    // // drop(c);
-    // let d = a.borrow_mut();
-    // drop(d);
-    // // println!("{} {}", b, c);
-    // println!("a: {:?}", a);
-
-    // let x = 32;
-    // let x1 = &mut x;
-
-    // let a = RefCell::new(10);
-    // // let c = *a;
-    // let mut b = a.borrow_mut();
-    // *b = 15;
-    // drop(b);
-    // println!("{:?}", a);
-
-    let a = Rc::new(RefCell::new(String::from("C++")));
-    let b = Rc::clone(&a);
-
-    *b.borrow_mut() = String::from("Rust");
-    println!("{:?}", a);
+    let user_1 = User {
+        file: Rc::clone(&txt_file)
+    };
+    user_1.file.borrow_mut().active_user += 1;
+    println!("Active users: {:?}", txt_file.borrow().active_user);
+    
+    let user_2 = User {
+        file: Rc::clone(&txt_file),
+    };
+    user_2.file.borrow_mut().active_user += 1;
+    println!("Active users: {:?}", txt_file.borrow().active_user);
 }
