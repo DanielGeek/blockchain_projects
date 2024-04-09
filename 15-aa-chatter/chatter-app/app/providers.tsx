@@ -17,6 +17,7 @@ import { publicProvider } from 'wagmi/providers/public';
 
 import {
     sepolia,
+    bsc
 } from 'wagmi/chains';
 
 const anvil: Chain = {
@@ -39,6 +40,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     [
         // anvil,
         sepolia,
+        bsc
     ],
     [publicProvider()]
 );
