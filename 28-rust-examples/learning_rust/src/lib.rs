@@ -1,25 +1,30 @@
-pub fn sort_algo_1<T: PartialOrd>(arr: &mut Vec<T>) {
-    let mut swapped = false;
-    for i in 0..(arr.len() -1) {
-        if arr[i] > arr[i + 1] {
-            arr.swap(i, i+1);
-            swapped = true;
+#[derive(Debug, Default)]
+pub struct Student {
+    pub id: u8,
+    pub age: u8,
+    pub name: String,
+}
+
+impl Student {
+    pub fn new(std_name: String) -> Result<Self, String> {
+        if std_name.chars().all(|x | matches!(x, 'a' ..= 'z')) {
+            Ok (Self {
+                id: 0,
+                age: 20,
+                name: std_name,
+            })
+        } else {
+            Err("The name is invalid".to_string())
         }
-    }
-    if swapped {
-        sort_algo_1(arr);
     }
 }
 
-pub fn sort_algo_2<T: Ord>(arr: &mut Vec<T>) {
-    let len = arr.len();
-    for left in 0..len {
-        let mut smallest = left;
-        for right in (left + 1)..len {
-            if arr[right] < arr[smallest] {
-                smallest = right;
-            }
-        }
-        arr.swap(smallest, left);
-    }
-}
+// impl Default for Student {
+//     fn default() -> Self {
+//         Self {
+//             id: 0,
+//             age: 20,
+//             name: "Unknown".to_string(),
+//         }
+//     }
+// }
