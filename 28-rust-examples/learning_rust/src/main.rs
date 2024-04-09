@@ -1,111 +1,58 @@
-// 97. Doubly Link List
-
-use std::{cell::RefCell, rc::Rc};
-
+// 100. Reference Cycles
+/*
+use std::cell:: RefCell;
+use std::rc::{Rc, Weak};
 #[derive(Debug)]
-struct Doubly_LinkList {
-    head: pointer,
-    tail: pointer,
+struct Node {
+    next: Option<Weak<RefCell<Node>>>,
 }
+
+impl Drop for Node {
+    fn drop(&mut self) {
+        println!("Dropping {:?}", self);
+    }
+}
+fn main() {
+    let a = Rc::new(RefCell::new(Node {next: None} ));
+    println!("a strong count: {:?}, a weak count: {:?}", Rc::strong_count(&a), Rc::weak_count(&a));
+
+    let b = Rc::new(RefCell::new(Node{next: Some(Rc::downgrade(&a))}));
+    println!("B is created: \n a strong count: {:?}, a weak count: {:?}", Rc::strong_count(&a), Rc::weak_count(&a));
+    println!("b strong count: {:?}, b weak count: {:?}", Rc::strong_count(&b), Rc::weak_count(&b));
+
+    let c = Rc::new(RefCell::new(Node {next: Some(Rc::downgrade(&b))}));
+
+    (*a).borrow_mut().next = Some(Rc::downgrade(&c));
+
+    println!("After creating cycle: \n a count: {:?}, a weak count: {:?}", Rc::strong_count(&a), Rc::weak_count(&a));
+    println!("b count: {:?}, b weak count: {:?}", Rc::strong_count(&b), Rc::weak_count(&b));
+    println!("c count: {:?}, c weak count: {:?}", Rc::strong_count(&c), Rc::weak_count(&c));
+
+    // println!("a {:?}", a);
+}
+*/
+
+use std::borrow::Borrow;
+use std::rc::{Rc, Weak};
+use std::cell::RefCell;
 
 #[derive(Debug)]
 struct Node {
-    element: i32,
-    next: pointer,
-    prev: pointer,
+    value: i32,
+    parent: RefCell<Weak<Node>>,
+    children: RefCell<Vec<Rc<Node>>>,
 }
-
-type pointer = Option<Rc<RefCell<Node>>>;
-
-impl Doubly_LinkList {
-    fn new() -> Self {
-        Doubly_LinkList {
-            head: None,
-            tail: None,
-        }
-    }
-
-    fn add(&mut self, element: i32) {
-        let new_head = Node::new(element);
-
-        match self.head.take() {
-            Some(old_head) => {
-                old_head.borrow_mut().prev = Some(new_head.clone());
-                new_head.borrow_mut().next = Some(old_head.clone());
-                self.head = Some(new_head);
-            }
-
-            None => {
-                self.tail = Some(new_head.clone());
-                self.head = Some(new_head);
-            }
-        }
-    }
-
-    // Case: 1
-    // -----------------------
-    //      Head            Tail
-    // None <-- 2 --> 3 --> None
-    // None     2 <-- 3     None
-
-    // Case: 2
-    // -----------------------
-    //      Head = None
-    //      Tail = None
-    // -----------------------
-
-    fn remove(&mut self) -> Option<i32> {
-        if self.head.is_none() {
-            println!("List is empty so we can not remove");
-            None
-        } else {
-            let removed_val = self.head.as_ref().unwrap().borrow().element;
-            self.head.take()
-            .map(|old_head| match old_head.borrow_mut().next.take() {
-                Some(new_head) => {
-                    new_head.borrow_mut().prev = None;
-                    self.head = Some(new_head);
-                    self.head.clone()
-                }
-                None => {
-                    self.tail = None;
-                    println!("List is empty after removal");
-                    None
-                }
-            });
-            Some(removed_val)
-        }
-    }
-
-    fn print(&self) {
-        let mut traversal = self.head.clone();
-        while !traversal.is_none() {
-            println!("{}", traversal.as_ref().unwrap().borrow().element);
-            traversal = traversal.unwrap().borrow().next.clone();
-        }
-    }
-}
-
-impl Node {
-    fn new(element: i32) -> Rc<RefCell<Node>> {
-        Rc::new(RefCell::new(Node {
-            element: element,
-            next: None,
-            prev: None,
-        }))
-    }
-}
-
 fn main() {
-    let mut list1 = Doubly_LinkList::new();
+    let leaf = Rc::new(Node {
+        value: 3,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![]),
+    });
 
-    list1.add(30);
-    list1.add(32);
-    list1.add(34);
-    list1.add(36);
-    list1.print();
-
-    list1.remove();
-    println!("After Removal");
-    list1.print();
+    let branch = Rc::new(Node {
+        value: 5,
+        parent: RefCell::new(Weak::new()),
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
 }
