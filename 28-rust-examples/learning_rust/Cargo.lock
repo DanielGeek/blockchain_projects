@@ -260,6 +260,7 @@ name = "learning_rust"
 version = "0.1.0"
 dependencies = [
  "criterion",
+ "negative-impl",
  "rand",
 ]
 
@@ -280,6 +281,17 @@ name = "memchr"
 version = "2.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
+
+[[package]]
+name = "negative-impl"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "681fa6e0925389292df5b310dc2b8f9407748194cedb9d6fb678adec155fb73c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "num-traits"

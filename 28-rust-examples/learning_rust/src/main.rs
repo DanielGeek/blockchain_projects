@@ -1,46 +1,22 @@
-// 106. Pointers to Sized vs Unsized Types
+// 107. - Sized Trait
+//      - Optionally Sized Trait
 
-use std::mem::size_of;
-trait Shape {
-    fn print(&self);
-}
+use negative_impl::negative_impl;
 
-#[derive(Debug)]
-struct Circle;
+struct ABC;
 
-#[derive(Debug)]
-struct Rectangle;
+#[negative_impl]
+impl !Send for ABC {}
 
-impl Shape for Circle {
-    fn print(&self) {
-        println!("{:?}", self);
-    }
-}
+#[negative_impl]
+impl !Sync for ABC {}
 
-impl Shape for Rectangle {
-    fn print(&self) {
-        println!("{:?}", self);
-    }
-}
+// #[negative_impl]
+// impl !Sized for ABC {}
+
+// fn some_fn<T>(t: T) {}
+fn some_fn<T: ?Sized>(t: &T) {}
 
 fn main() {
-    println!("Size of reference to sized type: {}", size_of::<&[i32; 3]>());
-
-    println!("Size of a reference to unsized type: {}", size_of::<&[i32]>());
-
-    let num_1: &[i32; 3] = &[10, 12, 30];
-    let num_2: &[i32] = &[10, 12, 30];
-
-    let mut sum = 0;
-    for num in num_1 {
-        sum += num;
-    }
-
-    for num in num_2 {
-        sum += num;
-    }
-
-    println!("Size of &Circle is: {}", size_of::<&Circle>());
-    println!("Size of &Rectangle is: {}", size_of::<&Rectangle>());
-    println!("Size of &dyn Shape: {}", size_of::<&dyn Shape>());
+    let x: i32 = Default::default();
 }

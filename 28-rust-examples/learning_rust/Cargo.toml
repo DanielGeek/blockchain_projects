@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 criterion = "0.4.0"
 rand = "0.8.3"
+negative-impl = "0.1.4"
 
 [[bench]]
 name = "sorting_benchmark"
