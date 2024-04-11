@@ -1,26 +1,33 @@
-// 108. - ?Sized and Generic Parameters
+// 109. - Unsized Coercion
 
-// 1. Must have a single unsized field.
-// 2. The unsized field must be the last field.
+fn str_slice_fn(s: &str) {}
 
-use std::fmt::Debug;
+fn array_slice_fn<T>(s: &[T]) {}
 
-struct UnSizedStruct<T: ?Sized> {
-    sized_field_1: i32,
-    unsized_field: T,
+trait Some_Trait {
+    fn method(&self);
 }
 
-// fn print_fn<T: Debug>(t: T)
-fn print_fn<T: Debug + Sized>(t: T) {
-    println!("{:?}", t);
+impl<T> Some_Trait for [T] {
+    fn method(&self) {}
+    // can now call "method" on
+    // 1) any &[T]
+    // 2) Vec<T>
+    // 3) [T; N]
 }
-
 fn main() {
-    let x = UnSizedStruct {
-        sized_field_1: 3,
-        unsized_field: [3],
-    };
+    let some_string = String::from("String");
+    str_slice_fn(&some_string);
 
-    let x = "my name";
-    print_fn(&x);
+    let slice: &[i32] = &[1];
+    let vec = vec![1];
+    let array = [1, 2, 3];
+
+    array_slice_fn(slice);
+    array_slice_fn(&vec); // deref coercion
+    array_slice_fn(&array); // Unsized coercion
+
+    slice.method();
+    vec.method(); // deref coercion
+    array.method() // Unsized coercion
 }
