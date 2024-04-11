@@ -1,22 +1,26 @@
-// 107. - Sized Trait
-//      - Optionally Sized Trait
+// 108. - ?Sized and Generic Parameters
 
-use negative_impl::negative_impl;
+// 1. Must have a single unsized field.
+// 2. The unsized field must be the last field.
 
-struct ABC;
+use std::fmt::Debug;
 
-#[negative_impl]
-impl !Send for ABC {}
+struct UnSizedStruct<T: ?Sized> {
+    sized_field_1: i32,
+    unsized_field: T,
+}
 
-#[negative_impl]
-impl !Sync for ABC {}
-
-// #[negative_impl]
-// impl !Sized for ABC {}
-
-// fn some_fn<T>(t: T) {}
-fn some_fn<T: ?Sized>(t: &T) {}
+// fn print_fn<T: Debug>(t: T)
+fn print_fn<T: Debug + Sized>(t: T) {
+    println!("{:?}", t);
+}
 
 fn main() {
-    let x: i32 = Default::default();
+    let x = UnSizedStruct {
+        sized_field_1: 3,
+        unsized_field: [3],
+    };
+
+    let x = "my name";
+    print_fn(&x);
 }
