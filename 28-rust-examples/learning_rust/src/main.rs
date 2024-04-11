@@ -1,33 +1,38 @@
-// 109. - Unsized Coercion
+// 110. - Zero Sized Types
+//          - Never Type
 
-fn str_slice_fn(s: &str) {}
+#![feature(never_type)]
 
-fn array_slice_fn<T>(s: &[T]) {}
-
-trait Some_Trait {
-    fn method(&self);
+fn unrecoverable_state() -> ! {
+    panic!("This function will never return normally with something valid");
 }
 
-impl<T> Some_Trait for [T] {
-    fn method(&self) {}
-    // can now call "method" on
-    // 1) any &[T]
-    // 2) Vec<T>
-    // 3) [T; N]
-}
+// fn function() -> Result<i32, String> {}
+// fn function_1() -> Result<i32, !> {}
+// fn function_2() -> Result<!, i32> {}
+fn function() -> Result<NeverType, String> {}
+fn function_1() -> Result<i32, NeverType> {}
+
+enum NeverType {}
 fn main() {
-    let some_string = String::from("String");
-    str_slice_fn(&some_string);
+    unrecoverable_state();
+    // let x = !;
+    // let x = unrecoverable_state();
+    let x: !;
 
-    let slice: &[i32] = &[1];
-    let vec = vec![1];
-    let array = [1, 2, 3];
+    let x = match "123".parse::<i32>() {
+        Ok(num) => num,
+        Err(_) => panic!(),
+    };
 
-    array_slice_fn(slice);
-    array_slice_fn(&vec); // deref coercion
-    array_slice_fn(&array); // Unsized coercion
+    let x: String = return;
+    let counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break;
+        }
+    };
 
-    slice.method();
-    vec.method(); // deref coercion
-    array.method() // Unsized coercion
+    let x: NeverType;
 }
