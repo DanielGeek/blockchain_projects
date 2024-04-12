@@ -1,45 +1,41 @@
-// 119. - Correct Search Results Using Word Grouping
+// 119. - Popularity Scores
 //          - Description
-//              - Given a list of words, group the words that are anagrams
+//              - Given some products along with its respectively popularity scores,
+//                we want to determine if the popularity is fulctuating, increasing or decreasing
 
 //          - Tools
-//              - Hashmaps, Nested Loops
+//              - Hashmaps, Loops, conditional if
+
+fn popularity_analysis(scores: Vec<i32>) -> bool {
+    let mut increasing = true;
+    let mut decreasing = true;
+
+    for i in 0..scores.len() -1 {
+        if scores[i] > scores[i+1]
+        {
+            increasing = false;
+        }
+        if scores[i] < scores[i+1] {
+            decreasing = false;
+        }
+    }
+    return increasing || decreasing;
+}
 
 use std::collections::HashMap;
 
-fn word_groupings(words_list: Vec<String>) -> Vec<Vec<String>> {
-    let mut word_hash = HashMap::new();
-
-    let mut char_freq = vec![0; 26];
-
-    for current_word in words_list {
-        for c in current_word.to_lowercase().chars() {
-            char_freq[(c as u32 - 'a' as u32) as usize] += 1;
-        }
-
-        let key = char_freq.into_iter().map(|i |i.to_string()).collect::<String>();
-        word_hash.entry(key).or_insert(Vec::new()).push(current_word);
-
-        char_freq = vec![0;26];
-    }
-
-    for (key, value) in &word_hash {
-        println!("Key # {:?} value {:?}", key, value);
-    }
-
-    word_hash.into_iter().map(|(_,v)| v).collect()
-}
-
 fn main() {
-    let words = vec!["the".to_string(), "teh".to_string(), "het".to_string(),
-    "stupid".to_string(), "stupid".to_string(), "apple".to_string(), "appel".to_string()];
+    let mut products = HashMap::new();
 
-    let grouping = word_groupings(words);
+    products.insert("product 1", vec![1,2,2,3]);
+    products.insert("product 2", vec![4,5,6,3,4]);
+    products.insert("product 3", vec![8,8,7,6,5,4,4,1]);
 
-    let input_word = String::from("teh");
-    for i in grouping.into_iter() {
-        if i.contains(&input_word) {
-            println!("The group of the word is {:?}", i);
+    for (product_id, popularity) in products {
+        if popularity_analysis(popularity) {
+            println!("{} popularity is increasing or decreasing", product_id);
+        } else {
+            println!("{} popularity is fluctuating", product_id);
         }
     }
 }
