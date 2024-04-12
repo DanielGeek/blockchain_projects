@@ -1,86 +1,45 @@
-// 118. Question Mark Operator
+// 119. - Correct Search Results Using Word Grouping
+//          - Description
+//              - Given a list of words, group the words that are anagrams
 
-// use std::num::ParseIntError;
+//          - Tools
+//              - Hashmaps, Nested Loops
 
-// fn parse_str(input: &str) -> Result<i32, ParseIntError> {
-//     let integer = input.parse::<i32>()?;
+use std::collections::HashMap;
 
-//     println!("the value is {:?} is integer {:?}", input, integer);
-//     Ok(integer)
-// }
-// fn main() {
-//     let some_values = vec!["123", "some1", "some(123)", "abc", "53"];
-//     for value in some_values {
-//         println!("{:?}", parse_str(value));
-//     }
-// }
+fn word_groupings(words_list: Vec<String>) -> Vec<Vec<String>> {
+    let mut word_hash = HashMap::new();
 
-// fn divisor(divident: f64, divisor: f64) -> Option<f64> {
+    let mut char_freq = vec![0; 26];
 
-//     let answer = match divisor {
-//         0.0 => None,
-//         _ => Some(divident / divisor),
-//     };
+    for current_word in words_list {
+        for c in current_word.to_lowercase().chars() {
+            char_freq[(c as u32 - 'a' as u32) as usize] += 1;
+        }
 
-//     let correct = answer?;
-//     // println!("{:?}", answer);
-//     println!("This line will not print in case of error {:?}", correct);
-//     Some(correct)
-// }
-// fn main() {
-//     println!("Call from main with result equals to {:?}", divisor(9.0, 3.0));
-//     println!("Call from main with result equals to {:?}", divisor(4.0, 0.0));
-//     println!("Call from main with result equals to {:?}", divisor(0.0, 2.0));
-// }
+        let key = char_freq.into_iter().map(|i |i.to_string()).collect::<String>();
+        word_hash.entry(key).or_insert(Vec::new()).push(current_word);
 
-#[derive(Debug)]
-enum MathError {
-    DivisionError_DivisionByZero,
-    LogError_NonPositiveLogrithm,
-    SqrtError_NegativeSquareRoot,
-}
-
-type MathResult = Result<(), MathError>;
-
-fn division(x: f64, y:f64) -> MathResult {
-    if y == 0.0 {
-        Err(MathError::DivisionError_DivisionByZero)
-    } else {
-        println!("The division is successful and has a result of {}" , x/y);
-        Ok(())
+        char_freq = vec![0;26];
     }
-}
 
-fn sqrt(x:f64) -> MathResult {
-    if x < 0.0 {
-        Err(MathError::SqrtError_NegativeSquareRoot)
-    } else {
-        println!("The square root is successful and has a result of {}", x.sqrt());
-        Ok(())
+    for (key, value) in &word_hash {
+        println!("Key # {:?} value {:?}", key, value);
     }
-}
 
-fn ln(x:f64) -> MathResult {
-    if x <= 0.0 {
-        Err(MathError::LogError_NonPositiveLogrithm)
-    } else {
-        println!("The log was successful and has a result of {}", x.ln());
-        Ok(())
-    }
-}
-
-fn operations(x:f64, y:f64) -> MathResult {
-    division(x, y)?;
-    sqrt(x)?;
-    ln(x)?;
-    Ok(())
+    word_hash.into_iter().map(|(_,v)| v).collect()
 }
 
 fn main() {
-    let result = operations(0.0, 10.0);
-    if result.is_ok() {
-        println!("all the functions executed successfully");
-    } else {
-        println!("{:?}", result);
+    let words = vec!["the".to_string(), "teh".to_string(), "het".to_string(),
+    "stupid".to_string(), "stupid".to_string(), "apple".to_string(), "appel".to_string()];
+
+    let grouping = word_groupings(words);
+
+    let input_word = String::from("teh");
+    for i in grouping.into_iter() {
+        if i.contains(&input_word) {
+            println!("The group of the word is {:?}", i);
+        }
     }
 }
