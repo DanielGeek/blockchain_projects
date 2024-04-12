@@ -1,47 +1,25 @@
-// 116. - Declarative Macros
-//          - Repeating Patterns
+// 117. as_ref() and partial move in option and result
 
-macro_rules! string_concat {
-//     () => {
-//         String::new();
-//     };
-
-//     ($some_str: exp) => {{
-//         let mut temp_str = String::new();
-//         temp_str.push_str($some_str);
-//         temp_str
-//     }
-//     };
-
-//     ($some_s1: expr, $some_s2:expr) => {{
-//         let mut temp_str = String::new();
-//         temp_str.push_str($some_s1);
-//         temp_str.push_str($some_s2);
-
-//         temp_str
-//     }};
-// }
-
-    ($($some_str:expr,) *) => {{
-            let mut temp_str = String::new();
-            $(temp_str.push_str($some_str);)*
-            temp_str
-        }
-    };
-}
-
-macro_rules! vec_mac {
-    ( $($element: expr),*) => {
-        let mut some_vec = Vec::new();
-        $(some_vec.push($element);)*
-        some_vec
-    };
-}
 fn main() {
-    let str_null = string_concat!();
-    let str_single = string_concat!("First",);
+    // let some_option = Some("Alice".to_owned());
+    // match &some_option {
+    //     Some(inner_value) => println!("Name is {}", inner_value),
+    //     None => println!("No name provided"),
+    // }
 
-    let str_double = string_concat!("First", "Second",);
+    // println!("{:?}", some_option);
 
-    let string_vec = vec_mac!("Nouman", "Azam");
+    let some_option = Some("Alice".to_owned());
+    let some_1 = &some_option;
+    let some_2 = some_option.as_ref();
+
+    try_me(some_option.as_ref());
+    println!("{:?}", some_option);
+}
+
+fn try_me(option_name: Option<&String>) {
+    match option_name {
+        Some(inner_value) => println!("Name is {}", inner_value),
+        None => println!("No name provided"),
+    }
 }
