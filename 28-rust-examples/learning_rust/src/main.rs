@@ -1,48 +1,47 @@
-// 115. - Capturing Types
+// 116. - Declarative Macros
+//          - Repeating Patterns
 
-// macro_rules! input {
-//     ($t: ty) => {{
-//         let mut n = String::new();
-//         std::io::stdin()
-//         .read_line(&mut n)
-//         .expect("Failed to read input");
+macro_rules! string_concat {
+//     () => {
+//         String::new();
+//     };
 
-//         let n: $t = n.trim().parse().expect("Invalid input");
-//         n
+//     ($some_str: exp) => {{
+//         let mut temp_str = String::new();
+//         temp_str.push_str($some_str);
+//         temp_str
 //     }
 //     };
+
+//     ($some_s1: expr, $some_s2:expr) => {{
+//         let mut temp_str = String::new();
+//         temp_str.push_str($some_s1);
+//         temp_str.push_str($some_s2);
+
+//         temp_str
+//     }};
 // }
 
-// macro_rules! add_as {
-//     ($a: expr, $b: expr, $typ: ty) => { $a as $typ + $b as $typ };
-// }
-
-// macro_rules! some_macro {
-//     ($var: ident) => {
-//         $var = $var + 1;
-//     };
-// }
-// fn main() {
-//     // println!("Please enter a floating point number");
-//     // let some_input_0 = input!(f32);
-
-//     // println!("{}", add_as!(15,2.3,f32));
-//     let mut x: i32 = 4;
-//     some_macro!(x);
-// }
-
-
-macro_rules! create_function {
-    ($func_name:ident, $input: ident, $type_input: ty, $type_output: ty) => {
-        fn $func_name($input:$type_input) -> $type_output {
-            println!("You called {:?}() with the input of {:?}", stringify!($func_name), stringify!($type_output));
-            $input
+    ($($some_str:expr,) *) => {{
+            let mut temp_str = String::new();
+            $(temp_str.push_str($some_str);)*
+            temp_str
         }
     };
 }
 
-create_function!(f1, x, i32, i32);
+macro_rules! vec_mac {
+    ( $($element: expr),*) => {
+        let mut some_vec = Vec::new();
+        $(some_vec.push($element);)*
+        some_vec
+    };
+}
 fn main() {
-    // f1(15);
-    let y = f1(15);
+    let str_null = string_concat!();
+    let str_single = string_concat!("First",);
+
+    let str_double = string_concat!("First", "Second",);
+
+    let string_vec = vec_mac!("Nouman", "Azam");
 }
