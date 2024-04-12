@@ -1,39 +1,48 @@
-// 114. - Declarative Macros
-//          - Basic Syntax
+// 115. - Capturing Types
 
-/*
-    macro_rules! macro_name {
-        (...) => {...};
-        (...) => {...};
-        (...) => {...};
-    }
-*/
+// macro_rules! input {
+//     ($t: ty) => {{
+//         let mut n = String::new();
+//         std::io::stdin()
+//         .read_line(&mut n)
+//         .expect("Failed to read input");
 
-macro_rules! our_macro {
-    () => { 1+1;};
-    (something 4 u dear u32 @_@) => {
-        println!("You found nonsense here");
-    };
+//         let n: $t = n.trim().parse().expect("Invalid input");
+//         n
+//     }
+//     };
+// }
 
-    ($e1: expr, $e2: expr) => {
-        $e1 + $e2
-    };
-    ($a: expr, $b: expr; $c: expr) => {
-        $a * ($b + $c)
+// macro_rules! add_as {
+//     ($a: expr, $b: expr, $typ: ty) => { $a as $typ + $b as $typ };
+// }
+
+// macro_rules! some_macro {
+//     ($var: ident) => {
+//         $var = $var + 1;
+//     };
+// }
+// fn main() {
+//     // println!("Please enter a floating point number");
+//     // let some_input_0 = input!(f32);
+
+//     // println!("{}", add_as!(15,2.3,f32));
+//     let mut x: i32 = 4;
+//     some_macro!(x);
+// }
+
+
+macro_rules! create_function {
+    ($func_name:ident, $input: ident, $type_input: ty, $type_output: ty) => {
+        fn $func_name($input:$type_input) -> $type_output {
+            println!("You called {:?}() with the input of {:?}", stringify!($func_name), stringify!($type_output));
+            $input
+        }
     };
 }
 
+create_function!(f1, x, i32, i32);
 fn main() {
-    our_macro!();
-    println!("{}", our_macro!());
-    our_macro!(something 4 u dear u32 @_@);
-
-    println!("{}", our_macro!(2,2));
-
-    // println!("{}", our_macro!(5,6;3));
-    // // println!("{}", our_macro!("something",2;"nothing"));
-
-    // our_macro!();
-    // our_macro!{};
-    our_macro![];
+    // f1(15);
+    let y = f1(15);
 }
