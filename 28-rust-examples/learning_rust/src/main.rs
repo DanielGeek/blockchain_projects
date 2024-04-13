@@ -1,31 +1,75 @@
-// 123. - Suggesting Items for Special Shopping Card
+// 126. - Item in Range
 //          - Description
-//              - Given a list of prices, return a couple of items with their sum matching the
+//              - Given a vector of product prices, search for items in a given price range
 //          - Tools
-//              - HashSets, Vectors
+//              - Binary Search Tree, Box pointer
 
-use std::collections::HashSet;
-fn product_suggestions(product_prices: Vec<i32>, amount: i32) -> Vec<Vec<i32>> {
-    let mut prices_hash = HashSet::new();
-    let mut offers = Vec::new();
 
-    for i in product_prices {
-        let diff = amount - i;
-        if prices_hash.get(&diff).is_none() {
-            prices_hash.insert(i);
-        } else {
-            offers.push(vec![i,diff]);
+struct BinarySearchTree {
+    root: Node
+}
+#[derive(Clone)]
+struct Node {
+    val: i32,
+    left: Option<Box<Node>>,
+    right: Option<Box<Node>>
+}
+
+impl Node {
+    fn new(value: i32) -> Self {
+        Node { val: value,
+            left: None,
+            right: None
         }
     }
-    offers.sort();
-    offers
+
+    fn inset(&mut self, value: i32) {
+        if value > self.val {
+            match self.right {
+                None => self.right = Some(Box::new(Node { val: value, left: None, right: None })),
+                Some(ref mut node) => node.inset(value)
+            }
+        } else {
+            match self.left {
+                None => self.left = Some(Box::new(Node {val: value, left: None, right: None})),
+                Some(ref mut node) => node.inset(value)
+            }
+        }
+    }
+}
+
+fn traversal(node: Option<Box<Node>>, low: i32, high: i32, mut output: &mut Vec<i32>) {
+    
+    if !node.is_none() {
+        if node.as_ref().unwrap().val >= low && node.as_ref().unwrap().val <= high {
+            output.push(node.as_ref().unwrap().val);
+        }
+    
+        if node.as_ref().unwrap().val >= low {
+            traversal(node.as_ref().unwrap().left.clone(), low, high, &mut output);
+        }
+    
+        if node.as_ref().unwrap().val <= high {
+            traversal(node.as_ref().unwrap().right.clone(), low, high, &mut output);
+        }
+    }
+}
+
+fn productsInRange(root: Node, low: i32, high: i32) -> Vec<i32> {
+    let mut output: Vec<i32> = Vec::new();
+    traversal(Some(Box::new(root)), low, high, &mut output);
+    output
 }
 fn main() {
-    let product_prices = vec![11, 30, 55, 34, 45, 10, 19, 20, 60, 5, 23];
-    let shopping_card_amounts = vec![40, 70, 10, 50]; // Test with different amounts
+    let produc_prices = vec![9,6,14,20,1,30,8,17,5];
+    let mut bst = BinarySearchTree {
+        root: Node::new(produc_prices[0])
+    };
 
-    for amount in shopping_card_amounts {
-        let suggestions = product_suggestions(product_prices.clone(), amount);
-        println!("Product suggestions for amount {}: {:?}", amount, suggestions);
+    for i in 1..produc_prices.len() {
+        bst.root.inset(produc_prices[i]);
     }
+
+    let result = productsInRange(bst.root, 7, 20);
+    println!("{:?}", result);
 }
