@@ -1,44 +1,65 @@
-// 122. - Employee with no Meeting
+// 123. - Longest Non-Stop Work
 //          - Description
-//              - Given meeting schedule of employees, we want to determine the
-//                overlapping time
+//              - Given time slots numbers, we want to determine the longest consecutive
+//                time slots.
 //          - Tools
-//              - MultiDimensional Arrays, Nested Loops
+//              - HashSet Vectors, Loops
 
-use std::cmp;
+use std::collections::HashSet;
 
-fn overlapping_meetings(meetings_a: Vec<Vec<i32>>, meetings_b: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let mut intersection: Vec<Vec<i32>> = Vec::new();
-    for i in 0..meetings_a.len() {
-        for j in 0..meetings_b.len() {
-            let (st_a, st_b) = (meetings_a[i][0], meetings_b[j][0]);
-            let (ed_a, ed_b) = (meetings_a[i][1], meetings_b[j][1]);
+fn longest_consecutive(working_slots: &[u8]) -> u8 {
+    let mut slot_set: HashSet<u8> = HashSet::new();
+    let mut longest = 0;
 
-            let overlap_status = overlap(st_a, st_b, ed_a, ed_b);
-            if overlap_status != None {
-                intersection.push(overlap_status.unwrap());
+    for &slot in working_slots {
+        slot_set.insert(slot);
+    }
+
+    for &slot in &slot_set {
+        if !slot_set.contains(&(slot - 1)) {
+            let mut current_slot = slot;
+            let mut current_streak = 1;
+
+            while slot_set.contains(&(current_slot + 1)) {
+                current_slot += 1;
+                current_streak += 1;
             }
+
+            longest = longest.max(current_streak);
         }
     }
-    intersection
+
+    longest
 }
 
-fn overlap(start_a: i32, start_b:i32, end_a:i32, end_b:i32) -> Option<Vec<i32>> {
-    let mut intersection_time: Vec<i32> = Vec::new();
-    if cmp::max(start_a, start_b) < cmp::min(end_a, end_b) {
-        intersection_time.push(cmp::max(start_a, start_b));
-        intersection_time.push(cmp::min(end_a, end_b));
-        Some(intersection_time)
-    } else {
-        None
+fn longest_busy_time(working_slots: Vec<Vec<u8>>) -> usize {
+    let mut employee_longest_nonstop_work: Vec<u8> = Vec::new();
+
+    for employee_slots in working_slots {
+        employee_longest_nonstop_work.push(longest_consecutive(&employee_slots));
     }
+
+    for (i, &work) in employee_longest_nonstop_work.iter().enumerate() {
+        println!("Employee Number {} has worked nonstop for {} slots", i + 1, work);
+    }
+
+    employee_longest_nonstop_work
+        .iter()
+        .enumerate()
+        .max_by_key(|&(_i, &work)| work)
+        .map(|(i, _)| i)
+        .unwrap_or_default() + 1
 }
 
 fn main() {
-    let meeting_sec_a: Vec<Vec<i32>> = vec![vec![13,15], vec![15,16], vec![7,9]];
+    let schedules = vec![
+        vec![4, 1, 2, 5, 6, 8, 10, 11],
+        vec![3, 1, 2, 5, 7, 10, 11, 14],
+        vec![3, 1, 15, 5, 13, 12, 10, 14, 15, 16, 17, 18, 8, 9],
+    ];
 
-    let meeting_sec_b: Vec<Vec<i32>> = vec![vec![14,15], vec![5,10]];
-
-    let intersection = overlapping_meetings(meeting_sec_a, meeting_sec_b);
-    println!("The overlapping timmings are {:?}", intersection);
+    println!(
+        "Employee Number {} has the highest number of nonstop working slots",
+        longest_busy_time(schedules)
+    );
 }
