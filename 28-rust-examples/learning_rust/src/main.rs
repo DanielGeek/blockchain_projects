@@ -1,65 +1,31 @@
-// 123. - Longest Non-Stop Work
+// 123. - Suggesting Items for Special Shopping Card
 //          - Description
-//              - Given time slots numbers, we want to determine the longest consecutive
-//                time slots.
+//              - Given a list of prices, return a couple of items with their sum matching the
 //          - Tools
-//              - HashSet Vectors, Loops
+//              - HashSets, Vectors
 
 use std::collections::HashSet;
+fn product_suggestions(product_prices: Vec<i32>, amount: i32) -> Vec<Vec<i32>> {
+    let mut prices_hash = HashSet::new();
+    let mut offers = Vec::new();
 
-fn longest_consecutive(working_slots: &[u8]) -> u8 {
-    let mut slot_set: HashSet<u8> = HashSet::new();
-    let mut longest = 0;
-
-    for &slot in working_slots {
-        slot_set.insert(slot);
-    }
-
-    for &slot in &slot_set {
-        if !slot_set.contains(&(slot - 1)) {
-            let mut current_slot = slot;
-            let mut current_streak = 1;
-
-            while slot_set.contains(&(current_slot + 1)) {
-                current_slot += 1;
-                current_streak += 1;
-            }
-
-            longest = longest.max(current_streak);
+    for i in product_prices {
+        let diff = amount - i;
+        if prices_hash.get(&diff).is_none() {
+            prices_hash.insert(i);
+        } else {
+            offers.push(vec![i,diff]);
         }
     }
-
-    longest
+    offers.sort();
+    offers
 }
-
-fn longest_busy_time(working_slots: Vec<Vec<u8>>) -> usize {
-    let mut employee_longest_nonstop_work: Vec<u8> = Vec::new();
-
-    for employee_slots in working_slots {
-        employee_longest_nonstop_work.push(longest_consecutive(&employee_slots));
-    }
-
-    for (i, &work) in employee_longest_nonstop_work.iter().enumerate() {
-        println!("Employee Number {} has worked nonstop for {} slots", i + 1, work);
-    }
-
-    employee_longest_nonstop_work
-        .iter()
-        .enumerate()
-        .max_by_key(|&(_i, &work)| work)
-        .map(|(i, _)| i)
-        .unwrap_or_default() + 1
-}
-
 fn main() {
-    let schedules = vec![
-        vec![4, 1, 2, 5, 6, 8, 10, 11],
-        vec![3, 1, 2, 5, 7, 10, 11, 14],
-        vec![3, 1, 15, 5, 13, 12, 10, 14, 15, 16, 17, 18, 8, 9],
-    ];
+    let product_prices = vec![11, 30, 55, 34, 45, 10, 19, 20, 60, 5, 23];
+    let shopping_card_amounts = vec![40, 70, 10, 50]; // Test with different amounts
 
-    println!(
-        "Employee Number {} has the highest number of nonstop working slots",
-        longest_busy_time(schedules)
-    );
+    for amount in shopping_card_amounts {
+        let suggestions = product_suggestions(product_prices.clone(), amount);
+        println!("Product suggestions for amount {}: {:?}", amount, suggestions);
+    }
 }
