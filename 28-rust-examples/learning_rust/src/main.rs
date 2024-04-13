@@ -1,57 +1,44 @@
-// 119. - Highest Price Stock
+// 122. - Employee with no Meeting
 //          - Description
-//              - We have weekwise stock prices. we want to retrieve the highest
-//                stock price in any in any week in little to no time.
-
+//              - Given meeting schedule of employees, we want to determine the
+//                overlapping time
 //          - Tools
-//              - Maxstacks, Structures, Vectors
+//              - MultiDimensional Arrays, Nested Loops
 
-struct MaxStack{
-    main_stack: Vec<i32>,
-    maximum_stack: Vec<i32>,
-}
+use std::cmp;
 
-impl MaxStack {
-    fn new() -> Self {
-        MaxStack {
-            main_stack: Vec::new(),
-            maximum_stack: Vec::new(),
+fn overlapping_meetings(meetings_a: Vec<Vec<i32>>, meetings_b: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+    let mut intersection: Vec<Vec<i32>> = Vec::new();
+    for i in 0..meetings_a.len() {
+        for j in 0..meetings_b.len() {
+            let (st_a, st_b) = (meetings_a[i][0], meetings_b[j][0]);
+            let (ed_a, ed_b) = (meetings_a[i][1], meetings_b[j][1]);
+
+            let overlap_status = overlap(st_a, st_b, ed_a, ed_b);
+            if overlap_status != None {
+                intersection.push(overlap_status.unwrap());
+            }
         }
     }
-    fn push(&mut self, value: i32) {
-        self.main_stack.push(value);
-        if !self.maximum_stack.is_empty() && self.maximum_stack.last().unwrap() > &value {
-            self.maximum_stack.push(*self.maximum_stack.last().unwrap());
-        } else {
-            self.maximum_stack.push(value);
-        }
-    }
+    intersection
+}
 
-    fn pop(&mut self) {
-        self.main_stack.pop();
-        self.maximum_stack.pop();
-    }
-
-    fn max_value(&self) -> i32 {
-        *self.maximum_stack.last().unwrap()
+fn overlap(start_a: i32, start_b:i32, end_a:i32, end_b:i32) -> Option<Vec<i32>> {
+    let mut intersection_time: Vec<i32> = Vec::new();
+    if cmp::max(start_a, start_b) < cmp::min(end_a, end_b) {
+        intersection_time.push(cmp::max(start_a, start_b));
+        intersection_time.push(cmp::min(end_a, end_b));
+        Some(intersection_time)
+    } else {
+        None
     }
 }
+
 fn main() {
-    let mut stack = MaxStack::new();
-    stack.push(55);
-    stack.push(80);
-    stack.push(120);
-    stack.push(99);
-    stack.push(22);
-    stack.push(140);
-    stack.push(145);
+    let meeting_sec_a: Vec<Vec<i32>> = vec![vec![13,15], vec![15,16], vec![7,9]];
 
-    print!("Maximum value of stock: ");
-    println!("{:}", stack.max_value());
+    let meeting_sec_b: Vec<Vec<i32>> = vec![vec![14,15], vec![5,10]];
 
-    println!("After going one week back");
-    println!("Maximum value of stock: ");
-    stack.pop();
-
-    println!("{:}", stack.max_value());
+    let intersection = overlapping_meetings(meeting_sec_a, meeting_sec_b);
+    println!("The overlapping timmings are {:?}", intersection);
 }
