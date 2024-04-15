@@ -1,98 +1,128 @@
-// 129. - Most Recently Used Product
+// 131. - Displaying Participant of an Online Meeting
 //          - Description
-//              - A business is interesting in knowing the products that has been
-//                purchased most recently by a customer.
+//              - Retrieving list of paginated view of the list participants in an online meeting
 //              
 //          - Tools
-//              - Hashmaps + Double Link List
+//              - BST + Stack
 
-use std::{cell::RefCell, rc::Rc, collections::HashMap};
+use std::cell::RefCell;
+use std::rc::Rc;
+use std::result;
 
-type Link<T> = Option<Rc<RefCell<Node<T>>>>;
-
-#[derive(Debug)]
-struct Node<T> {
-    value: T,
-    prev: Link<T>,
-    next: Link<T>,
+#[derive(Debug, Default, PartialEq, Eq, Clone)]
+struct Node {
+    val: String,
+    left: Link,
+    right: Link,
 }
 
-impl<T> Node<T> {
-    fn new(value: T) -> Rc<RefCell<Self>> {
-        Rc::new(RefCell::new(Node {
-            value,
-            prev: None,
-            next: None,
-        }))
-    }
-}
-
-#[derive(Debug)]
-struct MRUTracker<T> {
-    head: Link<T>,
-    tail: Link<T>,
-    map: HashMap<T, Rc<RefCell<Node<T>>>>,
-}
-
-impl<T: Eq + std::hash::Hash + Clone> MRUTracker<T> {
-    fn new() -> Self {
-        MRUTracker {
-            head: None,
-            tail: None,
-            map: HashMap::new(),
+type Link = Option<Rc<RefCell<Node>>>;
+impl Node {
+    fn new(val: String) -> Self {
+        Node {
+            val,
+            left: None,
+            right: None
         }
     }
 
-    fn touch(&mut self, value: T) {
-        if let Some(node) = self.map.get(&value).cloned() {
-            let mut node_borrow = node.borrow_mut();
-            match node_borrow.prev.take() {
-                Some(prev) => {
-                    // Disconnect the node from its current position
-                    prev.borrow_mut().next = node_borrow.next.take();
-                    if let Some(next) = &prev.borrow().next {
-                        next.borrow_mut().prev = Some(prev.clone());
-                    }
-                    // Move the node to the front
-                    self.move_to_front(node.clone(), node_borrow);
-                }
-                None => {
-                    // Node is already at the front
-                }
+    fn insert(&mut self, val: String) {
+        if val > self.val {
+            match &self.right {
+                None => self.right = Some(Rc::new(RefCell::new(Self::new(val)))),
+                Some(node) => node.borrow_mut().insert(val.to_string()),
             }
         } else {
-            // Value not in list, so create a new node
-            let new_node = Node::new(value.clone());
-            // Move the new node to the front
-            self.move_to_front(new_node.clone(), new_node.borrow_mut());
-            // Add to hashmap
-            self.map.insert(value, new_node);
+            match &self.left {
+                None => self.left = Some(Rc::new(RefCell::new(Self::new(val)))),
+                Some(node) => node.borrow_mut().insert(val.to_string()),
+            }
+        }
+    }
+}
+
+#[derive(Debug, Default, PartialEq, Eq)]
+struct BinarySearchTree {
+    root: Node,
+}
+
+impl BinarySearchTree {
+    fn new(val: String) -> Self {
+        BinarySearchTree { root: Node::new(val.to_string()), }
+    }
+    fn insert(&mut self, val:String) {
+        self.root.insert(val.to_string());
+    }
+}
+
+struct DisplayLobby {
+    stack: Vec<Rc<RefCell<Node>>>,
+}
+
+impl DisplayLobby {
+    fn new(root: Option<Rc<RefCell<Node>>>) -> Self {
+        let mut stack = Vec::new();
+        Self::push_all_left(root.clone(), &mut stack);
+        DisplayLobby{stack}
+    }
+
+    fn push_all_left(mut p: Option<Rc<RefCell<Node>>>, stack: &mut Vec<Rc<RefCell<Node>>>) {
+        while let Some(link) = p.clone() {
+            stack.push(p.clone().unwrap());
+            p = link.borrow().left.clone();
         }
     }
 
-    fn move_to_front(&mut self, new_node: Rc<RefCell<Node<T>>>, mut new_node_borrow: std::cell::RefMut<Node<T>>) {
-        new_node_borrow.next = self.head.take();
-        if let Some(old_head) = &new_node_borrow.next {
-            old_head.borrow_mut().prev = Some(new_node.clone());
-        }
-        self.head = Some(new_node.clone());
-        if self.tail.is_none() {
-            self.tail = Some(new_node);
-        }
+    fn next_name(&mut self) -> String {
+        let node = self.stack.pop().unwrap();
+        let name = &node.borrow().val;
+        let mut next_node = node.borrow().right.clone();
+
+        Self::push_all_left(next_node, &mut self.stack);
+        name.to_string()
     }
 
-    fn get_mru(&self) -> Option<T> {
-        self.head.as_ref().map(|node| node.borrow().value.clone())
+    fn next_page(&mut self) -> Vec<String> {
+        let mut resultant_names = Vec::new();
+        for i in 0..10 {
+            if !self.stack.is_empty() {
+                resultant_names.push(self.next_name());
+            } else {
+                break;
+            }
+        }
+        resultant_names
     }
 }
 
 fn main() {
-    let mut tracker = MRUTracker::new();
-    
-    tracker.touch("Product 1");
-    tracker.touch("Product 2");
-    tracker.touch("Product 3");
-    
-    println!("Most Recently Used (MRU) Product: {:?}", tracker.get_mru());
+    let mut bst = BinarySearchTree::new("Jeanetter".to_string());
+    let names = vec![
+        "Latasha",
+        "Elvira",
+        "Caryl",
+        "Antionetter",
+        "Cassie",
+        "Charity",
+        "Lyn",
+        "Lia",
+        "Anya",
+        "Albert",
+        "Cherlyn",
+        "Lala",
+        "Kandince",
+        "Iliana",
+        "Nouman",
+        "Azam"
+    ];
+
+    for name in names.into_iter() {
+        bst.insert(name.to_string());
+    }
+
+    let mut display = DisplayLobby::new(Some(Rc::new(RefCell::new(bst.root))));
+    println!("Participants on the first page {:?}", display.next_page());
+
+    println!("Participants on the second page {:?}", display.next_page());
 }
 
