@@ -1,26 +1,30 @@
-// 133. - Threads Basics
+// 134. - Multiple Threads
+//        Ownership and Threads
 
 use std::thread;
-use std::time::Duration;
-fn main() {
-    println!("This will be printed");
-    println!("This will also be printed");
-    println!("The concurrency will start after this line");
 
-    let t = thread::spawn(|| {
-        println!("Hello 1 from the thread");
-        println!("Hello 2 from the thread");
-        println!("Hello 3 from the thread");
-        println!("Hello 4 from the thread");
-        println!("Hello 5 from the thread");
-        println!("Hello 6 from the thread");
-        println!("Hello 7 from the thread");
+fn main() {
+    // let mut thread_vec = vec![];
+    // for i in 0..10 {
+    //     thread_vec.push(thread::spawn(move || {
+    //         println!("Thread number {}", i);
+    //     }));
+    // }
+
+    // for i in thread_vec {
+    //     i.join();
+    // }
+
+    let v = vec![1,2,3];
+    let x = 5;
+    let handle = thread::spawn(move || {
+        println!("Here's a vector: {:?}", v);
+        println!("Here's a variable: {:?}", x);
     });
 
-    thread::sleep(Duration::from_millis(1));
-
-    println!("Hello 1 from the main");
-    println!("Hello 2 from the main");
-    t.join();
+    drop(x);
+    println!("The variable x is still alive {}", x);
+    println!("The variable v is not alive {}", v);
+    handle.join();
 }
 
