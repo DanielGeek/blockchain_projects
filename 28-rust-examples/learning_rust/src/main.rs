@@ -1,30 +1,33 @@
-// 134. - Multiple Threads
-//        Ownership and Threads
+// 117. - Message Passing through Channels
 
 use std::thread;
-
+use std::sync::mpsc;
 fn main() {
-    // let mut thread_vec = vec![];
-    // for i in 0..10 {
-    //     thread_vec.push(thread::spawn(move || {
-    //         println!("Thread number {}", i);
-    //     }));
-    // }
+    let (tx, rx) = mpsc::channel();
 
-    // for i in thread_vec {
-    //     i.join();
-    // }
+    // let rx1 = rx;
 
-    let v = vec![1,2,3];
-    let x = 5;
-    let handle = thread::spawn(move || {
-        println!("Here's a vector: {:?}", v);
-        println!("Here's a variable: {:?}", x);
+    let t = thread::spawn(move || {
+        let val = String::from("Some data from sender");
+        println!("Value sending from the thread");
+        tx.send(val).unwrap();
+        // println!("This may execute after the statement in the main");
+        // println!("Val is {:?}", val);
     });
 
-    drop(x);
-    println!("The variable x is still alive {}", x);
-    println!("The variable v is not alive {}", v);
-    handle.join();
+    // let recieved = rx.recv().unwrap();
+    // println!("Recieved: {:?}", recieved);
+
+    t.join();
+    let mut recieved_status = false;
+    while recieved_status != true {
+        match rx.try_recv() {
+            Ok(recieved_value) => {
+                println!("Recieved value is {:?}", recieved_value);
+                recieved_status = true;
+            },
+            Err(_) => println!("I am doing some other stuff"),
+        }
+    }
 }
 
