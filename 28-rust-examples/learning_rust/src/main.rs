@@ -44,18 +44,24 @@ async fn main() {
     //     _ = function_1() => println!("Function 1 is completed first"),
     //     _ = function_2() => println!("Function 2 is completed first"),
     // };
-    let aw1 = tokio::spawn(async move {
-        function_1().await;
-    });
     
-    let aw2 = tokio::spawn(async move {
-        function_2().await;
-    });
+    // let aw1 = tokio::spawn(async move {
+    //     function_1().await;
+    // });
+    
+    // let aw2 = tokio::spawn(async move {
+    //     function_2().await;
+    // });
 
-    tokio::select! {
-        _ = aw1 => println!("Function 1 is selected"),
-        _ = aw2 => println!("Function 2 is selected"),
-    }
+    // tokio::select! {
+    //     _ = aw1 => println!("Function 1 is selected"),
+    //     _ = aw2 => println!("Function 2 is selected"),
+    // }
+
+    tokio::join!{
+        function_1(),
+        function_2(),
+    };
 }
 
 async fn function_1() {
