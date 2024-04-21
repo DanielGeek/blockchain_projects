@@ -1,23 +1,52 @@
 
-// Sharing States
+// Passes Mutexes between Threads
 
-use std::sync::Mutex;
+// use std::sync::Mutex;
+// use std::thread;
+// // use std::rc::Rc;
+// use std::sync::Arc;
+// fn main () {
+//     let counter = Arc::new(Mutex::new(0));
 
-fn main () {
-    let m = Mutex::new(5);
+//     let mut handles = vec![];
 
-    // {
-    //     let mut num  = m.lock().unwrap();
-    //     *num = 10;
-    // }
+//     for _ in 0..10 {
+//         let counter = Arc::clone(&counter);
+//         let handle = thread::spawn(move || {
+//             let mut num = counter.lock().unwrap();
+//             *num += 1;
+//         });
+//         handles.push(handle);
+//     }
 
-    // println!("m = {:?}", m);
+//     for handle in handles {
+//         handle.join().unwrap();
+//     }
 
-    let mut num = m.lock().unwrap();
-    *num = 10;
-    drop(num);
+//     println!("Result: {}", *counter.lock().unwrap());
+// }
 
-    let mut num1 = m.lock().unwrap();
-    *num1 = 15;
-    drop(num1);
+use std::thread;
+use std::sync::Arc;
+
+struct MyString(String);
+impl MyString {
+    fn new(s: &str) -> MyString {
+        MyString(s.to_string())
+    }
+}
+fn main() {
+    let mut threads = Vec::new();
+    let name = Arc::new(MyString::new("Rust"));
+    for i in 0..5 {
+        let some_str = name.clone();
+        let t = thread::spawn(move || {
+            println!("hello {} count {}", some_str.0, i);
+        });
+        threads.push(t);
+    }
+
+    for t in threads {
+        t.join().unwrap();
+    }
 }
