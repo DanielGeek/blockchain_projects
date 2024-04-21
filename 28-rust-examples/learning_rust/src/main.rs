@@ -1,52 +1,62 @@
 
 // Passes Mutexes between Threads
 
-// use std::sync::Mutex;
-// use std::thread;
-// // use std::rc::Rc;
-// use std::sync::Arc;
-// fn main () {
-//     let counter = Arc::new(Mutex::new(0));
+// use std::{sync::{Arc, Barrier}, thread};
 
-//     let mut handles = vec![];
+// fn main() {
+//     let mut threads = Vec::new();
+//     let barrier = Arc::new(Barrier::new(5));
 
-//     for _ in 0..10 {
-//         let counter = Arc::clone(&counter);
-//         let handle = thread::spawn(move || {
-//             let mut num = counter.lock().unwrap();
-//             *num += 1;
+//     for i in 0..3 {
+//         let barrier = barrier.clone();
+//         let t = thread::spawn(move || {
+//             println!("Before wait {}", i);
+//             barrier.wait();
+//             println!("After wait {}", i);
 //         });
-//         handles.push(handle);
+//         threads.push(t);
 //     }
 
-//     for handle in handles {
-//         handle.join().unwrap();
+//     for t in threads {
+//         t.join().unwrap();
 //     }
-
-//     println!("Result: {}", *counter.lock().unwrap());
 // }
 
+use std::sync::{Arc, Mutex, Barrier};
 use std::thread;
-use std::sync::Arc;
 
-struct MyString(String);
-impl MyString {
-    fn new(s: &str) -> MyString {
-        MyString(s.to_string())
-    }
-}
 fn main() {
     let mut threads = Vec::new();
-    let name = Arc::new(MyString::new("Rust"));
-    for i in 0..5 {
-        let some_str = name.clone();
+    let barrier = Arc::new(Barrier::new(3));
+    let data = Arc::new(vec![
+        vec![1,2,3,4,5,6],
+        vec![1,2,3,4,5,6],
+        vec![1,2,3,4,5,6],
+    ]);
+
+    let result = Arc::new(Mutex::new(0));
+    for i in 0..3 {
+        let barrier = barrier.clone();
+        let data = data.clone();
+        let result = result.clone();
         let t = thread::spawn(move || {
-            println!("hello {} count {}", some_str.0, i);
+
+            let mut x = result.lock().unwrap();
+            *x = data[i][0..3].iter().sum();
+            // let x: i32 = data[i][0..3].iter().sum();
+            // *result.lock().unwrap() += x;
+            println!("Thread {} Part 1 is done", i);
+            barrier.wait();
+
+            // let x:i32 = data[i][3..6].iter().sum();
+            // *result.lock().unwrap() += x;
+            *x = data[i][3..6].iter().sum();
+            println!("Thread {} is complete", i);
         });
         threads.push(t);
     }
-
     for t in threads {
         t.join().unwrap();
     }
+    println!("The final value of the result is {}", *result.lock().unwrap());
 }
