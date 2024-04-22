@@ -1,78 +1,48 @@
 
-// Async Await (Tasks, Select)
-// tokio = {version = "1.17", features = ["full"]}
+// Projet: Web Scrapping
 
-// #[tokio::main]
-// async fn main() {
-//     let mut handles = vec![];
-//     println!("This code is not part of the async block");
-//     let s1 = String::from("Huge Computation function");
-//     let s2 = String::from("Simpler Computation function");
-//     let aw1 = tokio::spawn(async move {
-//         huge_computation(s1).await;
-//     });
-//     handles.push(aw1);
+use std::sync::{mpsc, Arc, Mutex};
+use std::time::{Duration, Instant};
+use std::thread;
+use ureq::{Agent, AgentBuilder};
+fn main() -> Result<(), ureq::Error>{
+    let webpages = vec![
+        "https://gist.github.com/recluze/dcaff7e60fbcac1f7425a1f8f9c69de7",
+        "https://gist.github.com/recluze/04745a99c190b6d1aec9a86f977740ff",
+        "https://gist.github.com/recluze/fd5bb0aa90c8fe5623c921172e83e975",
+        "https://gist.github.com/recluze/a643e0ab6cccd649a96ed68d9ecacf51",
+        "https://gist.github.com/recluze/1d2989c7e345c8c3c542",
+        "https://gist.github.com/recluze/a98aa1804884ca3b3ad3",
+        "https://gist.github.com/recluze/58deead37b93c0ad36be",
+        "https://gist.github.com/recluze/5051735efe3fc189b90d"
+    ];
 
-//     let aw2 = tokio::spawn(async move {
-//         simpler_computation(s2).await;
-//     });
-//     handles.push(aw2);
+    let agent = ureq::AgentBuilder::new().build();
+    let now = Instant::now();
 
-//     for handle in handles {
-//         handle.await.unwrap();
-//     }
-//     println!("All tasks are now completed");
-// }
-
-// async fn huge_computation(s: String) {
-//     println!("{:?} has started", s);
-//     for i in 0..100_000_000 {
-
-//     }
-//     println!("{:?} is now completed", s);
-// }
-
-// async fn simpler_computation(s: String) {
-//     println!("{:?} has started", s);
-//     println!("{:?} is now completed", s);
-// }
-
-use tokio::select;
-#[tokio::main]
-async fn main() {
-    // tokio::select! {
-    //     _ = function_1() => println!("Function 1 is completed first"),
-    //     _ = function_2() => println!("Function 2 is completed first"),
-    // };
-    
-    // let aw1 = tokio::spawn(async move {
-    //     function_1().await;
-    // });
-    
-    // let aw2 = tokio::spawn(async move {
-    //     function_2().await;
-    // });
-
-    // tokio::select! {
-    //     _ = aw1 => println!("Function 1 is selected"),
-    //     _ = aw2 => println!("Function 2 is selected"),
-    // }
-
-    tokio::join!{
-        function_1(),
-        function_2(),
-    };
-}
-
-async fn function_1() {
-    println!("Function 1 has started");
-    for i in 0..100_000_000 {
-
+    for web_page in &webpages {
+        let web_body = agent.get(web_page).call()?.into_string()?;
     }
-    println!("Function 1 has ended");
-}
+    println!("Time taken without Threads: {:.2?}", now.elapsed());
 
-async fn function_2() {
-    println!("Function 2 has started");
-    println!("Function 2 has ended");
+    let now = Instant::now();
+    let agent = Arc::new(agent);
+    let mut handles : Vec<thread::JoinHandle<Result<(), ureq::Error>>> = Vec::new();
+
+    for web_page in webpages {
+        let agent_thread = agent.clone();
+        let t = thread::spawn(move || {
+            let web_body = agent_thread.get(web_page).call()?.into_string()?;
+
+            Ok(())
+        });
+        handles.push(t);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Time taken using Threads: {:.2?}", now.elapsed());
+    Ok(())
 }
