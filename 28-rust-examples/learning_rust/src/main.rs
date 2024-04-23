@@ -3,9 +3,13 @@
 
 use std::net::{TcpListener, TcpStream};
 use std::io::{BufRead, BufReader, Write};
-use std::fs;
+use std::time::Duration;
+use std::{fs,thread};
+use std::sync::{Arc, Mutex};
 fn main(){
     let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
+    let mut active_request = Arc::new(Mutex::new(0));
+    
     // let stream = listener.accept();
 
     // println!("The stream {:?} \n The socket {:?}", stream.as_ref().unwrap().1, stream.as_ref().unwrap().0);
@@ -17,8 +21,22 @@ fn main(){
     // }
 
     for stream in listener.incoming() {
+        let active_request = Arc::clone(&active_request);
         let stream = stream.unwrap();
-        handle_connection(stream);
+
+        thread::spawn(move || {
+            let mut connection = active_request.lock().unwrap();
+            *connection += 1;
+            if *connection >= 3 {
+                thread::sleep(Duration::from_secs(2));
+            }
+            handle_connection(stream);
+
+            {
+                let mut connection = active_request.lock().unwrap();
+                *connection -= 1;
+            }
+        });
     }
 }
 
@@ -71,7 +89,10 @@ fn handle_connection(mut stream: TcpStream) {
     let mut request_line = buf_reader.lines().next();
     let (status_line, file_name) = match request_line.unwrap().unwrap().as_str() {
         "GET / HTTP/1.1" => (Some("HTTP/1.1 200 OK\r\n"), Some("index.html")),
-        "GET /page1 HTTP/1.1" => (Some("HTTP/1.1 200 OK\r\n"), Some("page1.html")),
+        "GET /page1 HTTP/1.1" => {
+            thread::sleep(Duration::from_secs(5));
+            (Some("HTTP/1.1 200 OK\r\n"), Some("page1.html"))
+        },
         "GET /page2 HTTP/1.1" => (Some("HTTP/1.1 200 OK\r\n"), Some("page2.html")),
         _ => (Some("HTTP/1.1 404 NOT FOUND\r\n"), Some("404.html"))
     };
