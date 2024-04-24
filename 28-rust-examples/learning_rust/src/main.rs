@@ -1,106 +1,50 @@
+// Basic File Handling
 
-// Web Programming Basics
+use std::fmt::format;
+use std::fs::*;
+use std::io::{BufRead, BufReader, Read, Write};
+use std::path::Path;
 
-use std::net::{TcpListener, TcpStream};
-use std::io::{BufRead, BufReader, Write};
-use std::time::Duration;
-use std::{fs,thread};
-use std::sync::{Arc, Mutex};
-fn main(){
-    let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
-    let mut active_request = Arc::new(Mutex::new(0));
-    
-    // let stream = listener.accept();
 
-    // println!("The stream {:?} \n The socket {:?}", stream.as_ref().unwrap().1, stream.as_ref().unwrap().0);
-    // for i in 0..10 {
-    //     match listener.accept() {
-    //         Ok((socket, addr)) => println!("The client info: {:?}", addr),
-    //         Err(e) => println!("Couldn't get client: {:?}", e),
-    //     }
-    // }
+fn basic_file_handling() -> std::io::Result<()> {
+    let path_loc = r"/Users/danielgeek/Documents/GitHub/blockchain_projects/28-rust-examples/learning_rust/my_text.txt";
+    let path = Path::new(path_loc);
+    // let mut file = File::create(path)?;
 
-    for stream in listener.incoming() {
-        let active_request = Arc::clone(&active_request);
-        let stream = stream.unwrap();
+    // file.write(b"let's put this in the file")?;
+    // file.write("let's put this in the file".as_bytes())?;
 
-        thread::spawn(move || {
-            let mut connection = active_request.lock().unwrap();
-            *connection += 1;
-            if *connection >= 3 {
-                thread::sleep(Duration::from_secs(2));
-            }
-            handle_connection(stream);
+    // let mut file = OpenOptions::new().append(true).open(path)?;
+    // file.write("\n www.includehelp.com\n".as_bytes());
 
-            {
-                let mut connection = active_request.lock().unwrap();
-                *connection -= 1;
-            }
-        });
+    // let str1 = "daniel";
+    // file.write(str1.as_bytes())?;
+
+    // let some_vec = vec![1,2,3,4,5,6];
+    // let str_from_vec = some_vec
+    // .into_iter()
+    // .map(|a | format!("{} \n", a.to_string()))
+    // .collect::<String>();
+
+    // file.write(str_from_vec.as_bytes())?;
+
+    // let (name, age) = ("Daniel", 33);
+    // let formatted_str = format!("I am {} and my name is {}", name, age);
+    // file.write(formatted_str.as_bytes());
+
+    // let mut file = File::open(path)?;
+    // let mut contents = String::new();
+    // file.read_to_string(&mut contents);
+    // println!("The file contains {:?}", contents);
+
+    let mut file = File::open(path)?;
+    let file_buffer = BufReader::new(file);
+    for lines in file_buffer.lines() {
+        println!("{:?}", lines);
     }
+    Ok(())
 }
 
-fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&mut stream);
-
-    // let http_request = buf_reader
-    //     .lines()
-    //     .map(|result| result.expect("Failed to read a line"))
-    //     .take_while(|line| !line.is_empty())
-    //     .collect::<Vec<String>>();
-
-    // println!("Request: {:#?}", http_request);
-
-    /*
-        Response Syntax
-
-        HTTP-Version Status-Code Reason-Phrase CRLF
-        headers CRLF
-        message-body
-
-        ex: HTTP/1.1 200 Ok\r\n\r\n
-     */
-
-    // let response = "HTTP/1.1 200 OK\r\n\r\n";
-    // stream.write(response.as_bytes()).unwrap();
-    // stream.flush().unwrap();
-
-    // let status_line = "HTTP/1.1 200 OK\r\n";
-    // let contents = match fs::read_to_string("index.html") {
-    //     Ok(file) => file,
-    //     Err(e) => {
-    //         eprintln!("Error reading file: {}", e);
-    //         let error_message = "HTTP/1.1 404 Not Found\r\n\r\n<html><body><h1>404 Not Found</h1></body></html>";
-    //         stream.write_all(error_message.as_bytes()).unwrap();
-    //         stream.flush().unwrap();
-    //         return;
-    //     }
-    // };
-
-    // let length = contents.len();
-    // let response = format!(
-    //     "{}Content-Length: {}\r\n\r\n{}",
-    //     status_line, length, contents
-    // );
-
-    // stream.write_all(response.as_bytes()).unwrap();
-    // stream.flush().unwrap();
-
-    let mut request_line = buf_reader.lines().next();
-    let (status_line, file_name) = match request_line.unwrap().unwrap().as_str() {
-        "GET / HTTP/1.1" => (Some("HTTP/1.1 200 OK\r\n"), Some("index.html")),
-        "GET /page1 HTTP/1.1" => {
-            thread::sleep(Duration::from_secs(5));
-            (Some("HTTP/1.1 200 OK\r\n"), Some("page1.html"))
-        },
-        "GET /page2 HTTP/1.1" => (Some("HTTP/1.1 200 OK\r\n"), Some("page2.html")),
-        _ => (Some("HTTP/1.1 404 NOT FOUND\r\n"), Some("404.html"))
-    };
-
-    let contents = fs::read_to_string(file_name.unwrap()).unwrap();
-    let response = format!("{} Content-Length: {}\r\n\r\n{}", status_line.unwrap(), contents.len(), contents);
-
-    stream.write_all(response.as_bytes()).unwrap();
-    stream.flush().unwrap();
-
+fn main(){
+    basic_file_handling();
 }
