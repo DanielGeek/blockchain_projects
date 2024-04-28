@@ -13,7 +13,7 @@ contract QiteSwap {
         require(token1 != token2, "Identical token address is not allowed");
         require(address(getPair[token1][token2]) == address(0), "Pair already exists");
 
-        QitePool qitePool = new QitePool();
+        QitePool qitePool = new QitePool(token1, token2);
 
         getPair[token1][token2] = qitePool;
         getPair[token2][token1] = qitePool;

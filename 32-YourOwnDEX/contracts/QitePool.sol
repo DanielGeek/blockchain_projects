@@ -15,4 +15,10 @@ contract QitePool {
 
     QiteLiquidityToken public liquidityToken;
 
+    constructor(address _token1, address _token2) {
+        token1 = _token1;
+        token2 = _token2;
+        liquidityToken = new QiteLiquidityToken();
+    }
+
 }
