@@ -2,7 +2,7 @@
 pragma solidity ^0.8.25;
 
 import "./QiteLiquidityToken.sol";
-import "@openzeppelin/contracts/token/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -46,6 +46,27 @@ contract QitePool {
         reserve1 += amountToken1;
         reserve2 += amountToken2;
         // Update the constrant formula
+        _updateConstantFormula();
+    }
+
+    function removeLiquidity(uint amountOfLiquidity) external {
+        uint256 totalSupply = liquidityToken.totalSupply();
+        require(amountOfLiquidity <= totalSupply, "Liquidity is more than total supply");
+        // Burn the liquidity amount
+        liquidityToken.burn(msg.sender, amountOfLiquidity);
+        // Transfer token1 and token2 to liquidity provider or msg.sender
+        uint256 amount1 = (reserve1*amountOfLiquidity) / totalSupply;
+        uint256 amount2 = (reserve2*amountOfLiquidity) / totalSupply;
+        require(IERC20(token1).transfer(msg.sender, amount1), "Transfer of token1 failed");
+        require(IERC20(token2).transfer(msg.sender, amount2), "Transfer of token2 failed");
+        // Update reserve1 and reserve2
+        reserve1 -= amount1;
+        reserve2 -= amount2;
+        // Update the constant formula
+        _updateConstantFormula();
+    }
+
+    function _updateConstantFormula() internal {
         constantK = reserve1.mul(reserve2);
         require(constantK > 0, "Constant formula not update");
     }
