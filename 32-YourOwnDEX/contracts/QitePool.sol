@@ -85,9 +85,9 @@ contract QitePool {
         // Verify that amountOut is less or equal to expectedAmount after calculation
         uint256 expectedAmountOut;
         if(fromToken == token1 && toToken == token2) {
-            expectedAmountOut = reserve2.mul(amountIn).div(reserve1);
+            expectedAmountOut = constantK.div(reserve1.sub(amountIn)).sub(reserve2);
         } else {
-            expectedAmountOut = reserve1.mul(amountIn).div(reserve2);
+            expectedAmountOut = constantK.div(reserve2.sub(amountIn)).sub(reserve2);
         }
         require(amountOut <= expectedAmountOut, "Swap does not preserve constant formula");
         // Perform the swap, to transfer amountIn into the liquidity poll and to transfer to the swap initiator the amountOut
@@ -102,13 +102,24 @@ contract QitePool {
             reserve2 = reserve2.add(amountIn);
         }
         // Check that the result is maintaining the constant formula x*y = k
-        require(reserve1.mul(reserve2) == constantK, "Swap does not preserve constant formula");
+        require(reserve1.mul(reserve2) <= constantK, "Swap does not preserve constant formula");
+        _updateConstantFormula();
         emit Swap(msg.sender, amountIn, expectedAmountOut, fromToken, toToken);
     }
 
     function _updateConstantFormula() internal {
         constantK = reserve1.mul(reserve2);
         require(constantK > 0, "Constant formula not update");
+    }
+
+    function estimateOutPutAmount(uint256 amountIn, address fromToken) public view returns(uint256 expectedAmountOut) {
+        require(amountIn > 0, "Amount must be greater than 0");
+        require(fromToken == token1 || fromToken == token2, "Need to be a token in this pair");
+        if(fromToken == token1) {
+            expectedAmountOut = constantK.div(reserve1.sub(amountIn)).sub(reserve2);
+        } else {
+            expectedAmountOut = constantK.div(reserve2.sub(amountIn)).sub(reserve1);
+        }
     }
 
 }
