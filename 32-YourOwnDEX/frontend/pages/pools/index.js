@@ -1,6 +1,11 @@
+import LiquidityPools from "@components/LiquidityPools";
 
 const Poolspage = () => {
-    return <div></div>
+    return (
+        <div>
+            <LiquidityPools />
+        </div>
+    )
 }
 
 export default Poolspage;
