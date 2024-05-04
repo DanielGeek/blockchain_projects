@@ -1,6 +1,8 @@
-import LiquidityPools from "@components/LiquidityPools";
+// pages/pools.js
+import React from "react"
+import LiquidityPools from "@/components/LiquidityPools"
 
-const Poolspage = () => {
+const PoolsPage = () => {
     return (
         <div>
             <LiquidityPools />
@@ -8,4 +10,4 @@ const Poolspage = () => {
     )
 }
 
-export default Poolspage;
+export default PoolsPage
