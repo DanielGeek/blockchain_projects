@@ -60,7 +60,7 @@ describe("token-contract", () => {
             mint: mintKey.publicKey,
             tokenProgram: TOKEN_PROGRAM_ID,
             tokenAccount: associatedTokenAccount,
-            payer: key,
+            authority: key,
         }).rpc();
 
         const minted = (await program.provider.connection.getParsedAccountInfo(associatedTokenAccount)).value.data.parsed.info.tokenAmount.amount;
@@ -81,7 +81,7 @@ describe("token-contract", () => {
         await program.methods.transferToken().accounts({
             tokenProgram: TOKEN_PROGRAM_ID,
             from: associatedTokenAccount,
-            signer: myWallet,
+            fromAuthority: myWallet,
             to: toATA,
         }).rpc();
 
