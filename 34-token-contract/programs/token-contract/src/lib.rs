@@ -13,7 +13,9 @@ pub mod token_contract {
         let cpi_accounts = MintTo {
             mint: ctx.accounts.mint.to_account_info(),
             to: ctx.accounts.token_account.to_account_info(),
-            authority: ctx.accounts.authority.to_account_info(),
+            authority: ctx.accounts.mint_authority.to_account_info(),
+            // authority: ctx.accounts.payer.to_account_info(),
+            // authority: ctx.accounts.authority.to_account_info(),
         };
         
         let cpi_program = ctx.accounts.token_program.to_account_info();
@@ -31,7 +33,9 @@ pub mod token_contract {
         let transfer_instruction = Transfer{
             from: ctx.accounts.from.to_account_info(),
             to: ctx.accounts.to.to_account_info(),
-            authority: ctx.accounts.from_authority.to_account_info(),
+            authority: ctx.accounts.transfer_authority.to_account_info(),
+            // authority: ctx.accounts.signer.to_account_info(),
+            // authority: ctx.accounts.from_authority.to_account_info(),
         };
 
         let cpi_program = ctx.accounts.token_program.to_account_info();
@@ -56,7 +60,9 @@ pub struct MintToken<'info> {
     pub token_account: UncheckedAccount<'info>,
     /// CHECK: the authority of the mint account
     #[account(mut)]
-    pub authority: AccountInfo<'info>,
+    pub mint_authority: Signer<'info>,
+    // pub payer: AccountInfo<'info>,
+    // pub authority: AccountInfo<'info>,
 }
 
 #[derive(Accounts)]
@@ -68,6 +74,9 @@ pub struct TransferToken<'info> {
     /// CHECK: The associated token account that we are transferring the token to
     #[account(mut)]
     pub to: AccountInfo<'info>,
+    #[account(mut)]
+    pub transfer_authority: Signer<'info>,
+    // pub signer: Signer<'info>,
     // the authority of the from account 
-    pub from_authority: Signer<'info>,
+    // pub from_authority: Signer<'info>,
 }
