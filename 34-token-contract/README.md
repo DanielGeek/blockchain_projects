@@ -5,6 +5,7 @@
 - see anchor version `anchor --version `
 - config test `ts-mocha`
 - run test `anchor test`
+- build our program `anchor build`
 
 # Note about anchor version
 - used anchor-cli 0.24.2
