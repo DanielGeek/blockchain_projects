@@ -3,3 +3,4 @@
 # Commands
 `anchor build`
 `anchor deploy`
+`anchor run test`
