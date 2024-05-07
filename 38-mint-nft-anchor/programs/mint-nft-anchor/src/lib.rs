@@ -14,7 +14,7 @@ use {
     },
 };
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("GNqCjGdGvjmoGtmfbk1f5apxAefYQohkVMFZ2cDoCF4j");
 
 #[program]
 pub mod mint_nft {
