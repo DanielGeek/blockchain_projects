@@ -3,5 +3,6 @@
 # Used Commands
 `solana config set --url localhost`
 `solana config get`
+`solana-test-validator`
 `anchor build`
 `anchor deploy`
