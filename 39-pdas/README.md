@@ -6,3 +6,4 @@
 `solana-test-validator`
 `anchor build`
 `anchor deploy`
+`anchor test --skip-local-validator`
