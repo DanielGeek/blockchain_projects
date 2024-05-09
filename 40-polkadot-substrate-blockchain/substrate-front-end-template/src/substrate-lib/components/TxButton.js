@@ -132,20 +132,74 @@ function TxButton({
   }
 
   const signedTx = async () => {
-    const fromAcct = await getFromAcct()
-    const transformed = transformParams(paramFields, inputParams)
-    // transformed can be empty parameters
-
+    console.log("entro...");
+    console.log("Available pallets in api.tx: ", Object.keys(api.tx));
+    if (api.tx[palletRpc]) {
+      console.log(`Methods available in ${palletRpc}: `, Object.keys(api.tx[palletRpc]));
+    } else {
+      console.log(`Pallet ${palletRpc} does not exist.`);
+    }
+    
+    const fromAcct = await getFromAcct();
+    const transformed = transformParams(paramFields, inputParams);
+    
+    // Verificación y corrección del método callable
+    let actualCallable = callable;
+    if (callable === 'transfer' && api.tx[palletRpc] && api.tx[palletRpc]['transferKeepAlive']) {
+      console.log("Correcting 'transfer' to 'transferKeepAlive' due to API constraints.");
+      actualCallable = 'transferKeepAlive';
+    }
+  
+    console.log("callable: ", actualCallable);
+  
+    // Comprobando si el callable es válido antes de intentar ejecutar
+    if (!api.tx[palletRpc][actualCallable]) {
+      console.error(`Callable method ${actualCallable} does not exist on pallet ${palletRpc}`);
+      setStatus(`Error: Method ${actualCallable} does not exist on pallet ${palletRpc}`);
+      return;
+    }
+  
+    console.log("api.tx[palletRpc][actualCallable](...transformed): ", api.tx[palletRpc][actualCallable](...transformed));
+  
     const txExecute = transformed
-      ? api.tx[palletRpc][callable](...transformed)
-      : api.tx[palletRpc][callable]()
-
+      ? api.tx[palletRpc][actualCallable](...transformed)
+      : api.tx[palletRpc][actualCallable]();
+  
     const unsub = await txExecute
       .signAndSend(...fromAcct, txResHandler)
-      .catch(txErrHandler)
+      .catch(txErrHandler);
+  
+    setUnsub(() => unsub);
+  };
+  
 
-    setUnsub(() => unsub)
-  }
+//   const signedTx = async () => {
+//     console.log("entro...")
+//     console.log("Available pallets in api.tx: ", Object.keys(api.tx));
+//     if (api.tx[palletRpc]) {
+//     console.log(`Methods available in ${palletRpc}: `, Object.keys(api.tx[palletRpc]));
+//     } else {
+//     console.log(`Pallet ${palletRpc} does not exist.`);
+//     }
+//     const fromAcct = await getFromAcct()
+//     const transformed = transformParams(paramFields, inputParams)
+//     // transformed can be empty parameters
+//     // console.log({api})
+//     // console.log("api.tx ", api.tx)
+//     // console.log("palletRpc ", palletRpc)
+//     console.log("callable ", callable)
+//     // console.log("api.tx[palletRpc] ", api.tx[palletRpc])
+//     console.log("api.tx[palletRpc][callable](...transformed) ", api.tx[palletRpc][callable]())
+//     const txExecute = transformed
+//       ? api.tx[palletRpc][callable](...transformed)
+//       : api.tx[palletRpc][callable]()
+
+//     const unsub = await txExecute
+//       .signAndSend(...fromAcct, txResHandler)
+//       .catch(txErrHandler)
+
+//     setUnsub(() => unsub)
+//   }
 
   const unsignedTx = async () => {
     const transformed = transformParams(paramFields, inputParams)
