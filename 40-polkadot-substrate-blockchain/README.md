@@ -3,6 +3,16 @@
 - Run backend node
   - `cd substrate-node-template`
   - `./target/release/node-template --dev`
+- Start the first blockchain node
+    - `cd substrate-node-template`
+    - `./target/release/node-template \
+  --base-path /tmp/alice \
+  --chain local \
+  --alice \
+  --port 30333 \
+  --rpc-port 9933 \
+  --telemetry-url "wss://telemetry.polkadot.io/submit 0" \
+  --validator`
 
 - Run Frontend
   - `cd substrate-front-end-template`
@@ -12,3 +22,4 @@
 
 # Help doc
 - https://github.com/LearnWithArjun/substrate-env-setup
+- https://docs.substrate.io/tutorials/build-a-blockchain/build-local-blockchain/
