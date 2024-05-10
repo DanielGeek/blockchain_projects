@@ -53,7 +53,7 @@
 --base-path /tmp/node01 \
 --chain ./customSpecRaw.json \
 --scheme Sr25519 \
---suri "current enable donor acquire alone leave claw airport modify risk tent athlete" \
+--suri "{secret phrase}" \
 --password-interactive \
 --key-type aura`
 
@@ -61,12 +61,42 @@
 --base-path /tmp/node01 \
 --chain ./customSpecRaw.json \
 --scheme Ed25519 \
---suri "current enable donor acquire alone leave claw airport modify risk tent athlete" \
+--suri "{secret phrase}" \
 --password-interactive \
 --key-type gran`
 
 - verify keys `ls /tmp/node01/chains/local_testnet/keystore`
 
+- Enable other participants to join
+  - `./target/release/node-template \
+--base-path /tmp/node02 \
+--chain ./customSpecRaw.json \
+--port 30334 \
+--rpc-port 9934 \
+--telemetry-url "wss://telemetry.polkadot.io/submit 0" \
+--validator \
+--name MyNode02 \
+--bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWQK7kEV9v7BKF6YD7RftsUUGfBL871VodcWqA8imnynsN \
+--password-interactive`
+
+- Add keys to the keystore for Node2
+  - `./target/release/node-template key insert \
+--base-path /tmp/node02 \
+--chain ./customSpecRaw.json \
+--scheme Sr25519 \
+--suri "{secret phrase}" \
+--password-interactive \
+--key-type aura`
+
+- `./target/release/node-template key insert \
+--base-path /tmp/node02 \
+--chain ./customSpecRaw.json \
+--scheme Ed25519 \
+--suri "{secret phrase}" \
+--password-interactive \
+--key-type gran`
+
+- verify keys `ls /tmp/node02/chains/local_testnet/keystore`
 
 - Run Frontend
   - `cd substrate-front-end-template`
