@@ -33,6 +33,8 @@
 
 - Create a custom chain specification
   - `./target/release/node-template build-spec --disable-default-bootnode --chain local > customSpec.json`
+- Convert the chain specification to raw format
+  - `./target/release/node-template build-spec --chain=customSpec.json --raw --disable-default-bootnode > customSpecRaw.json`
 
 
 - Run Frontend
