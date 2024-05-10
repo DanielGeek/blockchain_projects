@@ -31,6 +31,11 @@
   - `yarn install`
   - `yarn start`
 
+- Generate your account and key
+  -  - `cd substrate-node-template`
+    - Sr25519 `./target/release/node-template key generate --scheme Sr25519 --password-interactive`
+    - Ed25519 `./target/release/node-template key inspect --password-interactive --scheme Ed25519 {Secret phrase}`
+
 
 # Help doc
 - https://github.com/LearnWithArjun/substrate-env-setup
