@@ -48,6 +48,25 @@
 --name MyNode01 \
 --password-interactive`
 
+- Add keys to the keystore
+  - `./target/release/node-template key insert \
+--base-path /tmp/node01 \
+--chain ./customSpecRaw.json \
+--scheme Sr25519 \
+--suri "current enable donor acquire alone leave claw airport modify risk tent athlete" \
+--password-interactive \
+--key-type aura`
+
+  - `./target/release/node-template key insert \
+--base-path /tmp/node01 \
+--chain ./customSpecRaw.json \
+--scheme Ed25519 \
+--suri "current enable donor acquire alone leave claw airport modify risk tent athlete" \
+--password-interactive \
+--key-type gran`
+
+- verify keys `ls /tmp/node01/chains/local_testnet/keystore`
+
 
 - Run Frontend
   - `cd substrate-front-end-template`
