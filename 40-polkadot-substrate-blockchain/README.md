@@ -36,6 +36,18 @@
 - Convert the chain specification to raw format
   - `./target/release/node-template build-spec --chain=customSpec.json --raw --disable-default-bootnode > customSpecRaw.json`
 
+- Start the first node
+  - `./target/release/node-template \
+--base-path /tmp/node01 \
+--chain ./customSpecRaw.json \
+--port 30333 \
+--rpc-port 9933 \
+--telemetry-url "wss://telemetry.polkadot.io/submit 0" \
+--validator \
+--rpc-methods Unsafe \
+--name MyNode01 \
+--password-interactive`
+
 
 - Run Frontend
   - `cd substrate-front-end-template`
