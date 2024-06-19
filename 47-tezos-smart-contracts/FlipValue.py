@@ -18,5 +18,8 @@ def test():
     scenario += contract
     scenario.h2("Testing flip entrypoint")
     contract.flip()
+    scenario.verify(contract.data.side == 1)
     contract.flip()
+    scenario.verify(contract.data.side == 0)
     contract.flip()
+    scenario.verify(contract.data.side == 1)
