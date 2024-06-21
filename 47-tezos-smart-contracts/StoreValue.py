@@ -5,7 +5,7 @@ import smartpy as sp
 def main():
     class StoreValue(sp.Contract):
         def __init__(self):
-            self.data.stored_value = 42
+            self.data.stored_value = sp.nat(42)
 
         @sp.entrypoint
         def add(self, added_value):
@@ -13,7 +13,11 @@ def main():
 
         @sp.entrypoint
         def reset(self):
-            self.data.stored_value += 0
+            self.data.stored_value = 0
+
+        @sp.entrypoint
+        def multiply(self, factor):
+            self.data.stored_value *= factor
         
 @sp.add_test()
 def test():
@@ -23,5 +27,6 @@ def test():
     scenario.h3("Testing Add entrypoint")
     contract.add(5)
     scenario.verify(contract.data.stored_value == 47)
-    contract.add(2)
-    scenario.verify(contract.data.stored_value == 49)
+    scenario.h3("Testing multiply entrypoint")
+    contract.multiply(10)
+    scenario.verify(contract.data.stored_value == 470)
