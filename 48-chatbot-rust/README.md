@@ -1,5 +1,5 @@
 <picture>
-<img src="https://raw.githubusercontent.com/Me163/rusty_llama/main/demo.gif" />
+<img src="https://github.com/DanielGeek/blockchain_projects/blob/main/48-chatbot-rust/demo.gif?raw=true" />
 </picture>
 
 # Rusty Llama Webapp
