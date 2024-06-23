@@ -2,5 +2,17 @@
   {
     "hash": "0",
     "previousHash": null
+  },
+  {
+    "nonce": 351,
+    "hash": "006194c3e94292b0f9545b473d8c1640a09b7da71cae5c84ff7c7f85cbef1976",
+    "previousHash": "0",
+    "transactions": [
+      {
+        "buyerAddress": null,
+        "sellerAddress": "04ab5c894d1d2001de121ce35b9a7d307a29d77dc29c366ca6a1b285067d8c6241c7801f6d731f4d4703b3c3465036dd38",
+        "price": 40
+      }
+    ]
   }
 ]

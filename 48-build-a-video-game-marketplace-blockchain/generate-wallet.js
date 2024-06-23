@@ -23,3 +23,14 @@ wallets[newWalletName] = {
 };
 
 writeWallets(wallets);
+
+const transactions = getTransactions();
+
+const newTransaction = {
+    buyerAddress: null,
+    sellerAddress: pub,
+    price: 40
+};
+
+transactions.push(newTransaction);
+writeTransactions(transactions);
