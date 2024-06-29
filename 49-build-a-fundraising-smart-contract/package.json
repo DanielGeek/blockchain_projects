@@ -1,0 +1,17 @@
+{
+  "name": "49-build-a-fundraising-smart-contract",
+  "version": "1.0.0",
+  "description": "In this integrated project, you will create and deploy a smart contract to raise funds for your startup. The goal is to raise 150 tokens before the seventh block is mined.",
+  "main": "add-transaction.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniel Angel",
+  "type": "module",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.4.5",
+    "elliptic": "^6.5.5"
+  }
+}

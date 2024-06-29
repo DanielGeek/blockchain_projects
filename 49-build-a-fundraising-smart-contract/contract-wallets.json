@@ -1,1 +1,6 @@
-{}
+{
+  "example-contract": {
+    "publicKey": "04a66d4337696315470df246f67592c6e1010fe3bb3a0ed04df47084f452355fea2b1d7ff6c5868a8c7e443cf29586af18",
+    "privateKey": "e85ef05e2bcfec9436f8d4ab5c733332e0f39abb04c903c6"
+  }
+}
