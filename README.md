@@ -1,7 +1,7 @@
 ## Those are real and personal blockchain projects where I worked, a few of them are online
 
 ### Masma Smart Wallet Integration | Solidity | Rust | Go | Next | AA-4337 | Stackup.sh 
-masma.io
+https://masma.io
 
 ### Spozz NFT Marketplace | Solidity | Rust | Next | React | Sveltekit | truffle | tailwind | TypeScript | Testing | Ganache | Sepolia | Mumbai | BNB chain | Polygon Matic chain | Ethereum chain
 https://spozz.club/
