@@ -4,54 +4,78 @@
     "previousHash": null
   },
   {
-    "hash": "005bf5d75253487a4c7fc2d64f208f40708a6954cd6de89b7bc84f1f9e84cfb1",
+    "hash": "00952356165c294efe16cd6f646cac3c8a05d5df401e2565c8514dd01ed6cfd9",
     "previousHash": 0,
-    "nonce": 33,
+    "nonce": 157,
     "transactions": [],
     "smartContracts": [
       {
-        "address": "04a66d4337696315470df246f67592c6e1010fe3bb3a0ed04df47084f452355fea2b1d7ff6c5868a8c7e443cf29586af18",
-        "creatorAddress": "0412bb6129d866a633aa62270e84be8630ebf803a64f6879a5ac08f12cde2aeca2eb272481fcc742d568aad80e44ba68c5",
+        "address": "043f1e6977e80898479e43900aea23822c3b1250a7b4753aa83f465df040d9a749fd1219874ae568fbaa0c0362f0de7340",
+        "creatorAddress": "041608a1e5bc12c505bb60b52bf64ca40f816f14acc9e31bfa21c6c7ba435a215a8f54ba49ce767b950cfdfea2efe261a9",
         "functions": {
-          "get-favorite-number.js": "const contractState = JSON.parse(process.env.CONTRACT_STATE);\n\nconsole.log(`'Running the 'get-favorite-number.js' file in the 'example-contract'`);\nconsole.log(`The favorite number of the 'example-contract' is ${contractState.favoriteNumber}`);\n",
-          "on-new-block.js": "const blockchainLength = process.env.BLOCKCHAIN_LENGTH;\n\nconsole.log(`Block number ${blockchainLength} is being mined. 'example-contract' is running its 'on-new-block.js' file`);\n",
-          "on-transaction.js": "const transaction = JSON.parse(process.env.TRANSACTION);\n\nconsole.log(`Someone sent a transaction to 'example-contract', it is running its 'on-transaction.js' file, here's what the transaction looks like:`);\nconsole.log(transaction);\n",
-          "send-transaction.js": "const { addTransaction } = (await import('./blockchain-helpers.js'));\n\nconst privateKey = process.env.PRIVATE_KEY;\nconst toAddress =\n  '04f1c5e5a2f85e384ece781c8ecfdbeddb87c055d2e9c88db14bd5582805a798576f89c2b7b2d7933cd32a1ec3dc2ae44d';\n\nconsole.log(\n  `'example-contract' is running its 'send-transaction.js' file and is sending a transaction, see it in 'transactions.json'`\n);\naddTransaction(privateKey, toAddress, 0);\n",
-          "set-favorite-number.js": "const { updateContractState } = (await import('./blockchain-helpers.js'));\n\nconst contractState = JSON.parse(process.env.CONTRACT_STATE);\nconst contractAddress = process.env.CONTRACT_ADDRESS;\nconst args = JSON.parse(process.env.ARGS);\n\ncontractState.favoriteNumber = args[0];\n\nconsole.log(\n  `'example-contract' is running its 'set-favorite-number.js' file and updating the 'favoriteNumber' property in its state to ${args[0]}, see it in 'smart-contracts.json'`\n);\nupdateContractState(contractAddress, contractState);\n"
+          "get-description.js": "const contractState = JSON.parse(process.env.CONTRACT_STATE);\n\nconsole.log(`Here's the description of the fundraising contract: ${contractState.description}`);\n",
+          "get-state.js": "const contractState = JSON.parse(process.env.CONTRACT_STATE);\n\nconsole.log(contractState);\n",
+          "on-new-block.js": "const { addTransaction, updateContractState } = (await import('./blockchain-helpers.js'));\n\nconst contractState = JSON.parse(process.env.CONTRACT_STATE);\nconst contractAddress = process.env.CONTRACT_ADDRESS;\nconst privateKey = process.env.PRIVATE_KEY;\nconst creatorAddress = process.env.CREATOR_ADDRESS;\nconst blockchainLength = process.env.BLOCKCHAIN_LENGTH;\n// Add your code below\n\nif(blockchainLength >= 7 && contractState.status != 'closed') {\n    contractState.transactions.forEach(tx => {\n        addTransaction(privateKey, tx.fromAddress, tx.amount);\n    });\n\n    contractState.status = 'closed';\n    updateContractState(contractAddress, contractState);\n}\n",
+          "on-transaction.js": "const { addTransaction, updateContractState } = (await import('./blockchain-helpers.js'));\n\nconst contractState = JSON.parse(process.env.CONTRACT_STATE);\nconst contractAddress = process.env.CONTRACT_ADDRESS;\nconst privateKey = process.env.PRIVATE_KEY;\nconst creatorAddress = process.env.CREATOR_ADDRESS;\nconst transaction = JSON.parse(process.env.TRANSACTION);\n// Add your code below\n\ncontractState.transactions.push(transaction);\ncontractState.raised += transaction.amount;\n\nif (contractState.raised >= 150) {\n    addTransaction(privateKey, creatorAddress, contractState.raised);\n    contractState.status = \"closed\";\n}\n\nupdateContractState(contractAddress, contractState);\n",
+          "other-files.js": "const { addTransaction, updateContractState } = (await import('./blockchain-helpers.js'));\n\nconst contractState = JSON.parse(process.env.CONTRACT_STATE);\nconst contractAddress = process.env.CONTRACT_ADDRESS;\nconst privateKey = process.env.PRIVATE_KEY;\nconst creatorAddress = process.env.CREATOR_ADDRESS;\nconst blockchainLength = process.env.BLOCKCHAIN_LENGTH;\nconst args = JSON.parse(process.env.ARGS);\n",
+          "update-description.js": "const { addTransaction, updateContractState } = (await import('./blockchain-helpers.js'));\n\nconst contractState = JSON.parse(process.env.CONTRACT_STATE);\nconst contractAddress = process.env.CONTRACT_ADDRESS;\n\nconst args = JSON.parse(process.env.ARGS);\nconsole.log(args);\ncontractState.description = args[0];\nupdateContractState(contractAddress, contractState);\n"
         },
         "state": {
           "status": "open",
-          "favoriteNumber": 10
+          "description": "Smart contract",
+          "transactions": [],
+          "raised": 0
         }
       }
     ]
   },
   {
-    "hash": "00b2887c39b3fdcffba6297872bae8712330a3a62ac7a9f61b9f025a2d943d83",
-    "previousHash": "005bf5d75253487a4c7fc2d64f208f40708a6954cd6de89b7bc84f1f9e84cfb1",
-    "nonce": 183,
+    "hash": "0083cdff9cd2d72bfbac1a6ab8382aafcfa30919ab41be88ecd8c7e8d6842ba3",
+    "previousHash": "00952356165c294efe16cd6f646cac3c8a05d5df401e2565c8514dd01ed6cfd9",
+    "nonce": 524,
     "transactions": [
       {
         "fromAddress": null,
         "toAddress": "047f18310ca11477a0ccd328df42d7ff9cd068ac6816d9c76535b0fe1b7b45ab7312ff6167964c050e66c6db00642c5492",
         "amount": 50
-      },
-      {
-        "fromAddress": "0412bb6129d866a633aa62270e84be8630ebf803a64f6879a5ac08f12cde2aeca2eb272481fcc742d568aad80e44ba68c5",
-        "toAddress": "04a66d4337696315470df246f67592c6e1010fe3bb3a0ed04df47084f452355fea2b1d7ff6c5868a8c7e443cf29586af18",
-        "amount": 0,
-        "hash": "d5ef3a9422241ca54338d5bc9d6ded25ab386bb54580ece44e8bf7601e4f347f",
-        "signature": "3035021808f4f64a14bbe3a71d9d9ac581c07c85af97d04731ed79d602190095314ac994bcecd736e83a2f7d03574cf8d10d1ed2805f85"
       }
     ],
     "smartContracts": [
       {
-        "address": "04a66d4337696315470df246f67592c6e1010fe3bb3a0ed04df47084f452355fea2b1d7ff6c5868a8c7e443cf29586af18",
+        "address": "043f1e6977e80898479e43900aea23822c3b1250a7b4753aa83f465df040d9a749fd1219874ae568fbaa0c0362f0de7340",
         "state": {
           "status": "open",
-          "favoriteNumber": "11"
+          "description": "Smart contract to raise funds for my start up.",
+          "transactions": [],
+          "raised": 0
         }
       }
     ]
+  },
+  {
+    "hash": "00055d10c4bca929434795155bda80304873de5c34d19a7992eac06dbe172865",
+    "previousHash": "0083cdff9cd2d72bfbac1a6ab8382aafcfa30919ab41be88ecd8c7e8d6842ba3",
+    "nonce": 553,
+    "transactions": [
+      {
+        "fromAddress": null,
+        "toAddress": "0412bb6129d866a633aa62270e84be8630ebf803a64f6879a5ac08f12cde2aeca2eb272481fcc742d568aad80e44ba68c5",
+        "amount": 50
+      }
+    ],
+    "smartContracts": []
+  },
+  {
+    "hash": "00df7c1f3a50802b68984c67b32dd4276ae96dbd817efc82121f5a0a56894f61",
+    "previousHash": "00055d10c4bca929434795155bda80304873de5c34d19a7992eac06dbe172865",
+    "nonce": 7,
+    "transactions": [
+      {
+        "fromAddress": null,
+        "toAddress": "0412bb6129d866a633aa62270e84be8630ebf803a64f6879a5ac08f12cde2aeca2eb272481fcc742d568aad80e44ba68c5",
+        "amount": 50
+      }
+    ],
+    "smartContracts": []
   }
 ]

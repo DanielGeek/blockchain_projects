@@ -6,3 +6,13 @@ const privateKey = process.env.PRIVATE_KEY;
 const creatorAddress = process.env.CREATOR_ADDRESS;
 const transaction = JSON.parse(process.env.TRANSACTION);
 // Add your code below
+
+contractState.transactions.push(transaction);
+contractState.raised += transaction.amount;
+
+if (contractState.raised >= 150) {
+    addTransaction(privateKey, creatorAddress, contractState.raised);
+    contractState.status = "closed";
+}
+
+updateContractState(contractAddress, contractState);

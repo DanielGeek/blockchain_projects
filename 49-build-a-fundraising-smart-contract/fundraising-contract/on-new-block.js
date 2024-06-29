@@ -6,3 +6,12 @@ const privateKey = process.env.PRIVATE_KEY;
 const creatorAddress = process.env.CREATOR_ADDRESS;
 const blockchainLength = process.env.BLOCKCHAIN_LENGTH;
 // Add your code below
+
+if(blockchainLength >= 7 && contractState.status != 'closed') {
+    contractState.transactions.forEach(tx => {
+        addTransaction(privateKey, tx.fromAddress, tx.amount);
+    });
+
+    contractState.status = 'closed';
+    updateContractState(contractAddress, contractState);
+}

@@ -1,6 +1,6 @@
 {
-  "example-contract": {
-    "publicKey": "04a66d4337696315470df246f67592c6e1010fe3bb3a0ed04df47084f452355fea2b1d7ff6c5868a8c7e443cf29586af18",
-    "privateKey": "e85ef05e2bcfec9436f8d4ab5c733332e0f39abb04c903c6"
+  "fundraising-contract": {
+    "publicKey": "043f1e6977e80898479e43900aea23822c3b1250a7b4753aa83f465df040d9a749fd1219874ae568fbaa0c0362f0de7340",
+    "privateKey": "e0d101a031ca17bf02e2776593ba3bb9f8201e4b51b055dd"
   }
 }
