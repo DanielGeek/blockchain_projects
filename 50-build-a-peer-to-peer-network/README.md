@@ -28,3 +28,23 @@ A server should never attempt to create a socket connection to its own address.
 You should clone your node-1 folder at least two times.
 
 All of your nodes should have the exact same code, with the exception of the .env file.
+
+You should have at least three nodes running, that use ports 4001, 4002, and 4003.
+
+All of your nodes should have an open socket connection to all other nodes.
+
+## Bonus:
+The add-transaction.js file is completed so that when you run node add-transaction.js from a node-x folder, it sends { type: 'TRANSACTION', data: <transaction_object> } to your server. Make it so when a server receives this message, it uses the imported writeTransactions function to add it to its local transaction pool (transactions.json) and sends the same message to all the other servers, where they do the same thing. You may need to get creative to stop infinite loops of messages.
+
+## Hints:
+Adding some console.log statements when events happen can help.
+
+## How to work with a Web Socket Server:
+const myServer = new WebSocketServer({ port }) to create a server listening on the given port
+myServer.on('connection', socket => {}) runs when a socket connects to your server
+socket.on('message', dataString => {}) runs when a socket sends a message to your server. Nest it within the connection function
+
+## How to work with Sockets:
+const socket = new WebSocket(address) to attempt to connect to a server at the given address
+socket.on('open', () => {}) runs when a connection to a server has been established
+socket.on('message', dataString => {}) runs when a message is received from a connected server

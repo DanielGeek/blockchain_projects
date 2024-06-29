@@ -13,3 +13,13 @@ const openedSockets = [];
 const connectedAddresses = [];
 const attemptingToConnectAddresses = [];
 // Add your code below
+
+const myServer = new WebSocketServer({ port: MY_PORT });
+
+myServer.on('connection', socket => {
+    console.log('connection recieved');
+
+    socket.on('message', dataString => {
+        console.log('message received: ' + dataString);
+    });
+});
