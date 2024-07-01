@@ -21,21 +21,23 @@ myServer.on('connection', socket => {
 
     socket.on('message', dataString => {
         console.log(`message received: ${dataString}`);
+        const message = JSON.parse(dataString);
+        message.data.forEach(address => connect(address));
     });
 });
 
 function connect(address) {
-    if (address != MY_ADDRESS && !attemptingToConnectAddresses.includes(address)) {
+    if (address != MY_ADDRESS && !attemptingToConnectAddresses.includes(address) && !connectedAddresses.includes(address)) {
         console.log(`attempting to connect to ${address}`);
         attemptingToConnectAddresses.push(address);
 
         const socket = new WebSocket(address);
         socket.on('open', () => {
-            console.log('connection opened');
+            console.log(`connection to ${address} opened`);
             attemptingToConnectAddresses.splice(attemptingToConnectAddresses.indexOf(address), 1);
             connectedAddresses.push(address);
             socket.send(
-                JSON.stringify({ TYPE: 'HANDSHAKE', data: [MY_ADDRESS, ...connectedAddresses] })
+                JSON.stringify({ type: 'HANDSHAKE', data: [MY_ADDRESS, ...connectedAddresses] })
             );
         });
 
