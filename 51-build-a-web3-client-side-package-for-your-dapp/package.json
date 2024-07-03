@@ -1,0 +1,17 @@
+{
+  "name": "51-build-a-web3-client-side-package-for-your-dapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "express": "^4.19.2",
+    "logover": "^2.0.0"
+  }
+}
