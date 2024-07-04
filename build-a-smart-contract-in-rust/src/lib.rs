@@ -1,5 +1,29 @@
-// Write your code here:
+use wasm_bindgen::prelude::*;
+use serde::{Deserialize, Serialize};
 
+#[derive(Serialize, Deserialize)]
+pub struct Account {
+    pub total_clicks: u64,
+    pub clickers: Vec<String>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Context {
+    pub base_account: Account
+}
+
+// Write your code here:
+pub fn initialise() -> Result<JsValue, JsError> {
+    todo!()
+}
+
+pub fn set_click(context: JsValue, address: String) -> Result<JsValue, JsError> {
+    todo!()
+}
+
+pub fn get_contract_account(context: JsValue) -> Result<JsValue, JsError> {
+    todo!()
+}
 
 // Do not edit below this line!
 #[cfg(test)]
