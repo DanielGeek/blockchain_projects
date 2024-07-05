@@ -12,17 +12,31 @@ pub struct Context {
     pub base_account: Account
 }
 
-// Write your code here:
+#[wasm_bindgen]
 pub fn initialise() -> Result<JsValue, JsError> {
-    todo!()
+    let context = Context {
+        base_account: Account {
+            total_clicks: 0,
+            clickers: vec![]
+        }
+    };
+    Ok(JsValue::from_serde(&context).unwrap())
 }
 
+#[wasm_bindgen]
 pub fn set_click(context: JsValue, address: String) -> Result<JsValue, JsError> {
-    todo!()
+    let mut context: Context = context.into_serde()?;
+    let account = &mut context.base_account;
+    account.total_clicks += 1;
+    account.clickers.push(address);
+    Ok(JsValue::from_serde(&context).unwrap())
 }
 
+#[wasm_bindgen]
 pub fn get_contract_account(context: JsValue) -> Result<JsValue, JsError> {
-    todo!()
+    let context: Context = context.into_serde()?;
+    let account = &context.base_account;
+    Ok(JsValue::from_serde(&account).unwrap())
 }
 
 // Do not edit below this line!
