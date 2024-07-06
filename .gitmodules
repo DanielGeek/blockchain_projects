@@ -7,3 +7,9 @@
 [submodule "56-foundry-account-abstraction/lib/forge-std"]
 	path = 56-foundry-account-abstraction/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "56-foundry-account-abstraction/lib/account-abstraction"]
+	path = 56-foundry-account-abstraction/lib/account-abstraction
+	url = https://github.com/eth-infinitism/account-abstraction
+[submodule "56-foundry-account-abstraction/lib/openzeppelin-contracts"]
+	path = 56-foundry-account-abstraction/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
