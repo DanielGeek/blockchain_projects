@@ -10,10 +10,21 @@ import {SIG_VALIDATION_FAILED, SIG_VALIDATION_SUCCESS} from "lib/account-abstrac
 import {IEntryPoint} from "lib/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 
 contract MinimalAccount is IAccount, Ownable {
+    /*//////////////////////////////////////////////////////////////
+                                 ERRORS
+    //////////////////////////////////////////////////////////////*/
     error MinimalAccount__NotFromEntryPoint();
-    
+    error MinimalAccount_NotFromEntryPointOrOwner();
+    error MinimalAccount_CallFailed(bytes);
+
+    /*//////////////////////////////////////////////////////////////
+                            STATE VARIABLES
+    //////////////////////////////////////////////////////////////*/
     IEntryPoint private immutable i_entryPoint;
 
+    /*//////////////////////////////////////////////////////////////
+                               MODIFIERS
+    //////////////////////////////////////////////////////////////*/
     modifier requireFromEntryPoint() {
         if (msg.sender != address(i_entryPoint)) {
             revert MinimalAccount__NotFromEntryPoint();
@@ -21,15 +32,32 @@ contract MinimalAccount is IAccount, Ownable {
         _;
     }
 
+    modifier requireFromEntryPointOrOwner() {
+        if (msg.sender != address(i_entryPoint) && msg.sender != owner()) {
+            revert MinimalAccount_NotFromEntryPointOrOwner();
+        }
+        _;
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                               FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
     constructor(address entryPoint) Ownable(msg.sender) {
         i_entryPoint = IEntryPoint(entryPoint);
+    }
+
+    receive() external payable {
+        
     }
 
     /*//////////////////////////////////////////////////////////////
                         EXTERNAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
     function execute(address dest, uint256 value, bytes calldata functionData) external requireFromEntryPoint() {
-
+        (bool success, bytes memory result) = dest.call{value: value}(functionData);
+        if(!success) {
+            revert MinimalAccount_CallFailed(result);
+        }
     }
     
     // A signature is valid, if it's the MinimalAccount owner
