@@ -53,4 +53,8 @@ contract MinimalAccountTest is Test {
         vm.expectRevert(MinimalAccount.MinimalAccount_NotFromEntryPointOrOwner.selector);
         minimalAccount.execute(dest, value, functionData);
     }
+
+    function testValidationOfUserOps() public {
+        
+    }
 }
