@@ -5,6 +5,13 @@
 
 # Help Commands
 `forge install Cyfrin/foundry-era-contracts@0.0.3 --no-commit`
+`forge create --zksync --legacy`
+
+# Help info
+- https://docs.zksync.io/build/developer-reference/era-contracts/system-contracts
+- System Contract Address `https://explorer.zksync.io/address/0x0000000000000000000000000000000000008006#contract`
+- foundryup-zksync `https://docs.zksync.io/build/tooling/foundry/getting-started`
+- forge build --zksync
 
 <br/>
 <p align="center">
@@ -14,6 +21,7 @@
 
 - [Account Abstraction](#account-abstraction)
 - [Help Commands](#help-commands)
+- [Help info](#help-info)
   - [What is Account Abstraction?](#what-is-account-abstraction)
   - [What's this repo show?](#whats-this-repo-show)
   - [What does this repo not show?](#what-does-this-repo-not-show)
