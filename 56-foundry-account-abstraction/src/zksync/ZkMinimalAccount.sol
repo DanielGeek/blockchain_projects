@@ -14,7 +14,7 @@ import {SystemContractsCaller} from
     "lib/foundry-era-contracts/src/system-contracts/contracts/libraries/SystemContractsCaller.sol";
 import {
     NONCE_HOLDER_SYSTEM_CONTRACT,
-    BOOTLOEADER_FORMAL_ADDRESS,
+    BOOTLOADER_FORMAL_ADDRESS,
     DEPLOYER_SYSTEM_CONTRACT
 } from "lib/foundry-era-contracts/src/system-contracts/contracts/Constants.sol";
 import {INonceHolder} from "lib/foundry-era-contracts/src/system-contracts/contracts/interfaces/INonceHolder.sol";
@@ -46,30 +46,34 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 contract ZkMinimalAccount is IAccount, Ownable {
     using MemoryTransactionHelper for Transaction;
 
-    error ZkMinimalAccount_NotEnoughBalance();
+    error ZkMinimalAccount__NotEnoughBalance();
     error ZkMinimalAccount__NotFromBootLoader();
     error ZkMinimalAccount__ExecutionFailed();
     error ZkMinimalAccount__NotFromBootLoaderOrOwner();
-    error ZkMinimalAccount_FailedToPay();
+    error ZkMinimalAccount__FailedToPay();
 
     /*//////////////////////////////////////////////////////////////
                                MODIFIERS
     //////////////////////////////////////////////////////////////*/
     modifier requireFromBootLoader() {
-        if (msg.sender != BOOTLOEADER_FORMAL_ADDRESS) {
+        if (msg.sender != BOOTLOADER_FORMAL_ADDRESS) {
             revert ZkMinimalAccount__NotFromBootLoader();
         }
+        _;
     }
     
     modifier requireFromBootLoaderOrOwner() {
-        if (msg.sender != BOOTLOEADER_FORMAL_ADDRESS && msg.sender != owner()) {
+        if (msg.sender != BOOTLOADER_FORMAL_ADDRESS && msg.sender != owner()) {
             revert ZkMinimalAccount__NotFromBootLoaderOrOwner();
         }
+        _;
     }
 
     constructor() Ownable(msg.sender) {
 
     }
+
+    receive() external payable {}
 
     /*//////////////////////////////////////////////////////////////
                            EXTERNAL FUNCTIONS
@@ -85,6 +89,41 @@ contract ZkMinimalAccount is IAccount, Ownable {
         requireFromBootLoader
         returns (bytes4 magic)
     {
+        return _validateTransaction(_transaction);
+    }
+
+    function executeTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
+        external
+        payable
+        requireFromBootLoaderOrOwner
+    {
+        return _executeTransaction(_transaction);
+    }
+
+    function executeTransactionFromOutside(Transaction memory _transaction) external payable {
+        _validateTransaction(_transaction);
+        _executeTransaction(_transaction);
+    }
+
+    function payForTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
+        external
+        payable
+    {
+        bool success = _transaction.payToTheBootloader();
+        if (success) {
+            revert ZkMinimalAccount__FailedToPay();
+        }
+    }
+
+    function prepareForPaymaster(bytes32 _txHash, bytes32 _possibleSignedHash, Transaction memory _transaction)
+        external
+        payable
+    {}
+
+    /*//////////////////////////////////////////////////////////////
+                           INTERNAL FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+    function _validateTransaction(Transaction memory _transaction) internal returns (bytes4 magic) {
         // Call nonceholder
         // increment nonce
         // call(x, y, z) -> system contract call
@@ -98,64 +137,38 @@ contract ZkMinimalAccount is IAccount, Ownable {
         // Check for fee to pay
         uint256 totalRequiredBalance = _transaction.totalRequiredBalance();
         if (totalRequiredBalance > address(this).balance) {
-            revert ZkMinimalAccount_NotEnoughBalance();
+            revert ZkMinimalAccount__NotEnoughBalance();
         }
 
         // Check the signature
         bytes32 txHash = _transaction.encodeHash();
-        bytes32 convertedHash = MessageHashUtils.toEthSignedMessageHash(txHash);
-        address signer = ECDSA.recover(convertedHash, _transaction.signature);
+        // bytes32 convertedHash = MessageHashUtils.toEthSignedMessageHash(txHash);
+        address signer = ECDSA.recover(txHash, _transaction.signature);
         bool isValidSigner = signer == owner();
         if (isValidSigner) {
             magic = ACCOUNT_VALIDATION_SUCCESS_MAGIC;
         } else {
-            bytes4(0);
+            magic = bytes4(0);
         }
         return magic;
     }
 
-    function executeTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
-        external
-        payable
-        requireFromBootLoaderOrOwner
-    {
+    function _executeTransaction(Transaction memory _transaction) internal {
         address to = address(uint160(_transaction.to));
         uint128 value = Utils.safeCastToU128(_transaction.value);
         bytes memory data = _transaction.data;
 
         if (to == address(DEPLOYER_SYSTEM_CONTRACT)) {
-            uint32 gas = Utils.safeCastToU32(gaslef());
+            uint32 gas = Utils.safeCastToU32(gasleft());
             SystemContractsCaller.systemCallWithPropagatedRevert(gas, to, value, data);
         } else {
             bool success;
             assembly {
-                success := call(gast(), to, value, add(data, 0x20), mload(data), 0, 0)
+                success := call(gas(), to, value, add(data, 0x20), mload(data), 0, 0)
             }
             if(!success) {
                 revert ZkMinimalAccount__ExecutionFailed();
             }
         }
     }
-
-    function executeTransactionFromOutside(Transaction memory _transaction) external payable
-    {}
-
-    function payForTransaction(bytes32 /*_txHash*/, bytes32 /*_suggestedSignedHash*/, Transaction memory _transaction)
-        external
-        payable
-    {
-        bool success = _transaction.payToTheBootloader();
-        if (success) {
-            revert ZkMinimalAccount_FailedToPay();
-        }
-    }
-
-    function prepareForPaymaster(bytes32 _txHash, bytes32 _possibleSignedHash, Transaction memory _transaction)
-        external
-        payable
-    {}
-
-    /*//////////////////////////////////////////////////////////////
-                           INTERNAL FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
 }
