@@ -12,6 +12,8 @@
 - System Contract Address `https://explorer.zksync.io/address/0x0000000000000000000000000000000000008006#contract`
 - foundryup-zksync `https://docs.zksync.io/build/tooling/foundry/getting-started`
 - forge build --zksync
+- forge test --mt testZkOwnerCanExecuteCommands --zksync
+- forge test --mt testZkValidateTransaction --zksync --system-mode=true 
 
 <br/>
 <p align="center">

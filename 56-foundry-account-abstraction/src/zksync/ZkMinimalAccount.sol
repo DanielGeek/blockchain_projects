@@ -153,6 +153,7 @@ contract ZkMinimalAccount is IAccount, Ownable {
         return magic;
     }
 
+
     function _executeTransaction(Transaction memory _transaction) internal {
         address to = address(uint160(_transaction.to));
         uint128 value = Utils.safeCastToU128(_transaction.value);
