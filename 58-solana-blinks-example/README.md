@@ -32,6 +32,9 @@ npm install
 npm run dev
 ```
 
+# Test it
+https://dial.to/?action=solana-action:http://localhost:3000/api/action
+
 ## Apps
 
 ### web
