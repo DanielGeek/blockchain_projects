@@ -2,6 +2,9 @@
 
 This project is generated with the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
 
+# This project is about solana blinks and actions
+
+
 ## Getting Started
 
 ### Prerequisites

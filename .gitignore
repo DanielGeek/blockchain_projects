@@ -7,3 +7,5 @@ web3.0/smart_contract/hardhat.config.js
 23-chainlink_solana_dapp/id.json
 56-foundry-account-abstraction/zkout/Address.sol/Address.json
 .nx/cache/19.0.0-nx.darwin-arm64.node
+58-solana-blinks-example/.env
+58-solana-blinks-example/.env.local
