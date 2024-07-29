@@ -19,3 +19,6 @@
 [submodule "59-security-course/1-basic-solc-project/lib/forge-std"]
 	path = 59-security-course/1-basic-solc-project/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "59-security-course/1-basic-solc-project/lib/openzeppelin-contracts"]
+	path = 59-security-course/1-basic-solc-project/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
