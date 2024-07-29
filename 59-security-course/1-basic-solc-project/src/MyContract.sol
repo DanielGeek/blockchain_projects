@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+
+pragma solidity ^0.8.26;
 
 contract MyContract {
     uint256 public shouldAlwaysBeZero = 0;
@@ -17,4 +18,9 @@ contract MyContract {
     }
 
     // forge inspect MyContract storage
+
+    fallback() external payable {}
+
+    receive() external payable {}
+
 }
