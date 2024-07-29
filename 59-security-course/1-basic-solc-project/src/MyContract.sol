@@ -15,4 +15,6 @@ contract MyContract {
         // }
         hiddenValue = data;
     }
+
+    // forge inspect MyContract storage
 }
