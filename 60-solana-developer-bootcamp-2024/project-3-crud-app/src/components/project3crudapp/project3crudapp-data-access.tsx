@@ -2,13 +2,19 @@
 
 import {getProject3crudappProgram, getProject3crudappProgramId} from '@project/anchor'
 import {useConnection} from '@solana/wallet-adapter-react'
-import {Cluster, Keypair, PublicKey} from '@solana/web3.js'
+import {Cluster, PublicKey} from '@solana/web3.js'
 import {useMutation, useQuery} from '@tanstack/react-query'
 import {useMemo} from 'react'
 import toast from 'react-hot-toast'
 import {useCluster} from '../cluster/cluster-data-access'
 import {useAnchorProvider} from '../solana/solana-provider'
 import {useTransactionToast} from '../ui/ui-layout'
+
+interface CreateEntryArgs {
+    title: string;
+    message: string;
+    owner: PublicKey;
+}
 
 export function useProject3crudappProgram() {
   const { connection } = useConnection()
@@ -20,7 +26,7 @@ export function useProject3crudappProgram() {
 
   const accounts = useQuery({
     queryKey: ['project3crudapp', 'all', { cluster }],
-    queryFn: () => program.account.project3crudapp.all(),
+    queryFn: () => program.account.journalEntryState.all(),
   })
 
   const getProgramAccount = useQuery({
@@ -28,23 +34,26 @@ export function useProject3crudappProgram() {
     queryFn: () => connection.getParsedAccountInfo(programId),
   })
 
-  const initialize = useMutation({
-    mutationKey: ['project3crudapp', 'initialize', { cluster }],
-    mutationFn: (keypair: Keypair) =>
-      program.methods.initialize().accounts({ project3crudapp: keypair.publicKey }).signers([keypair]).rpc(),
-    onSuccess: (signature) => {
-      transactionToast(signature)
-      return accounts.refetch()
+  const createEntry = useMutation<string, Error, CreateEntryArgs>({
+    mutationKey: [`journalEntry`, `create`, { cluster }],
+    mutationFn: async ({ title, message }) => {
+        return program.methods.createJournalEntry(title, message).rpc();
     },
-    onError: () => toast.error('Failed to initialize account'),
-  })
+    onSuccess: (signature) => {
+        transactionToast(signature);
+        accounts.refetch();
+    },
+    onError: (error) => {
+        toast.error(`Error creating entry: ${error.message}`);
+    },
+  });
 
   return {
     program,
     programId,
     accounts,
     getProgramAccount,
-    initialize,
+    createEntry,
   }
 }
 
@@ -55,50 +64,37 @@ export function useProject3crudappProgramAccount({ account }: { account: PublicK
 
   const accountQuery = useQuery({
     queryKey: ['project3crudapp', 'fetch', { cluster, account }],
-    queryFn: () => program.account.project3crudapp.fetch(account),
-  })
+    queryFn: () => program.account.journalEntryState.fetch(account),
+  });
 
-  const closeMutation = useMutation({
-    mutationKey: ['project3crudapp', 'close', { cluster, account }],
-    mutationFn: () => program.methods.close().accounts({ project3crudapp: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accounts.refetch()
+  const updateEntry = useMutation<string, Error, CreateEntryArgs>({
+    mutationKey: [`journalEntry`, `update`, { cluster }],
+    mutationFn: async ({ title, message }) => {
+        return program.methods.updateJournalEntry(title, message).rpc();
     },
-  })
+    onSuccess: (signature) => {
+        transactionToast(signature);
+        accounts.refetch();
+    },
+    onError: (error) => {
+        toast.error(`Error updating entry: ${error.message}`);
+    },
+  });
 
-  const decrementMutation = useMutation({
-    mutationKey: ['project3crudapp', 'decrement', { cluster, account }],
-    mutationFn: () => program.methods.decrement().accounts({ project3crudapp: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
+  const deleteEntry = useMutation({
+    mutationKey: [`journalEntry`, `delete`, { cluster }],
+    mutationFn: (title: string) => {
+        return program.methods.deleteJournalEntry(title).rpc();
     },
-  })
-
-  const incrementMutation = useMutation({
-    mutationKey: ['project3crudapp', 'increment', { cluster, account }],
-    mutationFn: () => program.methods.increment().accounts({ project3crudapp: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
+    onSuccess: (signature) => {
+        transactionToast(signature);
+        accounts.refetch();
     },
-  })
-
-  const setMutation = useMutation({
-    mutationKey: ['project3crudapp', 'set', { cluster, account }],
-    mutationFn: (value: number) => program.methods.set(value).accounts({ project3crudapp: account }).rpc(),
-    onSuccess: (tx) => {
-      transactionToast(tx)
-      return accountQuery.refetch()
-    },
-  })
+  });
 
   return {
     accountQuery,
-    closeMutation,
-    decrementMutation,
-    incrementMutation,
-    setMutation,
+    updateEntry,
+    deleteEntry,
   }
 }
