@@ -21,7 +21,7 @@ export function getProject3crudappProgramId(cluster: Cluster) {
     case 'devnet':
     case 'testnet':
       // This is the program ID for the Project3crudapp program on devnet and testnet.
-      return new PublicKey('CounNZdmsQmWh7uVngV9FXW2dZ6zAgbJyYsvBpqbykg')
+      return new PublicKey('YQfvuoX2rQntqMdewbQXvpUzSPHkyhTN5MmsfTaiTJ1')
     case 'mainnet-beta':
     default:
       return PROJECT3CRUDAPP_PROGRAM_ID

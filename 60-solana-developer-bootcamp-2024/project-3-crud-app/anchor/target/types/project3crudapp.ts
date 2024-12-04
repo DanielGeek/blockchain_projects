@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/project3crudapp.json`.
  */
 export type Project3crudapp = {
-  "address": "AsjZ3kWAUSQRNt2pZVeJkywhZ6gpLpHZmJjduPmKZDZZ",
+  "address": "YQfvuoX2rQntqMdewbQXvpUzSPHkyhTN5MmsfTaiTJ1",
   "metadata": {
     "name": "project3crudapp",
     "version": "0.1.0",
