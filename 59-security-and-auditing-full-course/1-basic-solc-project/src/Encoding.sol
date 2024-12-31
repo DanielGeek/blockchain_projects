@@ -16,4 +16,14 @@ contract Encoding {
     bytes memory someString = abi.encode("Some string");
     return someString;
   }
+
+  function encodeStringPacked() public pure returns(bytes memory) {
+    bytes memory someString = abi.encodePacked("Some string");
+    return someString;
+  }
+
+    function encodeStringPacked() public pure returns(bytes memory) {
+        bytes memory someString = abi.encodePacked("Some string");
+        return someString;
+    }
 }
