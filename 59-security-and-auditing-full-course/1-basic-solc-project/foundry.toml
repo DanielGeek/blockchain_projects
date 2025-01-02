@@ -13,5 +13,8 @@ dictionary_weight = 40
 include_storage = true
 include_push_bytes = true
 
+[rpc_endpoint]
+mainnet = "https://mainnet.infura.io/v3/your-infura-key"
+
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

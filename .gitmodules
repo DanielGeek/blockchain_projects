@@ -22,3 +22,6 @@
 [submodule "59-security-course/1-basic-solc-project/lib/openzeppelin-contracts"]
 	path = 59-security-course/1-basic-solc-project/lib/openzeppelin-contracts
 	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "59-security-and-auditing-full-course/1-basic-solc-project/lib/openzeppelin-contracts"]
+	path = 59-security-and-auditing-full-course/1-basic-solc-project/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

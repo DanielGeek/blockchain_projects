@@ -9,3 +9,4 @@ web3.0/smart_contract/hardhat.config.js
 .nx/cache/19.0.0-nx.darwin-arm64.node
 58-solana-blinks-example/.env
 58-solana-blinks-example/.env.local
+59-security-and-auditing-full-course/1-basic-solc-project/lib/openzeppelin-contracts
