@@ -8,6 +8,9 @@ error NotEnoughEther();
 error BuyingClosed();
 error AmountTooLow();
 error AmountExceeded();
+error TargetNotReached();
+error EthTransferFailed();
+error NotOwner();
 
 contract Factory {
     uint256 public constant TARGET = 3 ether;
@@ -121,5 +124,39 @@ contract Factory {
 
         // Emit an event
         emit Buy(_token, _amount);
+    }
+
+    function deposit(address _token) external {
+        // The remaining token balance and the ETH raised
+        // would go into a liquidity pool like Uniswap V3.
+        // For simplicity we'll just transfer remaining
+        // tokens and ETH raised to the creator.
+
+        Token token = Token(_token);
+        TokenSale memory sale = tokenToSale[_token];
+
+        if(sale.isOpen) {
+            revert TargetNotReached();
+        }
+
+        // Transfer tokens
+        token.transfer(sale.creator, token.balanceOf(address(this)));
+
+        // Transfer ETH raised
+        (bool success, ) = payable(sale.creator).call{value: sale.raised}("");
+        if (!success) {
+            revert EthTransferFailed();
+        }
+    }
+
+    function withdraw(uint256 _amount) external {
+        if (msg.sender != owner) {
+            revert NotOwner();
+        }
+
+        (bool success, ) = payable(owner).call{value: _amount}("");
+        if (!success) {
+            revert EthTransferFailed();
+        }
     }
 }
