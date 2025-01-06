@@ -126,3 +126,13 @@ NEXT_PUBLIC_EXPLORER = https://holesky.etherscan.io/
 NEXT_PUBLIC_FORMSPREE_API =
 
 ```
+### Deployed Staking Contract Address
+[0x3DB4b32D210a0530a39053Ecb556aADE67510ec7](https://holesky.etherscan.io/address/0x3db4b32d210a0530a39053ecb556aade67510ec7)
+
+
+### Deployed TBC Token (TBC)
+[0x9e781d74d30afadf292fbe746a3dbc71280427bc](https://holesky.etherscan.io/token/0x9e781d74d30afadf292fbe746a3dbc71280427bc)
+
+
+### Deployed TokenICO
+[0xDBeCeDa642c27AA1a34c3E3fC2F2Fe57710D40bf](https://holesky.etherscan.io/address/0xDBeCeDa642c27AA1a34c3E3fC2F2Fe57710D40bf)
