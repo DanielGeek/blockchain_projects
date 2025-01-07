@@ -21,7 +21,6 @@ const CURRENCY = process.env.NEXT_PUBLIC_CURRENCY;
 const DECIMALS = process.env.NEXT_PUBLIC_NETWORK_DECIMALS;
 const NAME = process.env.NEXT_PUBLIC_NETWORK_NAME;
 const NETWORK = process.env.NEXT_PUBLIC_NETWORK;
-// const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 export default function App({ Component, pageProps }) {
   // NETWORK
@@ -65,7 +64,6 @@ export default function App({ Component, pageProps }) {
 
   const { connectors } = getDefaultWallets({
     appName: "StakingDapp",
-    // projectId,
     chains,
   });
 
