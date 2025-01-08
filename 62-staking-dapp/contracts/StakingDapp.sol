@@ -544,9 +544,17 @@ error LockIsActive();
 error AmountExceedsBalance();
 error CanNotWithdrawDepositedTokens();
 error NoRewardsToClaim();
+error InvalidDepositTokenAddress();
+error InvalidRewardTokenAddress();
+error InvalidAPY();
+error InvalidLockDays();
 
 contract StakingDapp is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
+
+    uint256 private constant DECIMALS = 10 ** 18;
+    uint private constant SECONDS_IN_A_DAY = 86400; // 1 Day
+    uint private constant SECONDS_IN_A_MINUTE = 60; // 1 Minute
 
     struct UserInfo {
         uint256 amount;
@@ -570,7 +578,6 @@ contract StakingDapp is Ownable, ReentrancyGuard {
         uint256 timestamp;
     }
 
-    uint256 decimals = 10 ** 18;
     uint256 public poolCount;
     PoolInfo[] public poolInfo;
 
@@ -587,6 +594,21 @@ contract StakingDapp is Ownable, ReentrancyGuard {
         uint256 _apy,
         uint _lockDays
     ) public onlyOwner {
+
+        if (address(_depositToken) == address(0)) {
+            revert InvalidDepositTokenAddress();
+        }
+        if (address(_rewardToken) == address(0)) {
+            revert InvalidRewardTokenAddress();
+        }
+
+        if (_apy <= 0 || _apy > 1000) {
+            revert InvalidAPY();
+        }
+
+        if (_lockDays <= 0 || _lockDays > 3650) { // 10 years max lock Days
+            revert InvalidLockDays();
+        }
         
         poolInfo.push(PoolInfo({
             depositToken: _depositToken,
@@ -621,8 +643,8 @@ contract StakingDapp is Ownable, ReentrancyGuard {
         user.amount += _amount;
         user.lastRewardAt = block.timestamp;
 
-        // user.lockUntil = block.timestamp + (pool.lockDays * 86400); // 1 Day
-        user.lockUntil = block.timestamp + (pool.lockDays * 60); // 1 Second
+        // user.lockUntil = block.timestamp + (pool.lockDays * SECONDS_IN_A_DAY); // 1 Day
+        user.lockUntil = block.timestamp + (pool.lockDays * SECONDS_IN_A_MINUTE); // 1 Minute
 
         depositedTokens[address(pool.depositToken)] += _amount;
 
@@ -663,14 +685,15 @@ contract StakingDapp is Ownable, ReentrancyGuard {
     function _calcPendingReward(UserInfo storage user, uint _pid) internal view returns(uint) {
         PoolInfo storage pool = poolInfo[_pid];
 
-        // uint daysPassed = (block.timestamp - user.lastRewardAt) / 86400;  // 1 day
-        uint daysPassed = (block.timestamp - user.lastRewardAt) / 60;  // 1 second
+        // uint daysPassed = (block.timestamp - user.lastRewardAt) / SECONDS_IN_A_DAY;  // 1 day
+        uint daysPassed = (block.timestamp - user.lastRewardAt) / SECONDS_IN_A_MINUTE;  // 1 Minute
 
         if(daysPassed > pool.lockDays) {
             daysPassed = pool.lockDays;
         }
 
-        return user.amount * daysPassed / 365 / 100 * pool.apy;
+        // return user.amount * daysPassed / 365 / 100 * pool.apy; // Loss of Precision
+        return (user.amount * pool.apy * daysPassed * DECIMALS) / (365 * 100 * DECIMALS);
     }
 
     function pendingReward(uint _pid, address _user) public view returns(uint) {
@@ -694,6 +717,11 @@ contract StakingDapp is Ownable, ReentrancyGuard {
     }
 
     function modifyPool(uint _pid, uint _apy) public onlyOwner {
+
+        if (_apy <= 0 || _apy > 1000) {
+            revert InvalidAPY();
+        }
+
         PoolInfo storage pool = poolInfo[_pid];
         pool.apy = _apy;
     }
@@ -702,20 +730,27 @@ contract StakingDapp is Ownable, ReentrancyGuard {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][msg.sender];
 
-        if(user.lockUntil > block.timestamp) {
-            revert LockIsActive();
+        uint256 pending = _calcPendingReward(user, _pid);
+
+        uint256 lockedReward = 0;
+        if (user.lockUntil > block.timestamp) {
+            lockedReward = pending;
+            pending = 0;
         }
 
-        uint256 pending = _calcPendingReward(user, _pid);
-        if(pending <= 0) {
+        if (pending > 0) {
+            user.lastRewardAt = block.timestamp;
+            pool.rewardToken.transfer(msg.sender, pending);
+            _createNotification(_pid, pending, msg.sender, "Claim");
+        }
+
+        if (lockedReward > 0) {
+            _createNotification(_pid, lockedReward, msg.sender, "Locked Reward");
+        }
+
+        if (pending == 0 && lockedReward == 0) {
             revert NoRewardsToClaim();
         }
-
-        user.lastRewardAt = block.timestamp;
-
-        pool.rewardToken.transfer(msg.sender, pending);
-
-        _createNotification(_pid, pending, msg.sender, "Claim");
     }
 
     function _createNotification(
