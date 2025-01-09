@@ -141,7 +141,6 @@ export const TOKEN_ICO_ERC20 = async () => {
       // USER ADDRESS
       const userAddress = await signer.getAddress();
       const nativeBalance = await signer.getBalance();
-      const balance = await contractReader.balanceOf(userAddress)
 
      const token = {
       address: await contractReader.address,
@@ -149,7 +148,7 @@ export const TOKEN_ICO_ERC20 = async () => {
       symbol: await contractReader.symbol(),
       decimals: await contractReader.decimals(),
       supply: toEth(await contractReader.totalSupply()),
-      balance: toEth(balance.toString()),
+      balance: toEth(await contractReader.balanceOf(userAddress)),
       nativeBalance: toEth(nativeBalance.toString()),
      };
 
