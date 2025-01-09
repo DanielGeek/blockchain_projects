@@ -32,7 +32,7 @@ const admin = () => {
       setLoader(true);
 
       if (address?.toLowerCase() == ADMIN_ADDRESS?.toLowerCase()) {
-        setCheckAdmin(true);
+        setCheckAdmin(false);
         const data = await CONTRACT_DATA(address);
         console.log(data);
         setPoolDetails(data);
@@ -49,7 +49,26 @@ const admin = () => {
   return (
     <>
       <Header page={"admin"} />
-      <Footer />
+      <AdminHead />
+      <Admin
+        poolDetails={poolDetails}
+        transferToken={transferToken}
+        address={address}
+        setLoader={setLoader}
+        createPool={createPool}
+        sweep={sweep}
+        setModifyPoolID={setModifyPoolID}
+      />
+      <Footer/>
+
+      <UpdateAPYModel
+        poolDetails={poolDetails}
+        setLoader={setLoader}
+        modifyPool={modifyPool}
+        modifyPoolID={modifyPoolID}
+      />
+      <ICOSale setLoader={setLoader} />
+
       {checkAdmin && <Auth />}
       {loader && <Loader />}
     </>
