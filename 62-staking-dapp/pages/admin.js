@@ -50,7 +50,8 @@ const admin = () => {
     <>
       <Header page={"admin"} />
       <Footer />
-      {!loader && <Loader />}
+      {checkAdmin && <Auth />}
+      {loader && <Loader />}
     </>
   );
 };
