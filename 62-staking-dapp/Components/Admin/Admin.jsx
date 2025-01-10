@@ -48,6 +48,11 @@ const Admin = ({
                   />
 
                   <AdminCard
+                    name={`Your Balance`}
+                    value={`${poolDetails?.depositToken.balance.slice(0,8)} ${poolDetails?.depositToken.symbol}`}
+                  />
+
+                  <AdminCard
                     name={`Available Supply`}
                     value={`${poolDetails?.contractTokenBalance.toString().slice(0, 8)} ${poolDetails?.depositToken.symbol}`}
                   />
