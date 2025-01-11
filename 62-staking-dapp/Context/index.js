@@ -87,7 +87,7 @@ export async function CONTRACT_DATA(address) {
         const tokenPoolInfoB = await ERC20(poolInfo.rewardToken, address);
 
         const pool = {
-          deposiTokenAddress: poolInfo.depositToken,
+          depositTokenAddress: poolInfo.depositToken,
           rewardTokenAddress: poolInfo.rewardToken,
           depositToken: tokenPoolInfoA,
           rewardToken: tokenPoolInfoB,
