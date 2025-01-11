@@ -100,7 +100,10 @@ const Pool = ({ poolDetails, createPool, setLoader, setModifyPoolID }) => {
                     handleChange={(e) => setPool({ ...pool, _lockDays: e.target.value })}
                   />
 
-                  <ClickButton namme={"Create Pool"} />
+                  <ClickButton
+                    name={"Create Pool"}
+                    handleClick={() => CALLING_FUNCTION(pool)}
+                  />
                 </div>
               </div>
 
@@ -191,6 +194,7 @@ const Pool = ({ poolDetails, createPool, setLoader, setModifyPoolID }) => {
                                       <i className="ti">
                                         <FaEdit />
                                       </i>
+                                      <span>Update APY</span>
                                     </a>
                                   </div>
                                 </td>
