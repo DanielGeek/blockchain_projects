@@ -5,7 +5,7 @@ const ClickButton = ({ name, handleClick }) => {
     <div className="col-12">
       <button
         type="button"
-        className="form__btn form__btn--small"
+        className="form__btn form__btn--small w-100"
         onClick={handleClick}
       >
         {name}
