@@ -179,7 +179,6 @@ const Pool = ({ poolDetails, createPool, setLoader, setModifyPoolID }) => {
                                     {pool.lockDays} days
                                   </div>
                                 </td>
-                                
                                 <td>
                                   <div className="deals__text deals__text--sell">
                                     <a
