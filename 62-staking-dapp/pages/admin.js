@@ -62,7 +62,6 @@ const admin = () => {
       <Footer/>
 
       <UpdateAPYModel
-        poolDetails={poolDetails}
         setLoader={setLoader}
         modifyPool={modifyPool}
         modifyPoolID={modifyPoolID}
