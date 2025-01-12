@@ -50,7 +50,7 @@ const Token = ({ token }) => {
               </tr>
               <tr>
                 <td>Total Stake</td>
-                <td>{token?.contractTokenBalance || "0"} {token?.symbol}</td>
+                <td>{token?.contractTokenBalance} {token?.symbol}</td>
               </tr>
               <tr>
                 <td className="yellow">Explorer Token</td>
