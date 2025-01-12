@@ -86,7 +86,7 @@ export const LOAD_TOKEN_ICO = async() => {
 
     const ZERO_ADDRESS = 0x0000000000000000000000000000000000000000;
 
-    if (tokenAddress === ZERO_ADDRESS) {
+    if (tokenAddress != ZERO_ADDRESS) {
       console.log("HEY", tokenAddress);
       const tokenDetails = await contract.getTokenDetails();
       const contractOwner = await contract.owner();
