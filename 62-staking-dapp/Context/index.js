@@ -190,8 +190,9 @@ export async function transferToken(amount, transferAddress) {
       transferAmount
     );
 
-    await approveTx.wait();
+    const receipt = await approveTx.wait();
     notifySuccess("Token transfer successfully");
+    return receipt;
   } catch (error) {
     console.log(error);
     const errorMsg = parseErrorMsg(error);
@@ -346,7 +347,7 @@ export const addTokenMetaMask = async (token) => {
     const contract = await tokenContract();
 
     const tokenDecimals = await contract.decimals();
-    const tokenAddress = await contract.address;
+    const tokenAddress = contract.address;
     const tokenSymbol = await contract.symbol();
     const tokenImage = TOKEN_LOGO;
 
