@@ -22,6 +22,7 @@ const UpdateAPYModel = ({ setLoader, modifyPool, modifyPoolID }) => {
     <div
       className="modal modal--auto fade"
       id="modal-apool"
+      tabIndex={-1}
       aria-labelledby="modal-apool"
       aria-hidden="true"
     >
