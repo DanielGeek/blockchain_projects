@@ -16,17 +16,14 @@ const ICOSale = ({ setLoader }) => {
     const loadToken = async () => {
       const token = await LOAD_TOKEN_ICO();
       setTokenDetails(token);
-      console.log(token);
     };
     loadToken();
   }, [address]);
 
   const CALLING_FUNCTION_BUY_TOKEN = async (quantity) => {
     setLoader(true);
-    console.log(quantity);
     const receipt = await BUY_TOKEN(quantity);
     if (receipt) {
-      console.log(receipt);
       setLoader(false);
       window.location.reload();
     }

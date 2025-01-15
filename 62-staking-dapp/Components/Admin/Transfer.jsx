@@ -11,10 +11,8 @@ const Transfer = ({ poolDetails, transferToken, setLoader, address }) => {
 
   const CALLING_FUNCTION = async (amount, transferAddress) => {
     setLoader(true);
-    console.log(amount, transferAddress);
     const receipt = await transferToken(amount, transferAddress);
     if (receipt) {
-      console.log(receipt);
       setLoader(false);
       window.location.reload();
     }

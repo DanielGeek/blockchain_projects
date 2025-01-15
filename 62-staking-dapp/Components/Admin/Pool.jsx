@@ -21,10 +21,8 @@ const Pool = ({ poolDetails, createPool, setLoader, setModifyPoolID }) => {
 
   const CALLING_FUNCTION = async (pool) => {
     setLoader(true);
-    console.log(pool);
     const receipt = await createPool(pool);
     if (receipt) {
-      console.log(receipt);
       setLoader(false);
       window.location.reload();
     }

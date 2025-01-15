@@ -8,10 +8,8 @@ const UpdateAPYModel = ({ setLoader, modifyPool, modifyPoolID }) => {
 
   const CALLING_FUNCTION_MODIFY_POOL = async (modifyPoolID, amount) => {
     setLoader(true);
-    console.log(modifyPoolID, amount);
     const receipt = await modifyPool(modifyPoolID, amount);
     if (receipt) {
-      console.log(receipt);
       setLoader(false);
       window.location.reload();
     }

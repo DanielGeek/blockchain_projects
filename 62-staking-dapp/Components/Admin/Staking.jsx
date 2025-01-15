@@ -13,10 +13,8 @@ const Staking = ({ poolDetails, sweep, setLoader }) => {
 
   const CALLING_FUNCTION_SWEEP = async (token) => {
     setLoader(true);
-    console.log(token);
     const receipt = await sweep(token);
     if (receipt) {
-      console.log(receipt);
       setLoader(false);
       window.location.reload();
     }
