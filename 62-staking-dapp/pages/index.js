@@ -6,7 +6,6 @@ import {
   Header,
   HeroSection,
   Footer,
-  Pools,
   PoolsModel,
   WithdrawModal,
   Withdraw,
@@ -17,7 +16,7 @@ import {
   Notification,
   ICOSale,
   Contact,
-  Pool,
+  Pools,
   Ask,
 } from "../Components/index";
 
@@ -26,7 +25,7 @@ import {
   deposit,
   withdraw,
   clainReward,
-  addTokenToMetaMask,
+  addTokenMetaMask,
 } from "../Context/index";
 
 const index = () => {
@@ -59,7 +58,7 @@ const index = () => {
       <Header />
       <HeroSection
         poolDetails={poolDetails}
-        addTokenToMetaMask={addTokenToMetaMask}
+        addTokenMetaMask={addTokenMetaMask}
       />
       <Statistics poolDetails={poolDetails} />
       <Pools
