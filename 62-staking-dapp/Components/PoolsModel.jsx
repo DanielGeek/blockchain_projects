@@ -61,11 +61,11 @@ const PoolsModel = ({ deposit, poolID, address, selectedPool, selectedToken, set
                     value={`Your Deposited: ${selectedPool?.amount} ${selectedPool?.depositToken.symbol}`}
                   />
                   <InputRatio
-                    index={1}
+                    index={2}
                     value={`Total Deposited: ${selectedPool?.depositedAmount} ${selectedPool?.depositToken.symbol}`}
                   />
                   <InputRatio
-                    index={1}
+                    index={3}
                     value={`My Balance: ${selectedPool?.depositToken.balance.slice(0, 8)} ${selectedPool?.depositToken.symbol}`}
                   />
                 </ul>
