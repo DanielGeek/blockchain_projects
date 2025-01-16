@@ -96,6 +96,10 @@ const index = () => {
       />
 
       <ICOSale setLoader={setLoader} />
+
+      {contactUs && <Contact setContactUs={setContactUs} />}
+
+      {loader && <Loader />}
     </>
   );
 };
