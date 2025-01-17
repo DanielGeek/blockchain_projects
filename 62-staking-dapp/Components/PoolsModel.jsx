@@ -75,7 +75,6 @@ const PoolsModel = ({ deposit, poolID, address, selectedPool, selectedToken, set
                 title={"Proceed"}
                 handleClick={() => CALLING_FUNCTION(poolID, amount, address)}
               />
-
             </div>
           </div>
         </div>

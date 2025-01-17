@@ -29,7 +29,7 @@ const Notification = ({ index, notify, poolDetails }) => {
       <div className="deposit__name">
         <span
           style={{
-            color: "#white",
+            color: "white",
           }}
           className={`deposit__icon deposit__icon--${index == 0 ? "orange" : index == 1 ? "green" : "blue"}`}
         >
@@ -40,16 +40,16 @@ const Notification = ({ index, notify, poolDetails }) => {
 
       <ul className="deposit__list">
         <List name={"Pool ID"} value={`#00-1${notify?.poolID}`} />
-        <List name={"Date"} value={`#00-1${notify?.timestamp}`} />
-        <List name={"Amount"} value={`#00-1${notify?.amount}`} />
-        <List name={"User"} value={`#00-1${notify?.user}`} />
+        <List name={"Date"} value={`${notify?.timestamp}`} />
+        <List name={"Amount"} value={`${notify?.amount}`} />
+        <List name={"User"} value={`${notify?.user}`} />
       </ul>
       <div
         className={`progressbar progressbar--${index == 0 ? "orange" : index == 1 ? "green" : "blue"}`}
       >
-        <h3 className="progressbar__title">Accrued{notify?.amount} %</h3>
+        <h3 className="progressbar__title">Accrued {notify?.amount} %</h3>
         <div
-          aria-colspan="progressbar"
+          className="progress"
           role="progressbar"
           aria-valuenow={75}
           aria-valuemin={0}

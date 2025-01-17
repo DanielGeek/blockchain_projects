@@ -98,7 +98,7 @@ const Notification = ({ poolDetails, page }) => {
                           <div
                             className="deals__text deals__text--sell"
                           >
-                            {`#00-${notify?.timestamp}`}
+                            {`${notify?.timestamp}`}
                           </div>
                         </td>
                       </tr>

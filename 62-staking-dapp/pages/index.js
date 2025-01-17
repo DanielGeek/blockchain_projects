@@ -24,7 +24,7 @@ import {
   CONTRACT_DATA,
   deposit,
   withdraw,
-  clainReward,
+  claimReward,
   addTokenMetaMask,
 } from "../Context/index";
 
@@ -92,7 +92,7 @@ const index = () => {
         withdrawPoolID={withdrawPoolID}
         address={address}
         setLoader={setLoader}
-        clainReward={clainReward}
+        claimReward={claimReward}
       />
 
       <ICOSale setLoader={setLoader} />
