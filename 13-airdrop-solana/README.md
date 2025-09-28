@@ -17,7 +17,7 @@ npm init -y
 ```
 
 ```bash
-npm install @solana/web3.js
+npm install --save @solana/web3.js
 ```
 
 ## Usage
