@@ -1,0 +1,12 @@
+{
+    "name": "Itachi Uchiha",
+    "symbol": "IU",
+    "description": "An ICO of Itachi Uchiha",
+    "image": "https://raw.githubusercontent.com/DanielGeek/blockchain_projects/refs/heads/main/13-airdrop-solana/assets/Itachi.png",
+    "attributes": [
+        {
+            "trait_type": "Character",
+            "value": "Itachi Uchiha"
+        }
+    ]
+}
