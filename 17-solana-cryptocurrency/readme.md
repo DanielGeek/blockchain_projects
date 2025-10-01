@@ -5,31 +5,78 @@
 - ⚙️ Install Rust.
 - ☕️ Install Node, NPM, and Mocha
 - 📚 Install Anchor
+- With cargo install solana-cli
+
+## Next steps
+
+```bash
+solana --version
+```
+
+```bash
+cargo install spl-token-cli
+```
 
 ## Get Solana set up on your computer
 
 - url: [solana-env-setup](https://github.com/LearnWithArjun/solana-env-setup)
 
-- Put solanas in your account by using pubkey: solana airdrop 2 your-pub-key --url devnet
+- Put solanas in your account by using pubkey:
 
-- create a token: spl-token create-token --url devnet
+```bash
+solana airdrop 2 your-pub-key --url devnet
+```
+
+- create a token:
+
+```bash
+spl-token create-token --url devnet
+```
 
 - token address GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz
 
-- Create account from my token address: spl-token create-account GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+- Create account from my token address:
+
+```bash
+spl-token create-account GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+```
 
 - account address: CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB
 
-- Get token address balance: spl-token balance GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+- Get token address balance:
 
-- Mint 100 token for this token address: spl-token mint GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 1000 --url devnet
+```bash
+spl-token balance GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+```
 
-- Get total supply: spl-token supply GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+- Mint 100 token for this token address:
 
-- Limit minting token: spl-token authorize GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz mint --disable --url devnet
+```bash
+spl-token mint GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 1000 --url devnet
+```
 
-- Burn token from account: spl-token burn CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB 100 --url devnet
+- Get total supply:
 
-- Phantom wallet address devnet: AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4
+```bash
+spl-token supply GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+```
 
-- Transfer 150 token to another Solana address: spl-token transfer GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 150 AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4 --url devnet --fund-recipient
+- Limit minting token:
+
+```bash
+spl-token authorize GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz mint --disable --url devnet
+```
+
+- Burn token from account:
+
+```bash
+spl-token burn CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB 100 --url devnet
+```
+
+- Phantom Number 2 wallet address devnet: AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4
+
+- Transfer 150 token to another Solana address:
+
+```bash
+spl-token transfer GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 150 AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4 --url devnet --fund-recipient
+```
