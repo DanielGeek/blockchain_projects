@@ -1,7 +1,14 @@
-## Steps for create you own solana token and mint 1000
+# Steps for create you own solana token and mint 1000
 
-### Get Solana set up on your computer!
-- url: https://github.com/LearnWithArjun/solana-env-setup 
+## Prerequisites
+
+- ⚙️ Install Rust.
+- ☕️ Install Node, NPM, and Mocha
+- 📚 Install Anchor
+
+## Get Solana set up on your computer
+
+- url: https://github.com/LearnWithArjun/solana-env-setup
 
 - Put solanas in your account by using pubkey: solana airdrop 2 your-pub-key --url devnet
 
