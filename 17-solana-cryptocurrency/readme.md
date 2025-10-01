@@ -8,7 +8,7 @@
 
 ## Get Solana set up on your computer
 
-- url: https://github.com/LearnWithArjun/solana-env-setup
+- url: [solana-env-setup](https://github.com/LearnWithArjun/solana-env-setup)
 
 - Put solanas in your account by using pubkey: solana airdrop 2 your-pub-key --url devnet
 
