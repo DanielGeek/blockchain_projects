@@ -17,6 +17,34 @@ solana --version
 cargo install spl-token-cli
 ```
 
+## Next thing you'll want to do is run these three commands separately
+
+```bash
+solana config set --url devnet
+```
+
+```bash
+solana-keygen recover 'prompt:?key=0/0' -o ~/phantom-keypair.json
+```
+
+```bash
+solana config set --keypair ~/phantom-keypair.json
+```
+
+```bash
+solana config set --commitment confirmed
+```
+
+This will output something like this:
+
+```bash
+Config File: /Users/thepunisher/.config/solana/cli/config.yml
+RPC URL: https://api.devnet.solana.com 
+WebSocket URL: wss://api.devnet.solana.com/ (computed)
+Keypair Path: /Users/thepunisher/.config/solana/id.json 
+Commitment: confirmed
+```
+
 ## Get Solana set up on your computer
 
 - url: [solana-env-setup](https://github.com/LearnWithArjun/solana-env-setup)
