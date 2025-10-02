@@ -61,44 +61,44 @@ solana airdrop 2 your-pub-key --url devnet
 spl-token create-token --url devnet
 ```
 
-- token address GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz
+- token address 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2
 
 - Create account from my token address:
 
 ```bash
-spl-token create-account GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+spl-token create-account 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 --url devnet
 ```
 
-- account address: CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB
+- token account address: 5XnXLqrfSTfFhkx1YT1zQr9b9HvC85NBF9EQR8qSSxPT
 
 - Get token address balance:
 
 ```bash
-spl-token balance GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+spl-token balance 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 --url devnet
 ```
 
-- Mint 100 token for this token address:
+- Mint 1000 tokens for this token address:
 
 ```bash
-spl-token mint GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 1000 --url devnet
+spl-token mint 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 1000 --url devnet
 ```
 
 - Get total supply:
 
 ```bash
-spl-token supply GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz --url devnet
+spl-token supply 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 --url devnet
 ```
 
 - Limit minting token:
 
 ```bash
-spl-token authorize GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz mint --disable --url devnet
+spl-token authorize 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 mint --disable --url devnet
 ```
 
-- Burn token from account:
+- Burn tokens of token account address:
 
 ```bash
-spl-token burn CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB 100 --url devnet
+spl-token burn 5XnXLqrfSTfFhkx1YT1zQr9b9HvC85NBF9EQR8qSSxPT 100 --url devnet
 ```
 
 - Phantom Number 2 wallet address devnet: AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4
@@ -106,5 +106,5 @@ spl-token burn CFyX4xhLNhN2ShQR8uaTtp3PbXpj8fNPYdsBKT4oamTB 100 --url devnet
 - Transfer 150 token to another Solana address:
 
 ```bash
-spl-token transfer GKY8TupE8b8LZEhpjv8x3ErjQpb1fQ3PR1NR5Z8Kojuz 150 AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4 --url devnet --fund-recipient
+spl-token transfer 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 150 AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4 --url devnet --fund-recipient
 ```
