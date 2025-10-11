@@ -1,0 +1,12 @@
+{
+    "name": "Prueba",
+    "symbol": "P",
+    "description": "An ICO of Prueba",
+    "image": "https://raw.githubusercontent.com/DanielGeek/blockchain_projects/refs/heads/main/13-airdrop-solana/assets2/test.jpg",
+    "attributes": [
+        {
+            "trait_type": "Character",
+            "value": "Prueba"
+        }
+    ]
+}
