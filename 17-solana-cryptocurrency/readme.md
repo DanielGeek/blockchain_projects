@@ -101,10 +101,10 @@ spl-token authorize 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 mint --disable 
 spl-token burn 5XnXLqrfSTfFhkx1YT1zQr9b9HvC85NBF9EQR8qSSxPT 100 --url devnet
 ```
 
-- Phantom Number 2 wallet address devnet: AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4
+- Phantom Number 2 wallet address devnet: CpmBmbscfNX8zM5qnqoTyhUYPsFSpxZJAP3hMT8Jt91E
 
 - Transfer 150 token to another Solana address:
 
 ```bash
-spl-token transfer 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 150 AUhPKUcijAntXRSiu3dK4Bfqbs3oFLs2yaPsbpY3WDS4 --url devnet --fund-recipient
+spl-token transfer 6sfZmzfzjZtXXXSWZikWzczU89NcUZL4qAAS7tndYWZ2 150 CpmBmbscfNX8zM5qnqoTyhUYPsFSpxZJAP3hMT8Jt91E --url devnet --fund-recipient
 ```
