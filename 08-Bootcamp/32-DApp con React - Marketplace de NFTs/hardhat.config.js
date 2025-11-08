@@ -20,6 +20,11 @@ module.exports = {
       url: "https://rpc-mumbai.maticvigil.com/v1/99a99d15ac2ad3b526aa97401fdbe30ee724ba38",
       accounts: [privateKey]
     },
+    sepolia: {
+      url: "https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+      accounts: [privateKey],
+      chainId: 11155111
+    },
     hardhat: {
     },
   },
