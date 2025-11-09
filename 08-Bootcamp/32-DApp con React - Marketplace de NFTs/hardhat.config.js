@@ -1,7 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 
-const fs = require('fs')
-const privateKey = fs.readFileSync(".secret").toString().trim();
+require('dotenv').config();
 
 module.exports = {
   solidity: "0.8.4",
@@ -18,11 +17,11 @@ module.exports = {
     },
     polygon: {
       url: "https://rpc-mumbai.maticvigil.com/v1/99a99d15ac2ad3b526aa97401fdbe30ee724ba38",
-      accounts: [privateKey]
+      accounts: [process.env.PRIVATE_KEY]
     },
     sepolia: {
-      url: "https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID",
-      accounts: [privateKey],
+      url: process.env.SEPOLIA_RPC_URL,
+      accounts: [process.env.PRIVATE_KEY],
       chainId: 11155111
     },
     hardhat: {
