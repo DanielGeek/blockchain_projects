@@ -1,5 +1,9 @@
 # Commands
 
+## Clean folder artifacts and cache
+
+npx hardhat clean
+
 ## Compile contracts
 
 npx hardhat compile
@@ -16,3 +20,9 @@ npx hardhat verify --network sepolia <NFT_ADDRESS>
 ## Run frontend
 
 npm start
+
+## Run tests
+
+npx hardhat test
+
+npx hardhat test --verbose
