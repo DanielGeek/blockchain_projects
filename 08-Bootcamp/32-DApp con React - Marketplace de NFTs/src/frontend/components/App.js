@@ -85,13 +85,20 @@ function App() {
     }
   };
 
+  const disconnectWallet = () => {
+    setAccount(null);
+    setMarketplace({});
+    setNFT({});
+    setLoading(false);
+  };
+
   const web3Handler = async () => {
     try {
       setLoading(true);
       setError(null);
       
       if (!window.ethereum) {
-        throw new Error("MetaMask is not installed");
+        throw new Error("MetaMask is not installed. Please install MetaMask to use this dApp.");
       }
 
       // Check or switch to Sepolia
@@ -99,16 +106,20 @@ function App() {
       if (!isSepolia) {
         const switched = await switchToSepolia();
         if (!switched) {
-          throw new Error("Por favor cambia a la red Sepolia en MetaMask");
+          throw new Error("Please switch to Sepolia network in MetaMask to continue.");
         }
+        // After switching network, reload to ensure everything is in sync
+        window.location.reload();
+        return;
       }
 
+      // Request account access if needed
       const accounts = await window.ethereum.request({ 
         method: 'eth_requestAccounts' 
       });
 
       if (accounts.length === 0) {
-        throw new Error("No se encontraron cuentas en MetaMask");
+        throw new Error("No accounts found in MetaMask. Please make sure you have an account set up.");
       }
 
       setAccount(accounts[0]);
@@ -117,21 +128,34 @@ function App() {
       
       await loadContracts(signer);
 
-      // Configure listeners
-      window.ethereum.on('accountsChanged', (newAccounts) => {
+      // Configure event listeners
+      const handleAccountsChanged = (newAccounts) => {
         if (newAccounts.length > 0) {
           setAccount(newAccounts[0]);
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           loadContracts(provider.getSigner());
         } else {
-          setAccount(null);
-          setLoading(false);
+          // This will be triggered when the user disconnects their wallet
+          disconnectWallet();
         }
-      });
+      };
 
-      window.ethereum.on('chainChanged', () => {
+      const handleChainChanged = () => {
+        // Reload the page when the network changes
         window.location.reload();
-      });
+      };
+
+      // Add event listeners
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', handleChainChanged);
+
+      // Cleanup function to remove event listeners
+      return () => {
+        if (window.ethereum) {
+          window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+          window.ethereum.removeListener('chainChanged', handleChainChanged);
+        }
+      };
 
     } catch (error) {
       console.error("Error in web3Handler:", error);
@@ -174,7 +198,11 @@ function App() {
   return (
     <BrowserRouter>
       <div className='App'>
-        <Navigation web3Handler={web3Handler} account={account} />
+        <Navigation 
+          web3Handler={web3Handler} 
+          account={account} 
+          onDisconnect={disconnectWallet} 
+        />
         <div className="container mt-4">
           {error && (
             <Alert variant="danger" onClose={() => setError(null)} dismissible>
