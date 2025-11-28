@@ -96,7 +96,7 @@ function App() {
     try {
       setLoading(true);
       setError(null);
-      
+
       if (!window.ethereum) {
         throw new Error("MetaMask is not installed. Please install MetaMask to use this dApp.");
       }
@@ -114,8 +114,8 @@ function App() {
       }
 
       // Request account access if needed
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts'
       });
 
       if (accounts.length === 0) {
@@ -125,7 +125,7 @@ function App() {
       setAccount(accounts[0]);
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      
+
       await loadContracts(signer);
 
       // Configure event listeners
@@ -167,10 +167,10 @@ function App() {
   useEffect(() => {
     const init = async () => {
       if (window.ethereum) {
-        const accounts = await window.ethereum.request({ 
-          method: 'eth_accounts' 
+        const accounts = await window.ethereum.request({
+          method: 'eth_accounts'
         });
-        
+
         if (accounts.length > 0) {
           await web3Handler();
         } else {
@@ -194,14 +194,15 @@ function App() {
       }
     };
   }, []);
+  // Quedamos aqui
 
   return (
     <BrowserRouter>
       <div className='App'>
-        <Navigation 
-          web3Handler={web3Handler} 
-          account={account} 
-          onDisconnect={disconnectWallet} 
+        <Navigation
+          web3Handler={web3Handler}
+          account={account}
+          onDisconnect={disconnectWallet}
         />
         <div className="container mt-4">
           {error && (
@@ -219,8 +220,8 @@ function App() {
           ) : !account ? (
             <div className="text-center my-5">
               <h4>Connect your wallet to start</h4>
-              <button 
-                onClick={web3Handler} 
+              <button
+                onClick={web3Handler}
                 className="btn btn-primary mt-3"
               >
                 Connect MetaMask
